@@ -5,6 +5,7 @@ import 'package:dart_synthizer/dart_synthizer.dart';
 import 'package:ziggurat/ziggurat.dart';
 import 'package:ziggurat_sounds/ziggurat_sounds.dart';
 
+import '../../command_triggers.dart';
 import '../json/world.dart';
 import 'get_main_menu.dart';
 
@@ -12,7 +13,20 @@ import 'get_main_menu.dart';
 Future<void> runWorld(World world) async {
   final synthizer = Synthizer()..initialize();
   final context = synthizer.createContext();
-  final game = Game(world.title);
+  final game = Game(
+    world.title,
+    triggerMap: TriggerMap(
+      [
+        walkForwardsCommandTrigger,
+        walkBackwardsCommandTrigger,
+        sidestepLeftCommandTrigger,
+        sidestepRightCommandTrigger,
+        turnLeftCommandTrigger,
+        turnRightCommandTrigger,
+        pauseMenuCommandTrigger,
+      ],
+    ),
+  );
   final soundManager = SoundManager(
     game: game,
     context: context,
