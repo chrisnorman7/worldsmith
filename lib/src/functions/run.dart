@@ -1,4 +1,3 @@
-/// Provides runner methods.
 import 'dart:math';
 
 import 'package:dart_sdl/dart_sdl.dart';
