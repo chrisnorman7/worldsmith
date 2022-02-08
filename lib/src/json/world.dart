@@ -7,6 +7,8 @@ import '../../extensions.dart';
 import '../../worldsmith.dart';
 import 'equipment_position.dart';
 import 'options/sound_options.dart';
+import 'zones/terrain.dart';
+import 'zones/zone.dart';
 
 part 'world.g.dart';
 
@@ -41,7 +43,14 @@ class World {
       destination: 'assets/equipment',
       assets: [],
     ),
+    this.terrainAssetStore = const AssetStore(
+      filename: 'assets/terrain.json',
+      destination: 'assets/terrains',
+      assets: [],
+    ),
     this.equipmentPositions = const [],
+    this.terrains = const [],
+    this.zones = const [],
   });
 
   /// Create an instance from a JSON object.
@@ -93,8 +102,24 @@ class World {
   /// The asset store for clothing and weapon sounds.
   final AssetStore equipmentAssetStore;
 
+  /// The asset store for terrain sounds.
+  final AssetStore terrainAssetStore;
+
   /// The positions for equipment.
   final List<EquipmentPosition> equipmentPositions;
+
+  /// The possible terrains.
+  final List<Terrain> terrains;
+
+  /// Get the terrain with the given [id].
+  Terrain getTerrain(String id) =>
+      terrains.firstWhere((element) => element.id == id);
+
+  /// The list of zones that this world has.
+  final List<Zone> zones;
+
+  /// Get the zone with the given [id].
+  Zone getZone(String id) => zones.firstWhere((element) => element.id == id);
 
   /// Convert an instance to JSON.
   Map<String, dynamic> toJson() => _$WorldToJson(this);
