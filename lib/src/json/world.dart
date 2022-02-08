@@ -5,6 +5,7 @@ import 'package:ziggurat_sounds/ziggurat_sounds.dart';
 
 import '../../extensions.dart';
 import '../../worldsmith.dart';
+import 'equipment_position.dart';
 import 'options/sound_options.dart';
 
 part 'world.g.dart';
@@ -35,6 +36,12 @@ class World {
       destination: 'assets/interface',
       assets: [],
     ),
+    this.equipmentAssetStore = const AssetStore(
+      filename: 'assets/equipment.json',
+      destination: 'assets/equipment',
+      assets: [],
+    ),
+    this.equipmentPositions = const [],
   });
 
   /// Create an instance from a JSON object.
@@ -82,6 +89,12 @@ class World {
 
   /// The interface sounds asset store.
   final AssetStore interfaceSoundsAssetStore;
+
+  /// The asset store for clothing and weapon sounds.
+  final AssetStore equipmentAssetStore;
+
+  /// The positions for equipment.
+  final List<EquipmentPosition> equipmentPositions;
 
   /// Convert an instance to JSON.
   Map<String, dynamic> toJson() => _$WorldToJson(this);

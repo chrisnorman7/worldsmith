@@ -48,6 +48,18 @@ World _$WorldFromJson(Map<String, dynamic> json) => World(
               assets: [])
           : AssetStore.fromJson(
               json['interfaceSoundsAssetStore'] as Map<String, dynamic>),
+      equipmentAssetStore: json['equipmentAssetStore'] == null
+          ? const AssetStore(
+              filename: 'assets/equipment.json',
+              destination: 'assets/equipment',
+              assets: [])
+          : AssetStore.fromJson(
+              json['equipmentAssetStore'] as Map<String, dynamic>),
+      equipmentPositions: (json['equipmentPositions'] as List<dynamic>?)
+              ?.map(
+                  (e) => EquipmentPosition.fromJson(e as Map<String, dynamic>))
+              .toList() ??
+          const [],
     );
 
 Map<String, dynamic> _$WorldToJson(World instance) => <String, dynamic>{
@@ -60,4 +72,6 @@ Map<String, dynamic> _$WorldToJson(World instance) => <String, dynamic>{
       'creditsAssetStore': instance.creditsAssetStore,
       'musicAssetStore': instance.musicAssetStore,
       'interfaceSoundsAssetStore': instance.interfaceSoundsAssetStore,
+      'equipmentAssetStore': instance.equipmentAssetStore,
+      'equipmentPositions': instance.equipmentPositions,
     };
