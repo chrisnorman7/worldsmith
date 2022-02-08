@@ -10,7 +10,7 @@ import 'package:ziggurat/sound.dart';
 import 'package:ziggurat/ziggurat.dart';
 import 'package:ziggurat_sounds/ziggurat_sounds.dart';
 
-import 'extensions.dart';
+import 'src/functions/get_credits_menu.dart';
 import 'src/json/world.dart';
 
 /// Run the given [world].
@@ -33,71 +33,23 @@ Future<void> runWorld(World world) async {
   try {
     await game.run(
       sdl,
-      framesPerSecond: world.options.framesPerSecond,
+      framesPerSecond: world.globalOptions.framesPerSecond,
       onStart: () {
-        final mainMenuMusicId = world.options.mainMenuMusicId;
-        final menuMoveSoundId = world.options.menuMoveSoundId;
-        final menuMoveSound = menuMoveSoundId != null
-            ? world.interfaceSoundsAssetStore.getAssetReferenceFromVariableName(
-                menuMoveSoundId,
-              )
-            : null;
-        final activateSoundId = world.options.menuActivateSoundId;
-        final activateSound = activateSoundId != null
-            ? world.interfaceSoundsAssetStore
-                .getAssetReferenceFromVariableName(activateSoundId)
-            : null;
-        final creditsMusicId = world.options.creditMusicId;
-        final creditsMenu = Menu(
-          game: game,
-          title: Message(
-            text: world.options.creditsMenuTitle,
-          ),
-          ambiances: [
-            if (creditsMusicId != null)
-              Ambiance(
-                sound: world.musicAssetStore
-                    .getAssetReferenceFromVariableName(creditsMusicId),
-              )
-          ],
-          items: [
-            for (final credit in world.credits)
-              MenuItem(
-                  Message(
-                    keepAlive: true,
-                    sound: credit.assetId == null
-                        ? menuMoveSound
-                        : world.creditsAssetStore
-                            .getAssetReferenceFromVariableName(
-                            credit.assetId!,
-                          ),
-                    text: credit.title,
-                  ),
-                  Button(
-                    () => credit.url == null
-                        ? null
-                        : game.outputText(credit.url!),
-                  ))
-          ],
-          onCancel: game.popLevel,
-        );
+        final mainMenuMusic = world.mainMenuMusic;
+        final moveSound = world.menuMoveSound;
+        final activateSound = world.menuActivateSound;
         final mainMenu = Menu(
           game: game,
-          title: Message(text: world.options.mainMenuTitle),
+          title: Message(text: world.mainMenuOptions.options.title),
           ambiances: [
-            if (mainMenuMusicId != null)
-              Ambiance(
-                sound: world.musicAssetStore.getAssetReferenceFromVariableName(
-                  mainMenuMusicId,
-                ),
-              )
+            if (mainMenuMusic != null) Ambiance(sound: mainMenuMusic)
           ],
           items: [
             MenuItem(
               Message(
                 keepAlive: true,
-                sound: menuMoveSound,
-                text: world.options.playNewGameMenuItemTitle,
+                sound: moveSound,
+                text: world.mainMenuOptions.newGameTitle,
               ),
               Button(
                 unimplemented,
@@ -107,30 +59,36 @@ Future<void> runWorld(World world) async {
             MenuItem(
               Message(
                 keepAlive: true,
-                sound: menuMoveSound,
-                text: world.options.playSavedGameMenuItemTitle,
+                sound: moveSound,
+                text: world.mainMenuOptions.savedGameTitle,
               ),
               Button(
                 unimplemented,
                 activateSound: activateSound,
               ),
             ),
+            if (world.credits.isNotEmpty)
+              MenuItem(
+                Message(
+                  keepAlive: true,
+                  sound: moveSound,
+                  text: world.mainMenuOptions.creditsTitle,
+                ),
+                Button(
+                  () => game.pushLevel(
+                    getCreditsMenu(
+                      game: game,
+                      world: world,
+                    ),
+                  ),
+                  activateSound: activateSound,
+                ),
+              ),
             MenuItem(
               Message(
                 keepAlive: true,
-                sound: menuMoveSound,
-                text: world.options.creditsMenuItemTitle,
-              ),
-              Button(
-                () => game.pushLevel(creditsMenu),
-                activateSound: activateSound,
-              ),
-            ),
-            MenuItem(
-              Message(
-                keepAlive: true,
-                sound: menuMoveSound,
-                text: world.options.exitMenuItemTitle,
+                sound: moveSound,
+                text: world.mainMenuOptions.exitTitle,
               ),
               Button(game.stop, activateSound: activateSound),
             )

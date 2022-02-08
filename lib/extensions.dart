@@ -8,8 +8,12 @@ import 'package:ziggurat_sounds/ziggurat_sounds.dart';
 extension WorldSmithAssetStoreExtensionMethods on AssetStore {
   /// Returns the asset whose [AssetReferenceReference] has the given
   /// [variableName].
-  AssetReference getAssetReferenceFromVariableName(String variableName) =>
-      assets
-          .firstWhere((element) => element.variableName == variableName)
-          .reference;
+  AssetReference? getAssetReferenceFromVariableName(String? variableName) {
+    if (variableName == null) {
+      return null;
+    }
+    return assets
+        .firstWhere((element) => element.variableName == variableName)
+        .reference;
+  }
 }
