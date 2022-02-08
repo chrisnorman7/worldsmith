@@ -50,11 +50,12 @@ Menu getMainMenu({
             text: world.mainMenuOptions.creditsTitle,
           ),
           Button(
-            () => game.pushLevel(
+            () => game.replaceLevel(
               getCreditsMenu(
                 game: game,
                 world: world,
               ),
+              ambianceFadeTime: world.mainMenuOptions.options.fadeTime,
             ),
             activateSound: activateSound,
           ),

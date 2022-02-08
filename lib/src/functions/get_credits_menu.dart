@@ -5,6 +5,7 @@ import 'package:ziggurat/ziggurat.dart';
 
 import '../../extensions.dart';
 import '../json/world.dart';
+import 'get_main_menu.dart';
 
 /// Returns a menu that will show credits.
 Menu getCreditsMenu({
@@ -36,6 +37,12 @@ Menu getCreditsMenu({
               () => credit.url == null ? null : game.outputText(credit.url!),
             ))
     ],
-    onCancel: game.popLevel,
+    onCancel: () => game.replaceLevel(
+      getMainMenu(
+        game: game,
+        world: world,
+      ),
+      ambianceFadeTime: world.creditsMenuOptions.fadeTime,
+    ),
   );
 }

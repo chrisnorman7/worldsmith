@@ -10,6 +10,7 @@ class MenuOptions {
   const MenuOptions({
     required this.title,
     this.musicId,
+    this.fadeTime,
   });
 
   /// Create an instance from a JSON object.
@@ -21,6 +22,9 @@ class MenuOptions {
 
   /// The ID of the music that should play while in this menu.
   final String? musicId;
+
+  /// How many seconds should it take for this menu to be dismissed.
+  final double? fadeTime;
 
   /// Convert an instance to JSON.
   Map<String, dynamic> toJson() => _$MenuOptionsToJson(this);
