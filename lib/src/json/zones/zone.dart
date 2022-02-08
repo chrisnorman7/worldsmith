@@ -3,6 +3,7 @@ import 'package:json_annotation/json_annotation.dart';
 
 import '../world.dart';
 import 'box.dart';
+import 'terrain.dart';
 
 part 'zone.g.dart';
 
@@ -14,6 +15,8 @@ class Zone {
     required this.id,
     required this.name,
     required this.boxes,
+    required this.defaultTerrainId,
+    this.musicId,
     this.topDownMap = true,
   });
 
@@ -28,6 +31,12 @@ class Zone {
 
   /// The boxes in this zone.
   final List<Box> boxes;
+
+  /// The ID of the [Terrain] to use when no [Box] has been found.
+  final String defaultTerrainId;
+
+  /// The music for this zone.
+  final String? musicId;
 
   /// Whether or not a top-down map of this zone can be viewed.
   final bool topDownMap;
