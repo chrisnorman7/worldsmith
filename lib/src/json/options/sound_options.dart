@@ -1,5 +1,6 @@
 /// Provides the [SoundOptions] class.
 import 'package:json_annotation/json_annotation.dart';
+import 'package:ziggurat/sound.dart';
 
 part 'sound_options.g.dart';
 
@@ -10,6 +11,7 @@ class SoundOptions {
   const SoundOptions({
     this.menuMoveSoundId,
     this.menuActivateSoundId,
+    this.defaultPannerStrategy = DefaultPannerStrategy.stereo,
   });
 
   /// Create an instance from a JSON object.
@@ -21,6 +23,9 @@ class SoundOptions {
 
   /// The ID of the menu activate sound from the interface sounds asset store.
   final String? menuActivateSoundId;
+
+  /// The default panning strategy for this game.
+  final DefaultPannerStrategy defaultPannerStrategy;
 
   /// Convert an instance to JSON.
   Map<String, dynamic> toJson() => _$SoundOptionsToJson(this);

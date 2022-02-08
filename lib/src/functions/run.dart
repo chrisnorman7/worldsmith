@@ -28,11 +28,11 @@ Future<void> runWorld(World world) async {
     await game.run(
       sdl,
       framesPerSecond: world.globalOptions.framesPerSecond,
-      onStart: () {
-        game.pushLevel(
+      onStart: () => game
+        ..setDefaultPannerStrategy(world.soundOptions.defaultPannerStrategy)
+        ..pushLevel(
           getMainMenu(game: game, world: world),
-        );
-      },
+        ),
     );
   } catch (e) {
     rethrow;
