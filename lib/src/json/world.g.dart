@@ -62,6 +62,10 @@ World _$WorldFromJson(Map<String, dynamic> json) => World(
               assets: [])
           : AssetStore.fromJson(
               json['terrainAssetStore'] as Map<String, dynamic>),
+      directions: (json['directions'] as Map<String, dynamic>?)?.map(
+            (k, e) => MapEntry(k, (e as num).toDouble()),
+          ) ??
+          defaultDirections,
       equipmentPositions: (json['equipmentPositions'] as List<dynamic>?)
               ?.map(
                   (e) => EquipmentPosition.fromJson(e as Map<String, dynamic>))
@@ -75,6 +79,10 @@ World _$WorldFromJson(Map<String, dynamic> json) => World(
               ?.map((e) => Zone.fromJson(e as Map<String, dynamic>))
               .toList() ??
           const [],
+      pauseMenuOptions: json['pauseMenuOptions'] == null
+          ? const MenuOptions(title: 'Pause Menu')
+          : MenuOptions.fromJson(
+              json['pauseMenuOptions'] as Map<String, dynamic>),
     );
 
 Map<String, dynamic> _$WorldToJson(World instance) => <String, dynamic>{
@@ -89,7 +97,9 @@ Map<String, dynamic> _$WorldToJson(World instance) => <String, dynamic>{
       'interfaceSoundsAssetStore': instance.interfaceSoundsAssetStore,
       'equipmentAssetStore': instance.equipmentAssetStore,
       'terrainAssetStore': instance.terrainAssetStore,
+      'directions': instance.directions,
       'equipmentPositions': instance.equipmentPositions,
       'terrains': instance.terrains,
       'zones': instance.zones,
+      'pauseMenuOptions': instance.pauseMenuOptions,
     };

@@ -24,6 +24,8 @@ Future<void> runWorld(World world) async {
         turnLeftCommandTrigger,
         turnRightCommandTrigger,
         pauseMenuCommandTrigger,
+        showCoordinatesCommandTrigger,
+        showFacingCommandTrigger,
       ],
     ),
   );

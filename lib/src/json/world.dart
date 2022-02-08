@@ -12,6 +12,18 @@ import 'zones/zone.dart';
 
 part 'world.g.dart';
 
+/// The default directions.
+const defaultDirections = {
+  'North': CardinalDirections.north,
+  'Northeast': CardinalDirections.northeast,
+  'East': CardinalDirections.east,
+  'Southeast': CardinalDirections.southeast,
+  'South': CardinalDirections.south,
+  'Southwest': CardinalDirections.southwest,
+  'West': CardinalDirections.west,
+  'Northwest': CardinalDirections.northwest,
+};
+
 /// The top-level world object.
 @JsonSerializable()
 class World {
@@ -48,9 +60,11 @@ class World {
       destination: 'assets/terrains',
       assets: [],
     ),
+    this.directions = defaultDirections,
     this.equipmentPositions = const [],
     this.terrains = const [],
     this.zones = const [],
+    this.pauseMenuOptions = const MenuOptions(title: 'Pause Menu'),
   });
 
   /// Create an instance from a JSON object.
@@ -105,6 +119,9 @@ class World {
   /// The asset store for terrain sounds.
   final AssetStore terrainAssetStore;
 
+  /// The directions that are recognised by this world.
+  final Map<String, double> directions;
+
   /// The positions for equipment.
   final List<EquipmentPosition> equipmentPositions;
 
@@ -120,6 +137,9 @@ class World {
 
   /// Get the zone with the given [id].
   Zone getZone(String id) => zones.firstWhere((element) => element.id == id);
+
+  /// The options for the pause menu.
+  final MenuOptions pauseMenuOptions;
 
   /// Convert an instance to JSON.
   Map<String, dynamic> toJson() => _$WorldToJson(this);

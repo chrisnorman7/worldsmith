@@ -57,3 +57,19 @@ const pauseMenuCommandTrigger = CommandTrigger(
   button: GameControllerButton.start,
   keyboardKey: CommandKeyboardKey(ScanCode.SCANCODE_ESCAPE),
 );
+
+/// Show coordinates.
+const showCoordinatesCommandTrigger = CommandTrigger(
+  name: 'show_coordinates',
+  description: 'Show coordinates',
+  button: GameControllerButton.x,
+  keyboardKey: CommandKeyboardKey(ScanCode.SCANCODE_C),
+);
+
+/// Show facing.
+const showFacingCommandTrigger = CommandTrigger(
+  name: 'show_facing',
+  description: 'Show direction of travel',
+  button: GameControllerButton.b,
+  keyboardKey: CommandKeyboardKey(ScanCode.SCANCODE_F),
+);
