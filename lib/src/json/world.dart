@@ -9,7 +9,6 @@ import '../../extensions.dart';
 import 'equipment_position.dart';
 import 'options/credits_menu_options.dart';
 import 'options/main_menu_options.dart';
-import 'options/menu_options.dart';
 import 'options/pause_menu_options.dart';
 import 'options/sound_options.dart';
 import 'options/world_options.dart';
