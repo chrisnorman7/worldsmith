@@ -103,7 +103,7 @@ void main() {
           expect(z.boxes, contains(southBank));
           expect(z.boxes, contains(eastBank));
           expect(z.boxes, contains(westBank));
-          expect(z.musicId, isNull);
+          expect(z.music, isNull);
           expect(z.topDownMap, isTrue);
         },
       );

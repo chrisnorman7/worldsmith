@@ -2,7 +2,6 @@
 import 'dart:math';
 
 import 'package:ziggurat/levels.dart';
-import 'package:ziggurat/sound.dart';
 import 'package:ziggurat/ziggurat.dart';
 
 import '../../command_triggers.dart';
@@ -11,6 +10,8 @@ import '../json/world.dart';
 import '../json/zones/zone.dart';
 import 'pause_menu.dart';
 
+const _origin = Point(0.0, 0.0);
+
 /// A level for playing through a zone.
 class ZoneLevel extends Level {
   /// Create an instance.
@@ -18,15 +19,13 @@ class ZoneLevel extends Level {
     required Game game,
     required this.world,
     required this.zone,
-    required this.coordinates,
+    this.coordinates = _origin,
     this.heading = 0,
   }) : super(
           game: game,
           ambiances: [
-            if (zone.musicId != null)
-              Ambiance(
-                  sound: world.musicAssetStore
-                      .getAssetReferenceFromVariableName(zone.musicId)!),
+            if (zone.music != null)
+              world.musicAssetStore.getAmbiance(zone.music!)
           ],
         ) {
     commands[pauseMenuCommandTrigger.name] = Command(

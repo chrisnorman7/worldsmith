@@ -1,6 +1,9 @@
 /// Provides various extensions used by the package.
 library extensions;
 
+import 'dart:math';
+
+import 'package:ziggurat/sound.dart';
 import 'package:ziggurat/ziggurat.dart';
 import 'package:ziggurat_sounds/ziggurat_sounds.dart';
 
@@ -35,5 +38,13 @@ extension WorldSmithAssetStoreExtensionMethods on AssetStore {
       sound: asset,
       text: text,
     );
+  }
+
+  /// Make an ambiance from the given [sound].
+  ///
+  /// The ID of the sound must reside in this asset store.
+  Ambiance getAmbiance(Sound sound, {Point<double>? position}) {
+    final asset = getAssetReferenceFromVariableName(sound.id)!;
+    return Ambiance(sound: asset, gain: sound.gain, position: position);
   }
 }

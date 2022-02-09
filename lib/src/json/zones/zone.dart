@@ -3,6 +3,7 @@ import 'dart:math';
 
 import 'package:json_annotation/json_annotation.dart';
 
+import '../sound.dart';
 import '../world.dart';
 import 'box.dart';
 import 'coordinates.dart';
@@ -19,7 +20,7 @@ class Zone {
     required this.name,
     required this.boxes,
     required this.defaultTerrainId,
-    this.musicId,
+    this.music,
     this.topDownMap = true,
   });
 
@@ -39,7 +40,7 @@ class Zone {
   final String defaultTerrainId;
 
   /// The music for this zone.
-  final String? musicId;
+  final Sound? music;
 
   /// Whether or not a top-down map of this zone can be viewed.
   final bool topDownMap;

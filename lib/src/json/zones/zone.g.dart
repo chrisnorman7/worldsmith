@@ -13,7 +13,9 @@ Zone _$ZoneFromJson(Map<String, dynamic> json) => Zone(
           .map((e) => Box.fromJson(e as Map<String, dynamic>))
           .toList(),
       defaultTerrainId: json['defaultTerrainId'] as String,
-      musicId: json['musicId'] as String?,
+      music: json['music'] == null
+          ? null
+          : Sound.fromJson(json['music'] as Map<String, dynamic>),
       topDownMap: json['topDownMap'] as bool? ?? true,
     );
 
@@ -22,6 +24,6 @@ Map<String, dynamic> _$ZoneToJson(Zone instance) => <String, dynamic>{
       'name': instance.name,
       'boxes': instance.boxes,
       'defaultTerrainId': instance.defaultTerrainId,
-      'musicId': instance.musicId,
+      'music': instance.music,
       'topDownMap': instance.topDownMap,
     };
