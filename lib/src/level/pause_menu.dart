@@ -4,6 +4,7 @@ import 'package:ziggurat/sound.dart';
 import 'package:ziggurat/ziggurat.dart';
 
 import '../../extensions.dart';
+import '../functions/menus.dart';
 import '../json/world.dart';
 import '../json/zones/zone.dart';
 
@@ -18,11 +19,26 @@ class PauseMenu extends Menu {
           game: game,
           title: Message(text: world.pauseMenuOptions.title),
           ambiances: [
-            if (world.pauseMenuOptions.musicId != null)
+            if (world.pauseMenuOptions.music != null)
               Ambiance(
-                  sound: world.musicAssetStore
-                      .getAssetReferenceFromVariableName(
-                          world.pauseMenuOptions.musicId)!),
+                sound: world.musicAssetStore.getAssetReferenceFromVariableName(
+                  world.pauseMenuOptions.music!.id,
+                )!,
+              ),
+          ],
+          items: [
+            MenuItem(
+                makeMenuItemMessage(world, text: zone.name), menuItemLabel),
+            MenuItem(
+              makeMenuItemMessage(world,
+                  text: world.pauseMenuOptions.returnToGameTitle),
+              makeButton(
+                world,
+                () => game.popLevel(
+                  ambianceFadeTime: world.pauseMenuOptions.fadeTime,
+                ),
+              ),
+            )
           ],
           onCancel: () => game.popLevel(
             ambianceFadeTime: world.pauseMenuOptions.fadeTime,

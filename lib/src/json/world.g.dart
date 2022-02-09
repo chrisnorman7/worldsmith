@@ -24,8 +24,8 @@ World _$WorldFromJson(Map<String, dynamic> json) => World(
               .toList() ??
           const [],
       creditsMenuOptions: json['creditsMenuOptions'] == null
-          ? const MenuOptions(title: 'Credits')
-          : MenuOptions.fromJson(
+          ? const CreditsMenuOptions()
+          : CreditsMenuOptions.fromJson(
               json['creditsMenuOptions'] as Map<String, dynamic>),
       creditsAssetStore: json['creditsAssetStore'] == null
           ? const AssetStore(
@@ -80,8 +80,8 @@ World _$WorldFromJson(Map<String, dynamic> json) => World(
               .toList() ??
           const [],
       pauseMenuOptions: json['pauseMenuOptions'] == null
-          ? const MenuOptions(title: 'Pause Menu')
-          : MenuOptions.fromJson(
+          ? const PauseMenuOptions()
+          : PauseMenuOptions.fromJson(
               json['pauseMenuOptions'] as Map<String, dynamic>),
     );
 

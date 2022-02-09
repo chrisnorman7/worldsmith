@@ -1,6 +1,8 @@
 /// Provides the [WorldCredit] class.
 import 'package:json_annotation/json_annotation.dart';
 
+import 'sound.dart';
+
 part 'world_credit.g.dart';
 
 /// A credit for the game.
@@ -12,7 +14,7 @@ class WorldCredit {
   const WorldCredit({
     required this.title,
     this.url,
-    this.assetId,
+    this.sound,
   });
 
   /// Create an instance from a JSON object.
@@ -25,9 +27,8 @@ class WorldCredit {
   /// The URL to open when this credit is clicked.
   final String? url;
 
-  /// The ID of an asset from the credits asset store to play when this credit
-  /// is selected.
-  final String? assetId;
+  /// The sound to play when selecting this credit.
+  final Sound? sound;
 
   /// Convert an instance to JSON.
   Map<String, dynamic> toJson() => _$WorldCreditToJson(this);

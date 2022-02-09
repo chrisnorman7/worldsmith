@@ -9,11 +9,11 @@ part of 'terrain.dart';
 Terrain _$TerrainFromJson(Map<String, dynamic> json) => Terrain(
       id: json['id'] as String,
       name: json['name'] as String,
-      assetId: json['assetId'] as String,
+      sound: Sound.fromJson(json['sound'] as Map<String, dynamic>),
     );
 
 Map<String, dynamic> _$TerrainToJson(Terrain instance) => <String, dynamic>{
       'id': instance.id,
       'name': instance.name,
-      'assetId': instance.assetId,
+      'sound': instance.sound,
     };

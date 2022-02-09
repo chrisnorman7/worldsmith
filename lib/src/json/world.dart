@@ -1,12 +1,16 @@
 /// Provides the [World] class.
 import 'package:json_annotation/json_annotation.dart';
+import 'package:ziggurat/sound.dart';
 import 'package:ziggurat/ziggurat.dart';
 import 'package:ziggurat_sounds/ziggurat_sounds.dart';
 
+import '../../constants.dart';
 import '../../extensions.dart';
 import 'equipment_position.dart';
+import 'options/credits_menu_options.dart';
 import 'options/main_menu_options.dart';
 import 'options/menu_options.dart';
+import 'options/pause_menu_options.dart';
 import 'options/sound_options.dart';
 import 'options/world_options.dart';
 import 'world_credit.dart';
@@ -14,18 +18,6 @@ import 'zones/terrain.dart';
 import 'zones/zone.dart';
 
 part 'world.g.dart';
-
-/// The default directions.
-const defaultDirections = {
-  'North': CardinalDirections.north,
-  'Northeast': CardinalDirections.northeast,
-  'East': CardinalDirections.east,
-  'Southeast': CardinalDirections.southeast,
-  'South': CardinalDirections.south,
-  'Southwest': CardinalDirections.southwest,
-  'West': CardinalDirections.west,
-  'Northwest': CardinalDirections.northwest,
-};
 
 /// The top-level world object.
 @JsonSerializable()
@@ -37,7 +29,7 @@ class World {
     this.soundOptions = const SoundOptions(),
     this.mainMenuOptions = const MainMenuOptions(),
     this.credits = const [],
-    this.creditsMenuOptions = const MenuOptions(title: 'Credits'),
+    this.creditsMenuOptions = const CreditsMenuOptions(),
     this.creditsAssetStore = const AssetStore(
       filename: 'assets/credits.json',
       destination: 'assets/credits',
@@ -67,7 +59,7 @@ class World {
     this.equipmentPositions = const [],
     this.terrains = const [],
     this.zones = const [],
-    this.pauseMenuOptions = const MenuOptions(title: 'Pause Menu'),
+    this.pauseMenuOptions = const PauseMenuOptions(),
   });
 
   /// Create an instance from a JSON object.
@@ -85,27 +77,25 @@ class World {
   /// The options for the main menu.
   final MainMenuOptions mainMenuOptions;
 
-  /// The sound that will play when the player moves in a menu.
-  AssetReference? get menuMoveSound => interfaceSoundsAssetStore
-      .getAssetReferenceFromVariableName(soundOptions.menuMoveSoundId);
-
-  /// The sound that will play when a menu item is activated.
-  AssetReference? get menuActivateSound => interfaceSoundsAssetStore
-      .getAssetReferenceFromVariableName(soundOptions.menuActivateSoundId);
-
   /// The music for the main menu.
-  AssetReference? get mainMenuMusic => musicAssetStore
-      .getAssetReferenceFromVariableName(mainMenuOptions.options.musicId);
+  Ambiance? get mainMenuMusic {
+    final sound = mainMenuOptions.music;
+    if (sound != null) {
+      final asset = musicAssetStore.getAssetReferenceFromVariableName(sound.id);
+      return Ambiance(sound: asset!, gain: sound.gain);
+    }
+    return null;
+  }
 
   /// The credits for this world.
   final List<WorldCredit> credits;
 
   /// The configuration for the credits menu.
-  final MenuOptions creditsMenuOptions;
+  final CreditsMenuOptions creditsMenuOptions;
 
   /// The music for the credits menu.
   AssetReference? get creditsMenuMusic => musicAssetStore
-      .getAssetReferenceFromVariableName(creditsMenuOptions.musicId);
+      .getAssetReferenceFromVariableName(creditsMenuOptions.music?.id);
 
   /// The asset store for credit sounds.
   final AssetStore creditsAssetStore;
@@ -142,7 +132,7 @@ class World {
   Zone getZone(String id) => zones.firstWhere((element) => element.id == id);
 
   /// The options for the pause menu.
-  final MenuOptions pauseMenuOptions;
+  final PauseMenuOptions pauseMenuOptions;
 
   /// Convert an instance to JSON.
   Map<String, dynamic> toJson() => _$WorldToJson(this);

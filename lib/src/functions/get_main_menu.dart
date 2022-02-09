@@ -1,10 +1,10 @@
 /// Provides the [getMainMenu] function.
 import 'package:ziggurat/menus.dart';
-import 'package:ziggurat/sound.dart';
 import 'package:ziggurat/ziggurat.dart';
 
 import '../json/world.dart';
 import 'get_credits_menu.dart';
+import 'menus.dart';
 
 /// Get the main menu for the given [world].
 Menu getMainMenu({
@@ -13,60 +13,57 @@ Menu getMainMenu({
 }) {
   void unimplemented() => game.outputText('Unimplemented.');
   final mainMenuMusic = world.mainMenuMusic;
-  final moveSound = world.menuMoveSound;
-  final activateSound = world.menuActivateSound;
+  final options = world.mainMenuOptions;
   return Menu(
     game: game,
-    title: Message(text: world.mainMenuOptions.options.title),
-    ambiances: [if (mainMenuMusic != null) Ambiance(sound: mainMenuMusic)],
+    title: Message(text: options.title),
+    ambiances: [
+      if (mainMenuMusic != null) mainMenuMusic,
+    ],
     items: [
       MenuItem(
-        Message(
-          keepAlive: true,
-          sound: moveSound,
-          text: world.mainMenuOptions.newGameTitle,
-        ),
-        Button(
-          unimplemented,
-          activateSound: activateSound,
-        ),
+        makeMenuItemMessage(world, text: options.newGameTitle),
+        makeButton(world, unimplemented),
       ),
       MenuItem(
-        Message(
-          keepAlive: true,
-          sound: moveSound,
-          text: world.mainMenuOptions.savedGameTitle,
-        ),
-        Button(
-          unimplemented,
-          activateSound: activateSound,
-        ),
+        makeMenuItemMessage(world, text: options.savedGameTitle),
+        makeButton(world, unimplemented),
       ),
       if (world.credits.isNotEmpty)
         MenuItem(
-          Message(
-            keepAlive: true,
-            sound: moveSound,
-            text: world.mainMenuOptions.creditsTitle,
-          ),
-          Button(
+          makeMenuItemMessage(world, text: options.creditsTitle),
+          makeButton(
+            world,
             () => game.replaceLevel(
               getCreditsMenu(
                 game: game,
                 world: world,
               ),
-              ambianceFadeTime: world.mainMenuOptions.options.fadeTime,
+              ambianceFadeTime: options.fadeTime,
             ),
-            activateSound: activateSound,
           ),
         ),
       MenuItem(
-        Message(
-          keepAlive: true,
-          sound: moveSound,
-          text: world.mainMenuOptions.exitTitle,
+        makeMenuItemMessage(
+          world,
+          text: options.exitTitle,
         ),
-        Button(game.stop, activateSound: activateSound),
+        makeButton(
+          world,
+          () {
+            final fadeTime = options.fadeTime;
+            if (fadeTime != null) {
+              game
+                ..popLevel(ambianceFadeTime: fadeTime)
+                ..registerTask(
+                  runAfter: (fadeTime * 1000).floor(),
+                  func: game.stop,
+                );
+            } else {
+              game.stop();
+            }
+          },
+        ),
       )
     ],
   );
