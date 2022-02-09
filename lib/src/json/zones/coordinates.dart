@@ -36,6 +36,10 @@ class CoordinateClamp {
 
   /// Convert an instance to JSON.
   Map<String, dynamic> toJson() => _$CoordinateClampToJson(this);
+
+  /// Describe this object.
+  @override
+  String toString() => '<$runtimeType boxId: $boxId, corner: $corner>';
 }
 
 /// A pair of coordinates.
@@ -61,4 +65,8 @@ class Coordinates {
 
   /// Convert an instance to JSON.
   Map<String, dynamic> toJson() => _$CoordinatesToJson(this);
+
+  /// Describe this object.
+  @override
+  String toString() => '<$runtimeType x: $x, y: $y, clamp: $clamp>';
 }

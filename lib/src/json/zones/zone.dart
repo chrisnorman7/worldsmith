@@ -1,8 +1,11 @@
 /// Provides the [Zone] class.
+import 'dart:math';
+
 import 'package:json_annotation/json_annotation.dart';
 
 import '../world.dart';
 import 'box.dart';
+import 'coordinates.dart';
 import 'terrain.dart';
 
 part 'zone.g.dart';
@@ -43,6 +46,39 @@ class Zone {
 
   /// Get a box by its [id].
   Box getBox(String id) => boxes.firstWhere((element) => element.id == id);
+
+  /// Get the absolute coordinates for the given [Coordinates].
+  Point<int> getAbsoluteCoordinates(Coordinates coordinates) {
+    final clamp = coordinates.clamp;
+    if (clamp == null) {
+      return Point(coordinates.x, coordinates.y);
+    }
+    final box = getBox(clamp.boxId);
+    final Point<int> point;
+    switch (clamp.corner) {
+      case BoxCorner.southwest:
+        point = getAbsoluteCoordinates(box.start);
+        break;
+      case BoxCorner.southeast:
+        point = getBoxSoutheastCorner(box);
+        break;
+      case BoxCorner.northeast:
+        point = getAbsoluteCoordinates(box.end);
+        break;
+      case BoxCorner.northwest:
+        point = getBoxNorthwestCorner(box);
+        break;
+    }
+    return Point(point.x + coordinates.x, point.y + coordinates.y);
+  }
+
+  /// Get the point at the northwest corner of the given [box].
+  Point<int> getBoxNorthwestCorner(Box box) => Point(
+      getAbsoluteCoordinates(box.start).x, getAbsoluteCoordinates(box.end).y);
+
+  /// Get the coordinates at the southeast corner of the given [box].
+  Point<int> getBoxSoutheastCorner(Box box) => Point(
+      getAbsoluteCoordinates(box.end).x, getAbsoluteCoordinates(box.start).y);
 
   /// Convert an instance to JSON.
   Map<String, dynamic> toJson() => _$ZoneToJson(this);
