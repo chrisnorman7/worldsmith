@@ -11,6 +11,7 @@ WalkingOptions _$WalkingOptionsFromJson(Map<String, dynamic> json) =>
       interval: json['interval'] as int,
       distance: (json['distance'] as num).toDouble(),
       sound: Sound.fromJson(json['sound'] as Map<String, dynamic>),
+      joystickValue: (json['joystickValue'] as num?)?.toDouble() ?? 0.2,
     );
 
 Map<String, dynamic> _$WalkingOptionsToJson(WalkingOptions instance) =>
@@ -18,4 +19,5 @@ Map<String, dynamic> _$WalkingOptionsToJson(WalkingOptions instance) =>
       'interval': instance.interval,
       'distance': instance.distance,
       'sound': instance.sound,
+      'joystickValue': instance.joystickValue,
     };

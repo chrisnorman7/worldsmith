@@ -13,6 +13,7 @@ class WalkingOptions {
     required this.interval,
     required this.distance,
     required this.sound,
+    this.joystickValue = 0.2,
   });
 
   /// Create an instance from a JSON object.
@@ -27,6 +28,9 @@ class WalkingOptions {
 
   /// The sound that will play when taking a footstep.
   final Sound sound;
+
+  /// The minimum value of a joystick for this walking mode to be used.
+  final double joystickValue;
 
   /// Convert an instance to JSON.
   Map<String, dynamic> toJson() => _$WalkingOptionsToJson(this);
