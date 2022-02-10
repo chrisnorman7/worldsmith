@@ -13,6 +13,18 @@ import 'pause_menu.dart';
 
 const _origin = Point(0.0, 0.0);
 
+/// The possible walking modes.
+enum WalkingMode {
+  /// The player is stationary.
+  stationary,
+
+  /// The player is walking slowly.
+  slow,
+
+  /// The player is walking fast.
+  fast,
+}
+
 /// A level for playing through a zone.
 class ZoneLevel extends Level {
   /// Create an instance.
@@ -20,9 +32,13 @@ class ZoneLevel extends Level {
     required Game game,
     required this.world,
     required this.zone,
-    this.coordinates = _origin,
-    this.heading = 0,
-  }) : super(
+    int heading = 0,
+    Point<double> coordinates = _origin,
+    this.walkingMode = WalkingMode.stationary,
+    this.lastWalk = 0,
+  })  : _heading = heading,
+        _coordinates = coordinates,
+        super(
           game: game,
           ambiances: [
             if (zone.music != null)
@@ -95,10 +111,28 @@ class ZoneLevel extends Level {
   final Zone zone;
 
   /// The direction the player is facing in.
-  double heading;
+  int _heading;
+
+  /// Get the player's current heading.
+  int get heading => _heading;
+
+  /// Set the player's heading.
+  set heading(int value) {
+    _heading = value;
+    game.setListenerOrientation(value.toDouble());
+  }
 
   /// The coordinates of the player.
-  Point<double> coordinates;
+  Point<double> _coordinates;
+
+  /// Get the player's current coordinates.
+  Point<double> get coordinates => _coordinates;
+
+  /// How fast the player is walking.
+  WalkingMode walkingMode;
+
+  /// The time the player last took a step.
+  int lastWalk;
 
   /// The loaded tiles.
   late final List<List<int?>> tiles;
@@ -108,7 +142,7 @@ class ZoneLevel extends Level {
 
   /// Get the box that resides at the provided [coordinates].
   Box? getBox([Point<double>? where]) {
-    where ??= coordinates;
+    where ??= _coordinates;
     final index = tiles[where.x.floor()][where.y.floor()];
     if (index == null) {
       return null;
@@ -118,17 +152,18 @@ class ZoneLevel extends Level {
 
   /// Show the current coordinates.
   void showCoordinates() {
-    final x = coordinates.x.toStringAsFixed(2);
-    final y = coordinates.y.toStringAsFixed(2);
+    final x = coordinates.x.floor();
+    final y = coordinates.y.floor();
     game.outputText('$x, $y');
   }
 
   /// Show the facing direction.
   void showFacing() {
     String? direction;
-    double? difference;
+    int? difference;
     for (final entry in world.directions.entries) {
-      final d = max(heading, entry.value) - min(heading, entry.value);
+      final value = entry.value.floor();
+      final d = max<int>(_heading, value) - min<int>(_heading, value);
       if (difference == null || difference > d) {
         difference = d;
         direction = entry.key;
@@ -139,12 +174,17 @@ class ZoneLevel extends Level {
     }
   }
 
+  /// Set the listener's position according to [coordinates].
+  set coordinates(Point<double> value) {
+    _coordinates = value;
+    game.setListenerPosition(value.x, value.y, 0.0);
+  }
+
   /// Set the listener position ETC.
   @override
   void onPush() {
     super.onPush();
-    game
-      ..setListenerPosition(coordinates.x, coordinates.y, 0.0)
-      ..setListenerOrientation(heading.toDouble());
+    coordinates = _coordinates;
+    heading = _heading;
   }
 }

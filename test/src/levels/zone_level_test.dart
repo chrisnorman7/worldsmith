@@ -2,8 +2,8 @@ import 'dart:math';
 
 import 'package:test/test.dart';
 import 'package:worldsmith/worldsmith.dart';
-import 'package:ziggurat/ziggurat.dart';
 
+import '../../custom_game.dart';
 import '../../pond_zone.dart';
 
 void main() {
@@ -12,7 +12,7 @@ void main() {
     () {
       final pondZone = PondZone.generate();
       final world = World(zones: [pondZone.zone]);
-      final game = Game('Test Game');
+      final game = CustomGame('Test Game');
       final level = ZoneLevel(game: game, world: world, zone: pondZone.zone);
       test(
         'Initialisation',
@@ -39,6 +39,24 @@ void main() {
             ),
             pondZone.pondBox,
           );
+        },
+      );
+      test(
+        '.showCoordinates',
+        () {
+          game.strings.clear();
+          level.showCoordinates();
+          expect(game.strings.length, 1);
+          expect(game.strings.first, '0, 0');
+        },
+      );
+      test(
+        'showFacing',
+        () {
+          game.strings.clear();
+          level.showFacing();
+          expect(game.strings.length, 1);
+          expect(game.strings.first, 'North');
         },
       );
     },
