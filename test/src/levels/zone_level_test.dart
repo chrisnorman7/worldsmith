@@ -48,6 +48,11 @@ void main() {
           level.showCoordinates();
           expect(game.strings.length, 1);
           expect(game.strings.first, '0, 0');
+          level
+            ..coordinates = Point(pi, 15.54321)
+            ..showCoordinates();
+          expect(game.strings.length, 2);
+          expect(game.strings.last, '3, 15');
         },
       );
       test(
@@ -57,6 +62,20 @@ void main() {
           level.showFacing();
           expect(game.strings.length, 1);
           expect(game.strings.first, 'North');
+          level
+            ..heading = 45
+            ..showFacing();
+          expect(game.strings.length, 2);
+          expect(game.strings.last, 'Northeast');
+          level
+            ..heading = 52
+            ..showFacing();
+          expect(game.strings.length, 3);
+          expect(game.strings.last, 'Northeast');
+          level
+            ..heading = 359
+            ..showFacing();
+          expect(game.strings.last, 'Northwest');
         },
       );
     },
