@@ -1,100 +1,20 @@
 import 'dart:math';
 
 import 'package:test/test.dart';
-import 'package:worldsmith/worldsmith.dart';
+
+import '../../../pond_zone.dart';
 
 void main() {
   group(
     'Zone class',
     () {
-      final pond = Box(
-        id: 'pond',
-        name: 'Pond',
-        start: Coordinates(0, 0),
-        end: Coordinates(5, 5),
-        terrainId: 'water',
-      );
-      final northBank = Box(
-        id: 'north_bank',
-        name: 'North Bank',
-        start: Coordinates(
-          0,
-          1,
-          clamp: CoordinateClamp(boxId: pond.id, corner: BoxCorner.northwest),
-        ),
-        end: Coordinates(
-          0,
-          2,
-          clamp: CoordinateClamp(boxId: pond.id, corner: BoxCorner.northeast),
-        ),
-        terrainId: 'grass',
-      );
-      final southBank = Box(
-          id: 'southBank',
-          name: 'South Bank',
-          start: Coordinates(
-            0,
-            -2,
-            clamp: CoordinateClamp(boxId: pond.id, corner: BoxCorner.southwest),
-          ),
-          end: Coordinates(
-            0,
-            -1,
-            clamp: CoordinateClamp(boxId: pond.id, corner: BoxCorner.southeast),
-          ),
-          terrainId: 'grass');
-      final eastBank = Box(
-        id: 'eastBank',
-        name: 'East Bank',
-        start: Coordinates(
-          1,
-          0,
-          clamp: CoordinateClamp(
-            boxId: southBank.id,
-            corner: BoxCorner.southeast,
-          ),
-        ),
-        end: Coordinates(
-          1,
-          2,
-          clamp: CoordinateClamp(
-            boxId: northBank.id,
-            corner: BoxCorner.northeast,
-          ),
-        ),
-        terrainId: 'grass',
-      );
-      final westBank = Box(
-        id: 'westBank',
-        name: 'West Bank',
-        start: Coordinates(
-          -2,
-          0,
-          clamp: CoordinateClamp(
-            boxId: southBank.id,
-            corner: BoxCorner.southwest,
-          ),
-        ),
-        end: Coordinates(
-          -1,
-          0,
-          clamp:
-              CoordinateClamp(boxId: northBank.id, corner: BoxCorner.northwest),
-        ),
-        terrainId: 'grass',
-      );
-      final z = Zone(
-        id: 'testZone',
-        name: 'Test Zone',
-        boxes: [
-          pond,
-          northBank,
-          southBank,
-          eastBank,
-          westBank,
-        ],
-        defaultTerrainId: 'terrain',
-      );
+      final pondZone = PondZone.generate();
+      final pond = pondZone.pondBox;
+      final northBank = pondZone.northBank;
+      final southBank = pondZone.southBank;
+      final eastBank = pondZone.eastBank;
+      final westBank = pondZone.westBank;
+      final z = pondZone.zone;
       test(
         'Initialisation',
         () {
@@ -127,6 +47,7 @@ void main() {
             z.getBoxNorthwestCorner(westBank),
             Point(-2, 7),
           );
+          expect(z.getAbsoluteCoordinates(eastBank.end), Point(7, 7));
         },
       );
     },

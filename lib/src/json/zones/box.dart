@@ -44,4 +44,8 @@ class Box {
 
   /// Convert an instance to JSON.
   Map<String, dynamic> toJson() => _$BoxToJson(this);
+
+  /// Describe this object.
+  @override
+  String toString() => '<$runtimeType $name>';
 }

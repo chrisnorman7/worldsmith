@@ -10,3 +10,5 @@ export 'src/json/zones/box.dart';
 export 'src/json/zones/coordinates.dart';
 export 'src/json/zones/terrain.dart';
 export 'src/json/zones/zone.dart';
+export 'src/level/pause_menu.dart';
+export 'src/level/zone_level.dart';
