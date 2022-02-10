@@ -14,20 +14,9 @@ import '../json/zones/box.dart';
 import '../json/zones/terrain.dart';
 import '../json/zones/zone.dart';
 import 'pause_menu.dart';
+import 'walking_mode.dart';
 
 const _origin = Point(0.0, 0.0);
-
-/// The possible walking modes.
-enum WalkingMode {
-  /// The player is stationary.
-  stationary,
-
-  /// The player is walking slowly.
-  slow,
-
-  /// The player is walking fast.
-  fast,
-}
 
 /// A level for playing through a zone.
 class ZoneLevel extends Level {
