@@ -9,11 +9,15 @@ part of 'terrain.dart';
 Terrain _$TerrainFromJson(Map<String, dynamic> json) => Terrain(
       id: json['id'] as String,
       name: json['name'] as String,
-      sound: Sound.fromJson(json['sound'] as Map<String, dynamic>),
+      slowWalk:
+          WalkingOptions.fromJson(json['slowWalk'] as Map<String, dynamic>),
+      fastWalk:
+          WalkingOptions.fromJson(json['fastWalk'] as Map<String, dynamic>),
     );
 
 Map<String, dynamic> _$TerrainToJson(Terrain instance) => <String, dynamic>{
       'id': instance.id,
       'name': instance.name,
-      'sound': instance.sound,
+      'slowWalk': instance.slowWalk,
+      'fastWalk': instance.fastWalk,
     };

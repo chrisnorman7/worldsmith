@@ -1,7 +1,7 @@
 /// Provides the [Terrain] class.
 import 'package:json_annotation/json_annotation.dart';
 
-import '../sound.dart';
+import '../options/walking_options.dart';
 import 'box.dart';
 
 part 'terrain.g.dart';
@@ -13,7 +13,8 @@ class Terrain {
   const Terrain({
     required this.id,
     required this.name,
-    required this.sound,
+    required this.slowWalk,
+    required this.fastWalk,
   });
 
   /// Create an instance from a JSON object.
@@ -26,8 +27,11 @@ class Terrain {
   /// The name of this terrain type.
   final String name;
 
-  /// The sound to play when this terrain is used.
-  final Sound sound;
+  /// Slow walk configuration.
+  final WalkingOptions slowWalk;
+
+  /// Fast walking options.
+  final WalkingOptions fastWalk;
 
   /// Convert an instance to JSON.
   Map<String, dynamic> toJson() => _$TerrainToJson(this);
