@@ -180,11 +180,23 @@ class ZoneLevel extends Level {
     game.setListenerPosition(value.x, value.y, 0.0);
   }
 
+  /// Reset state.
+  void resetState() {
+    coordinates = _coordinates;
+    heading = _heading;
+  }
+
   /// Set the listener position ETC.
   @override
   void onPush() {
     super.onPush();
-    coordinates = _coordinates;
-    heading = _heading;
+    resetState();
+  }
+
+  /// Reset state.
+  @override
+  void onReveal(Level old) {
+    super.onReveal(old);
+    resetState();
   }
 }
