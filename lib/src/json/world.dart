@@ -12,6 +12,7 @@ import 'options/main_menu_options.dart';
 import 'options/pause_menu_options.dart';
 import 'options/sound_options.dart';
 import 'options/world_options.dart';
+import 'reverb_reference.dart';
 import 'world_credit.dart';
 import 'zones/terrain.dart';
 import 'zones/zone.dart';
@@ -59,6 +60,7 @@ class World {
     this.terrains = const [],
     this.zones = const [],
     this.pauseMenuOptions = const PauseMenuOptions(),
+    this.reverbs = const [],
   });
 
   /// Create an instance from a JSON object.
@@ -132,6 +134,16 @@ class World {
 
   /// The options for the pause menu.
   final PauseMenuOptions pauseMenuOptions;
+
+  /// The reverb references to use.
+  final List<ReverbReference> reverbs;
+
+  /// Return the reverb with the given [id].
+  ReverbPreset getReverb(String id) => reverbs
+      .firstWhere(
+        (element) => element.id == id,
+      )
+      .reverbPreset;
 
   /// Convert an instance to JSON.
   Map<String, dynamic> toJson() => _$WorldToJson(this);

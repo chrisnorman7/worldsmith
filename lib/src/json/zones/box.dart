@@ -17,6 +17,7 @@ class Box {
     required this.end,
     required this.terrainId,
     this.enclosed = false,
+    this.reverbId,
   });
 
   /// Create an instance from a JSON object.
@@ -42,10 +43,26 @@ class Box {
   /// If this value is `true`, sounds from the outside will be inaudible.
   final bool enclosed;
 
+  /// The ID of the reverb preset to use in this box.
+  final String? reverbId;
+
   /// Convert an instance to JSON.
   Map<String, dynamic> toJson() => _$BoxToJson(this);
 
   /// Describe this object.
   @override
   String toString() => '<$runtimeType $name>';
+
+  /// Return the hash code of [id].
+  @override
+  int get hashCode => id.hashCode;
+
+  /// Compare 2 objects.
+  @override
+  bool operator ==(Object other) {
+    if (other is Box) {
+      return other.id == id;
+    }
+    return super == other;
+  }
 }

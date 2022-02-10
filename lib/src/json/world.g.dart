@@ -83,6 +83,10 @@ World _$WorldFromJson(Map<String, dynamic> json) => World(
           ? const PauseMenuOptions()
           : PauseMenuOptions.fromJson(
               json['pauseMenuOptions'] as Map<String, dynamic>),
+      reverbs: (json['reverbs'] as List<dynamic>?)
+              ?.map((e) => ReverbReference.fromJson(e as Map<String, dynamic>))
+              .toList() ??
+          const [],
     );
 
 Map<String, dynamic> _$WorldToJson(World instance) => <String, dynamic>{
@@ -102,4 +106,5 @@ Map<String, dynamic> _$WorldToJson(World instance) => <String, dynamic>{
       'terrains': instance.terrains,
       'zones': instance.zones,
       'pauseMenuOptions': instance.pauseMenuOptions,
+      'reverbs': instance.reverbs,
     };

@@ -1,13 +1,17 @@
 /// Provides the [ZoneLevel] class.
 import 'dart:math';
 
+import 'package:dart_sdl/dart_sdl.dart';
 import 'package:ziggurat/levels.dart';
+import 'package:ziggurat/sound.dart';
 import 'package:ziggurat/ziggurat.dart';
 
 import '../../command_triggers.dart';
 import '../../extensions.dart';
+import '../json/options/walking_options.dart';
 import '../json/world.dart';
 import '../json/zones/box.dart';
+import '../json/zones/terrain.dart';
 import '../json/zones/zone.dart';
 import 'pause_menu.dart';
 
@@ -35,9 +39,11 @@ class ZoneLevel extends Level {
     int heading = 0,
     Point<double> coordinates = _origin,
     this.walkingMode = WalkingMode.stationary,
-    this.lastWalk = 0,
+    this.timeSinceLastWalked = 0,
   })  : _heading = heading,
         _coordinates = coordinates,
+        affectedInterfaceSounds = game.createSoundChannel(),
+        boxReverbs = {},
         super(
           game: game,
           ambiances: [
@@ -128,11 +134,23 @@ class ZoneLevel extends Level {
   /// Get the player's current coordinates.
   Point<double> get coordinates => _coordinates;
 
+  /// Set the listener's position.
+  set coordinates(Point<double> value) {
+    _coordinates = value;
+    game.setListenerPosition(value.x, value.y, 0.0);
+  }
+
+  /// The sound channel to use for affected interface sounds.
+  final SoundChannel affectedInterfaceSounds;
+
+  /// The loaded reverbs.
+  final Map<String, CreateReverb> boxReverbs;
+
   /// How fast the player is walking.
   WalkingMode walkingMode;
 
-  /// The time the player last took a step.
-  int lastWalk;
+  /// The number of milliseconds since the [walk] method was called.
+  int timeSinceLastWalked;
 
   /// The loaded tiles.
   late final List<List<int?>> tiles;
@@ -148,6 +166,32 @@ class ZoneLevel extends Level {
       return null;
     }
     return zone.boxes[index];
+  }
+
+  /// Get the terrain at the current position.
+  Terrain getTerrain([Box? box]) {
+    box ??= getBox();
+    return world.getTerrain(box?.terrainId ?? zone.defaultTerrainId);
+  }
+
+  /// Get the current walking options.
+  ///
+  /// If there is a box at the current [coordinates], then that box's terrain
+  /// will be used.
+  ///
+  /// Otherwise, the default terrain for the loaded [zone] will be returned.
+  ///
+  /// If the player is not walking, then `null` will be returned.
+  WalkingOptions? getWalkingOptions([Box? box]) {
+    final terrain = getTerrain(box);
+    switch (walkingMode) {
+      case WalkingMode.stationary:
+        return null;
+      case WalkingMode.slow:
+        return terrain.slowWalk;
+      case WalkingMode.fast:
+        return terrain.fastWalk;
+    }
   }
 
   /// Show the current coordinates.
@@ -174,12 +218,6 @@ class ZoneLevel extends Level {
     }
   }
 
-  /// Set the listener's position according to [coordinates].
-  set coordinates(Point<double> value) {
-    _coordinates = value;
-    game.setListenerPosition(value.x, value.y, 0.0);
-  }
-
   /// Reset state.
   void resetState() {
     coordinates = _coordinates;
@@ -198,5 +236,91 @@ class ZoneLevel extends Level {
   void onReveal(Level old) {
     super.onReveal(old);
     resetState();
+  }
+
+  /// Get the reverb for the given [box].
+  CreateReverb? getReverb(Box box) {
+    final reverbId = box.reverbId;
+    if (reverbId == null) {
+      return null;
+    }
+    var reverb = boxReverbs[box.id];
+    if (reverb == null) {
+      reverb = game.createReverb(world.getReverb(reverbId));
+      boxReverbs[box.id] = reverb;
+    }
+    return reverb;
+  }
+
+  /// Walk a bit.
+  void walk(WalkingOptions options) {
+    final oldBox = getBox();
+    final destination = coordinatesInDirection(
+      _coordinates,
+      _heading.toDouble(),
+      options.distance,
+    );
+    final newBox = getBox(destination);
+    if (newBox != oldBox) {
+      // Boxes are different.
+      final String text;
+      if (newBox == null) {
+        affectedInterfaceSounds.setReverb(null);
+        if (oldBox != null) {
+          text = 'Leaving ${oldBox.name}.';
+        } else {
+          text = 'Both boxes are null, new box was tested first.';
+        }
+      } else {
+        affectedInterfaceSounds.setReverb(getReverb(newBox));
+        if (oldBox == null) {
+          text = 'Entering ${newBox.name}.';
+        } else {
+          text = 'Both boxes are null, old box was tested first.';
+        }
+      }
+      game.outputText(text);
+    }
+    affectedInterfaceSounds.playSound(
+      world.terrainAssetStore.getAssetReferenceFromVariableName(
+        options.sound.id,
+      )!,
+      gain: options.sound.gain,
+    );
+    coordinates = destination;
+    timeSinceLastWalked = 0;
+  }
+
+  /// Maybe walk.
+  @override
+  Future<void> tick(Sdl sdl, int timeDelta) async {
+    super.tick(sdl, timeDelta);
+    final walkingOptions = getWalkingOptions();
+    if (walkingOptions != null) {
+      timeSinceLastWalked += timeDelta;
+      if (timeSinceLastWalked >= walkingOptions.interval) {
+        walk(walkingOptions);
+      }
+    }
+  }
+
+  /// Handle SDL events.
+  @override
+  void handleSdlEvent(Event event) {
+    if (event is ControllerAxisEvent) {
+      if (event.axis == GameControllerAxis.lefty) {
+        final terrain = getTerrain();
+        final value = event.smallValue;
+        if (value >= terrain.fastWalk.joystickValue) {
+          walkingMode = WalkingMode.fast;
+        } else if (value >= terrain.slowWalk.joystickValue) {
+          walkingMode = WalkingMode.slow;
+        } else {
+          walkingMode = WalkingMode.stationary;
+        }
+      }
+    } else {
+      super.handleSdlEvent(event);
+    }
   }
 }

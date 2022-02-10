@@ -6,6 +6,7 @@
     "SCANCODE",
     "sdl",
     "synthizer",
+    "unpanned",
     "worldsmith"
   ]
 }
