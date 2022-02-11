@@ -1,9 +1,11 @@
 /// Provides utility functions.
 import 'dart:math';
 
+import 'package:path/path.dart' as path;
 import 'package:ziggurat/sound.dart';
 import 'package:ziggurat_sounds/ziggurat_sounds.dart';
 
+import 'constants.dart';
 import 'src/json/sound.dart';
 import 'src/json/world.dart';
 
@@ -47,3 +49,15 @@ PlaySound playSound(
       keepAlive: keepAlive,
       looping: looping,
     );
+
+/// Returns an asset store.
+AssetStore getAssetStore({
+  required String name,
+  required AssetList assets,
+  required String comment,
+}) =>
+    AssetStore(
+        filename: path.join(assetsDirectory, '$name.dart'),
+        destination: path.join(assetsDirectory, name),
+        assets: assets,
+        comment: comment);

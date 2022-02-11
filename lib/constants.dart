@@ -1,6 +1,9 @@
 /// Provides compile-time constants.
 import 'package:ziggurat/ziggurat.dart';
 
+/// The directory where assets will be stored.
+const assetsDirectory = 'assets';
+
 /// The default directions.
 const defaultDirections = {
   'North': CardinalDirections.north,

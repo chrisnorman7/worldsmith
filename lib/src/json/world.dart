@@ -131,23 +131,54 @@ class World {
   AssetReference? get creditsMenuMusic => getAssetReferenceReference(
         assets: musicAssets,
         id: creditsMenuOptions.music?.id,
-      )!
-          .reference;
+      )?.reference;
 
   /// Credit sounds.
   final AssetList creditsAssets;
 
+  /// The asset store for credits.
+  AssetStore get creditsAssetStore => getAssetStore(
+        name: 'credits',
+        assets: creditsAssets,
+        comment: 'Credits sounds',
+      );
+
   /// Musical assets.
   final AssetList musicAssets;
+
+  /// The asset store for music.
+  AssetStore get musicAssetStore => getAssetStore(
+        name: 'music',
+        assets: musicAssets,
+        comment: 'Game and zone music',
+      );
 
   /// Interface sounds.
   final AssetList interfaceSoundsAssets;
 
+  /// The asset store for interface sounds.
+  AssetStore get interfaceSoundsAssetStore => getAssetStore(
+        name: 'interface',
+        assets: interfaceSoundsAssets,
+        comment: 'UI sounds',
+      );
+
   /// Clothing and weapon sounds.
   final AssetList equipmentAssets;
 
+  /// The asset store for equipment sounds.
+  AssetStore get equipmentAssetStore => getAssetStore(
+        name: 'equipment',
+        assets: equipmentAssets,
+        comment: 'Equipment sounds',
+      );
+
   /// Terrain sounds.
   final AssetList terrainAssets;
+
+  /// The asset store for terrain sounds.
+  AssetStore get terrainAssetStore => getAssetStore(
+      name: 'terrain', assets: terrainAssets, comment: 'Terrain sounds');
 
   /// The directions that are recognised by this world.
   final DirectionsMap directions;
