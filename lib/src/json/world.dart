@@ -12,7 +12,7 @@ import 'options/main_menu_options.dart';
 import 'options/pause_menu_options.dart';
 import 'options/sound_options.dart';
 import 'options/world_options.dart';
-import 'reverb_reference.dart';
+import 'reverb_preset_reference.dart';
 import 'world_credit.dart';
 import 'zones/terrain.dart';
 import 'zones/zone.dart';
@@ -136,7 +136,7 @@ class World {
   final PauseMenuOptions pauseMenuOptions;
 
   /// The reverb references to use.
-  final List<ReverbReference> reverbs;
+  final List<ReverbPresetReference> reverbs;
 
   /// Return the reverb with the given [id].
   ReverbPreset getReverb(String id) => reverbs

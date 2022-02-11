@@ -83,10 +83,7 @@ World _$WorldFromJson(Map<String, dynamic> json) => World(
           ? const PauseMenuOptions()
           : PauseMenuOptions.fromJson(
               json['pauseMenuOptions'] as Map<String, dynamic>),
-      reverbs: (json['reverbs'] as List<dynamic>?)
-              ?.map((e) => ReverbReference.fromJson(e as Map<String, dynamic>))
-              .toList() ??
-          const [],
+      reverbs: json['reverbs'] as List<dynamic>? ?? const [],
     );
 
 Map<String, dynamic> _$WorldToJson(World instance) => <String, dynamic>{

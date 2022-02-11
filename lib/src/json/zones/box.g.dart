@@ -13,6 +13,7 @@ Box _$BoxFromJson(Map<String, dynamic> json) => Box(
       end: Coordinates.fromJson(json['end'] as Map<String, dynamic>),
       terrainId: json['terrainId'] as String,
       enclosed: json['enclosed'] as bool? ?? false,
+      reverbId: json['reverbId'] as String?,
     );
 
 Map<String, dynamic> _$BoxToJson(Box instance) => <String, dynamic>{
@@ -22,4 +23,5 @@ Map<String, dynamic> _$BoxToJson(Box instance) => <String, dynamic>{
       'end': instance.end,
       'terrainId': instance.terrainId,
       'enclosed': instance.enclosed,
+      'reverbId': instance.reverbId,
     };
