@@ -10,7 +10,7 @@ part 'reverb_preset_reference.g.dart';
 @JsonSerializable()
 class ReverbPresetReference {
   /// Create an instance.
-  const ReverbPresetReference({
+  ReverbPresetReference({
     required this.id,
     required this.reverbPreset,
     this.sound,
@@ -24,10 +24,10 @@ class ReverbPresetReference {
   final String id;
 
   /// The reverb to use.
-  final ReverbPreset reverbPreset;
+  ReverbPreset reverbPreset;
 
   /// The sound to test the reverb with.
-  final Sound? sound;
+  Sound? sound;
 
   /// Convert an instance to JSON.
   Map<String, dynamic> toJson() => _$ReverbPresetReferenceToJson(this);

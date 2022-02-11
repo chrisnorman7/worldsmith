@@ -15,7 +15,7 @@ part 'zone.g.dart';
 @JsonSerializable()
 class Zone {
   /// Create an instance.
-  const Zone({
+  Zone({
     required this.id,
     required this.name,
     required this.boxes,
@@ -31,19 +31,19 @@ class Zone {
   final String id;
 
   /// The name of this zone.
-  final String name;
+  String name;
 
   /// The boxes in this zone.
   final List<Box> boxes;
 
   /// The ID of the [Terrain] to use when no [Box] has been found.
-  final String defaultTerrainId;
+  String defaultTerrainId;
 
   /// The music for this zone.
-  final Sound? music;
+  Sound? music;
 
   /// Whether or not a top-down map of this zone can be viewed.
-  final bool topDownMap;
+  bool topDownMap;
 
   /// Get a box by its [id].
   Box getBox(String id) => boxes.firstWhere((element) => element.id == id);

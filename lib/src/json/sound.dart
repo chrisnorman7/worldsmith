@@ -10,7 +10,7 @@ part 'sound.g.dart';
 @JsonSerializable()
 class Sound {
   /// Create an instance.
-  const Sound({required this.id, this.gain = 0.7});
+  Sound({required this.id, this.gain = 0.7});
 
   /// Create an instance from a JSON object.
   factory Sound.fromJson(Map<String, dynamic> json) => _$SoundFromJson(json);
@@ -19,10 +19,10 @@ class Sound {
   ///
   /// Which asset store this sound belongs to will depend on what this sound is
   /// used for.
-  final String id;
+  String id;
 
   /// The gain of this sound.
-  final double gain;
+  double gain;
 
   /// Convert an instance to JSON.
   Map<String, dynamic> toJson() => _$SoundToJson(this);

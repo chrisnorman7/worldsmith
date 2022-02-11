@@ -1,9 +1,6 @@
 /// Provides compile-time constants.
 import 'package:ziggurat/ziggurat.dart';
 
-/// Default gain.
-const defaultGain = 0.75;
-
 /// The default directions.
 const defaultDirections = {
   'North': CardinalDirections.north,

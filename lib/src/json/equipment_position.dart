@@ -7,7 +7,7 @@ part 'equipment_position.g.dart';
 @JsonSerializable()
 class EquipmentPosition {
   /// Create an instance.
-  const EquipmentPosition({
+  EquipmentPosition({
     required this.id,
     required this.name,
   });
@@ -20,7 +20,7 @@ class EquipmentPosition {
   final String id;
 
   /// The name of this position.
-  final String name;
+  String name;
 
   /// Convert an instance to JSON.
   Map<String, dynamic> toJson() => _$EquipmentPositionToJson(this);

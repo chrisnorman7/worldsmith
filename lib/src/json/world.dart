@@ -5,7 +5,7 @@ import 'package:ziggurat/ziggurat.dart';
 import 'package:ziggurat_sounds/ziggurat_sounds.dart';
 
 import '../../constants.dart';
-import '../../extensions.dart';
+import '../../util.dart';
 import 'equipment_position.dart';
 import 'options/credits_menu_options.dart';
 import 'options/main_menu_options.dart';
@@ -19,61 +19,90 @@ import 'zones/zone.dart';
 
 part 'world.g.dart';
 
+/// The type for a list of credits.
+typedef CreditsList = List<WorldCredit>;
+
+/// The type for a list of assets.
+typedef AssetList = List<AssetReferenceReference>;
+
+/// The type for a map of direction names and degrees.
+typedef DirectionsMap = Map<String, double>;
+
+/// The type for a list of equipment positions.
+typedef EquipmentPositions = List<EquipmentPosition>;
+
+/// The type for a list of terrains.
+typedef TerrainsList = List<Terrain>;
+
+/// The type for a list of zones.
+typedef ZonesList = List<Zone>;
+
+/// The type for a list of reverb references.
+typedef ReverbsList = List<ReverbPresetReference>;
+
 /// The top-level world object.
 @JsonSerializable()
 class World {
   /// Create an instance.
-  const World({
+  World({
     this.title = 'Untitled World',
-    this.globalOptions = const WorldOptions(),
-    this.soundOptions = const SoundOptions(),
-    this.mainMenuOptions = const MainMenuOptions(),
-    this.credits = const [],
-    this.creditsMenuOptions = const CreditsMenuOptions(),
-    this.creditsAssetStore = const AssetStore(
-      filename: 'assets/credits.json',
-      destination: 'assets/credits',
-      assets: [],
-    ),
-    this.musicAssetStore = const AssetStore(
-      filename: 'assets/music.json',
-      destination: 'assets/music',
-      assets: [],
-    ),
-    this.interfaceSoundsAssetStore = const AssetStore(
-      filename: 'assets/interface.json',
-      destination: 'assets/interface',
-      assets: [],
-    ),
-    this.equipmentAssetStore = const AssetStore(
-      filename: 'assets/equipment.json',
-      destination: 'assets/equipment',
-      assets: [],
-    ),
-    this.terrainAssetStore = const AssetStore(
-      filename: 'assets/terrain.json',
-      destination: 'assets/terrains',
-      assets: [],
-    ),
-    this.directions = defaultDirections,
-    this.equipmentPositions = const [],
-    this.terrains = const [],
-    this.zones = const [],
-    this.pauseMenuOptions = const PauseMenuOptions(),
-    this.reverbs = const [],
-  });
+    WorldOptions? globalOptions,
+    SoundOptions? soundOptions,
+    MainMenuOptions? mainMenuOptions,
+    CreditsList? credits,
+    CreditsMenuOptions? creditsMenuOptions,
+    AssetList? creditsAssets,
+    AssetList? musicAssets,
+    AssetList? interfaceSoundsAssets,
+    AssetList? equipmentAssets,
+    AssetList? terrainAssets,
+    DirectionsMap? directions,
+    EquipmentPositions? equipmentPositions,
+    TerrainsList? terrains,
+    ZonesList? zones,
+    PauseMenuOptions? pauseMenuOptions,
+    ReverbsList? reverbs,
+  })  : globalOptions = globalOptions ?? WorldOptions(),
+        soundOptions = soundOptions ?? SoundOptions(),
+        mainMenuOptions = mainMenuOptions ?? MainMenuOptions(),
+        credits = credits ?? [],
+        creditsMenuOptions = creditsMenuOptions ?? CreditsMenuOptions(),
+        creditsAssets = creditsAssets ?? [],
+        musicAssets = musicAssets ?? [],
+        interfaceSoundsAssets = interfaceSoundsAssets ?? [],
+        equipmentAssets = equipmentAssets ?? [],
+        terrainAssets = terrainAssets ?? [],
+        directions = directions ??
+            defaultDirections.map(
+              MapEntry.new,
+            ),
+        equipmentPositions = equipmentPositions ?? [],
+        terrains = terrains ?? [],
+        zones = zones ?? [],
+        pauseMenuOptions = pauseMenuOptions ?? PauseMenuOptions(),
+        reverbs = reverbs ?? [];
 
   /// Create an instance from a JSON object.
   factory World.fromJson(Map<String, dynamic> json) => _$WorldFromJson(json);
 
   /// The title of the world.
-  final String title;
+  String title;
 
   /// The options for this world.
   final WorldOptions globalOptions;
 
   /// Sound configuration.
   final SoundOptions soundOptions;
+
+  /// Get the menu move sound.
+  AssetReference? get menuMoveSound => getAssetReferenceReference(
+          assets: interfaceSoundsAssets, id: soundOptions.menuMoveSound?.id)
+      ?.reference;
+
+  /// The menu activate sound.
+  AssetReference? get menuActivateSound => getAssetReferenceReference(
+          assets: interfaceSoundsAssets, id: soundOptions.menuMoveSound?.id)
+      ?.reference;
 
   /// The options for the main menu.
   final MainMenuOptions mainMenuOptions;
@@ -82,52 +111,59 @@ class World {
   Ambiance? get mainMenuMusic {
     final sound = mainMenuOptions.music;
     if (sound != null) {
-      final asset = musicAssetStore.getAssetReferenceFromVariableName(sound.id);
-      return Ambiance(sound: asset!, gain: sound.gain);
+      final assetReference = getAssetReferenceReference(
+        assets: musicAssets,
+        id: sound.id,
+      )!
+          .reference;
+      return Ambiance(sound: assetReference, gain: sound.gain);
     }
     return null;
   }
 
   /// The credits for this world.
-  final List<WorldCredit> credits;
+  final CreditsList credits;
 
   /// The configuration for the credits menu.
   final CreditsMenuOptions creditsMenuOptions;
 
   /// The music for the credits menu.
-  AssetReference? get creditsMenuMusic => musicAssetStore
-      .getAssetReferenceFromVariableName(creditsMenuOptions.music?.id);
+  AssetReference? get creditsMenuMusic => getAssetReferenceReference(
+        assets: musicAssets,
+        id: creditsMenuOptions.music?.id,
+      )!
+          .reference;
 
-  /// The asset store for credit sounds.
-  final AssetStore creditsAssetStore;
+  /// Credit sounds.
+  final AssetList creditsAssets;
 
-  /// The asset store for music.
-  final AssetStore musicAssetStore;
+  /// Musical assets.
+  final AssetList musicAssets;
 
-  /// The interface sounds asset store.
-  final AssetStore interfaceSoundsAssetStore;
+  /// Interface sounds.
+  final AssetList interfaceSoundsAssets;
 
-  /// The asset store for clothing and weapon sounds.
-  final AssetStore equipmentAssetStore;
+  /// Clothing and weapon sounds.
+  final AssetList equipmentAssets;
 
-  /// The asset store for terrain sounds.
-  final AssetStore terrainAssetStore;
+  /// Terrain sounds.
+  final AssetList terrainAssets;
 
   /// The directions that are recognised by this world.
-  final Map<String, double> directions;
+  final DirectionsMap directions;
 
   /// The positions for equipment.
-  final List<EquipmentPosition> equipmentPositions;
+  final EquipmentPositions equipmentPositions;
 
   /// The possible terrains.
-  final List<Terrain> terrains;
+  final TerrainsList terrains;
 
   /// Get the terrain with the given [id].
   Terrain getTerrain(String id) =>
       terrains.firstWhere((element) => element.id == id);
 
   /// The list of zones that this world has.
-  final List<Zone> zones;
+  final ZonesList zones;
 
   /// Get the zone with the given [id].
   Zone getZone(String id) => zones.firstWhere((element) => element.id == id);
@@ -136,7 +172,7 @@ class World {
   final PauseMenuOptions pauseMenuOptions;
 
   /// The reverb references to use.
-  final List<ReverbPresetReference> reverbs;
+  final ReverbsList reverbs;
 
   /// Return the reverb with the given [id].
   ReverbPreset getReverb(String id) => reverbs

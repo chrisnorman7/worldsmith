@@ -10,7 +10,8 @@ part 'sound_options.g.dart';
 @JsonSerializable()
 class SoundOptions {
   /// Create an instance.
-  const SoundOptions({
+  SoundOptions({
+    this.defaultGain = 0.7,
     this.menuMoveSound,
     this.menuActivateSound,
     this.defaultPannerStrategy = DefaultPannerStrategy.stereo,
@@ -20,14 +21,17 @@ class SoundOptions {
   factory SoundOptions.fromJson(Map<String, dynamic> json) =>
       _$SoundOptionsFromJson(json);
 
+  /// The default gain when no other gain is provided.
+  double defaultGain;
+
   /// The sound to play when moving through menus.
-  final Sound? menuMoveSound;
+  Sound? menuMoveSound;
 
   /// The sound to play when activating menu options.
-  final Sound? menuActivateSound;
+  Sound? menuActivateSound;
 
   /// The default panning strategy for this game.
-  final DefaultPannerStrategy defaultPannerStrategy;
+  DefaultPannerStrategy defaultPannerStrategy;
 
   /// Convert an instance to JSON.
   Map<String, dynamic> toJson() => _$SoundOptionsToJson(this);

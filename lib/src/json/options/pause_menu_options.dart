@@ -9,7 +9,7 @@ part 'pause_menu_options.g.dart';
 @JsonSerializable()
 class PauseMenuOptions {
   /// Create an instance.
-  const PauseMenuOptions({
+  PauseMenuOptions({
     this.title = 'Pause Menu',
     this.music,
     this.fadeTime,
@@ -21,16 +21,16 @@ class PauseMenuOptions {
       _$PauseMenuOptionsFromJson(json);
 
   /// The title of this menu.
-  final String title;
+  String title;
 
   /// The music to play while paused.
-  final Sound? music;
+  Sound? music;
 
   /// The fade time.
-  final double? fadeTime;
+  double? fadeTime;
 
   /// The title of the "Return to game" menu item.
-  final String returnToGameTitle;
+  String returnToGameTitle;
 
   /// Convert an instance to JSON.
   Map<String, dynamic> toJson() => _$PauseMenuOptionsToJson(this);

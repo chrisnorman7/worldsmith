@@ -10,7 +10,7 @@ part 'box.g.dart';
 @JsonSerializable()
 class Box {
   /// Create an instance.
-  const Box({
+  Box({
     required this.id,
     required this.name,
     required this.start,
@@ -27,7 +27,7 @@ class Box {
   final String id;
 
   /// The name of this box.
-  final String name;
+  String name;
 
   /// The start coordinates of this box.
   final Coordinates start;
@@ -36,15 +36,15 @@ class Box {
   final Coordinates end;
 
   /// The ID of the type of terrain for this box.
-  final String terrainId;
+  String terrainId;
 
   /// Whether or not this box is enclosed.
   ///
   /// If this value is `true`, sounds from the outside will be inaudible.
-  final bool enclosed;
+  bool enclosed;
 
   /// The ID of the reverb preset to use in this box.
-  final String? reverbId;
+  String? reverbId;
 
   /// Convert an instance to JSON.
   Map<String, dynamic> toJson() => _$BoxToJson(this);

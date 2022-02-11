@@ -9,7 +9,7 @@ part 'credits_menu_options.g.dart';
 @JsonSerializable()
 class CreditsMenuOptions {
   /// Create an instance.
-  const CreditsMenuOptions({
+  CreditsMenuOptions({
     this.title = 'Acknowledgements',
     this.music,
     this.fadeTime = 3.0,
@@ -20,13 +20,13 @@ class CreditsMenuOptions {
       _$CreditsMenuOptionsFromJson(json);
 
   /// The title of the menu.
-  final String title;
+  String title;
 
   /// The music to play.
-  final Sound? music;
+  Sound? music;
 
   /// How long to fade out after showing this menu.
-  final double? fadeTime;
+  double? fadeTime;
 
   /// Convert an instance to JSON.
   Map<String, dynamic> toJson() => _$CreditsMenuOptionsToJson(this);

@@ -9,7 +9,7 @@ part 'walking_options.g.dart';
 @JsonSerializable()
 class WalkingOptions {
   /// Create an instance.
-  const WalkingOptions({
+  WalkingOptions({
     required this.interval,
     required this.distance,
     required this.sound,
@@ -21,16 +21,16 @@ class WalkingOptions {
       _$WalkingOptionsFromJson(json);
 
   /// How many milliseconds must elapse between taking a footstep.
-  final int interval;
+  int interval;
 
   /// How far this footstep will take whatever is taking it.
-  final double distance;
+  double distance;
 
   /// The sound that will play when taking a footstep.
   final Sound sound;
 
   /// The minimum value of a joystick for this walking mode to be used.
-  final double joystickValue;
+  double joystickValue;
 
   /// Convert an instance to JSON.
   Map<String, dynamic> toJson() => _$WalkingOptionsToJson(this);

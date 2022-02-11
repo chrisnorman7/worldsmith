@@ -3,8 +3,7 @@ import 'package:ziggurat/menus.dart';
 import 'package:ziggurat/sound.dart';
 import 'package:ziggurat/ziggurat.dart';
 
-import '../../constants.dart';
-import '../../extensions.dart';
+import '../../util.dart';
 import '../json/world.dart';
 import 'get_main_menu.dart';
 import 'menus.dart';
@@ -27,13 +26,15 @@ Menu getCreditsMenu({
       for (final credit in world.credits)
         MenuItem(
           Message(
-            gain: credit.sound?.gain ?? defaultGain,
+            gain: credit.sound?.gain ??
+                world.soundOptions.menuMoveSound?.gain ??
+                world.soundOptions.defaultGain,
             keepAlive: true,
-            sound: world.creditsAssetStore
-                    .getAssetReferenceFromVariableName(credit.sound?.id) ??
-                world.interfaceSoundsAssetStore
-                    .getAssetReferenceFromVariableName(
-                        world.soundOptions.menuMoveSound?.id),
+            sound: getAssetReferenceReference(
+                  assets: world.creditsAssets,
+                  id: credit.sound?.id,
+                )?.reference ??
+                world.menuMoveSound,
             text: credit.title,
           ),
           makeButton(

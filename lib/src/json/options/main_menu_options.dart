@@ -9,7 +9,7 @@ part 'main_menu_options.g.dart';
 @JsonSerializable()
 class MainMenuOptions {
   /// Create an instance.
-  const MainMenuOptions({
+  MainMenuOptions({
     this.title = 'Main Menu',
     this.music,
     this.fadeTime = 4.0,
@@ -24,25 +24,25 @@ class MainMenuOptions {
       _$MainMenuOptionsFromJson(json);
 
   /// The title of the menu.
-  final String title;
+  String title;
 
   /// The music to play while the main menu is visible.
-  final Sound? music;
+  Sound? music;
 
   /// How long to fade this menu.
-  final double? fadeTime;
+  double? fadeTime;
 
   /// The title of the "Play New Game" option.
-  final String newGameTitle;
+  String newGameTitle;
 
   /// The title of the "Play Saved Game" option.
-  final String savedGameTitle;
+  String savedGameTitle;
 
   /// The title of the "Credits" option.
-  final String creditsTitle;
+  String creditsTitle;
 
   /// The title of the "Exit" option.
-  final String exitTitle;
+  String exitTitle;
 
   /// Convert an instance to JSON.
   Map<String, dynamic> toJson() => _$MainMenuOptionsToJson(this);

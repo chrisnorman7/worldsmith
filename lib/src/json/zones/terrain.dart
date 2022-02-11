@@ -10,7 +10,7 @@ part 'terrain.g.dart';
 @JsonSerializable()
 class Terrain {
   /// Create an instance.
-  const Terrain({
+  Terrain({
     required this.id,
     required this.name,
     required this.slowWalk,
@@ -25,7 +25,7 @@ class Terrain {
   final String id;
 
   /// The name of this terrain type.
-  final String name;
+  String name;
 
   /// Slow walk configuration.
   final WalkingOptions slowWalk;

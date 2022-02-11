@@ -7,7 +7,7 @@ import 'package:ziggurat/sound.dart';
 import 'package:ziggurat/ziggurat.dart';
 
 import '../../command_triggers.dart';
-import '../../extensions.dart';
+import '../../util.dart';
 import '../json/options/walking_options.dart';
 import '../json/world.dart';
 import '../json/zones/box.dart';
@@ -37,7 +37,7 @@ class ZoneLevel extends Level {
           game: game,
           ambiances: [
             if (zone.music != null)
-              world.musicAssetStore.getAmbiance(zone.music!)
+              getAmbiance(assets: world.musicAssets, sound: zone.music)!
           ],
         ) {
     commands[pauseMenuCommandTrigger.name] = Command(
@@ -270,11 +270,10 @@ class ZoneLevel extends Level {
       }
       game.outputText(text);
     }
-    affectedInterfaceSounds.playSound(
-      world.terrainAssetStore.getAssetReferenceFromVariableName(
-        options.sound.id,
-      )!,
-      gain: options.sound.gain,
+    playSound(
+      channel: affectedInterfaceSounds,
+      sound: options.sound,
+      assets: world.terrainAssets,
     );
     coordinates = destination;
     timeSinceLastWalked = 0;

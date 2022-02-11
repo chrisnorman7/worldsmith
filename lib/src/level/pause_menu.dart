@@ -3,7 +3,6 @@ import 'package:ziggurat/menus.dart';
 import 'package:ziggurat/sound.dart';
 import 'package:ziggurat/ziggurat.dart';
 
-import '../../extensions.dart';
 import '../functions/menus.dart';
 import '../json/world.dart';
 import '../json/zones/zone.dart';
@@ -21,9 +20,8 @@ class PauseMenu extends Menu {
           ambiances: [
             if (world.pauseMenuOptions.music != null)
               Ambiance(
-                sound: world.musicAssetStore.getAssetReferenceFromVariableName(
-                  world.pauseMenuOptions.music!.id,
-                )!,
+                sound: world.creditsMenuMusic!,
+                gain: world.creditsMenuOptions.music!.gain,
               ),
           ],
           items: [

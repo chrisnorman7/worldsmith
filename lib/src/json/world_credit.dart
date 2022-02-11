@@ -11,7 +11,7 @@ part 'world_credit.g.dart';
 @JsonSerializable()
 class WorldCredit {
   /// Create an instance.
-  const WorldCredit({
+  WorldCredit({
     required this.title,
     this.url,
     this.sound,
@@ -22,13 +22,13 @@ class WorldCredit {
       _$WorldCreditFromJson(json);
 
   /// The title of this credit.
-  final String title;
+  String title;
 
   /// The URL to open when this credit is clicked.
-  final String? url;
+  String? url;
 
   /// The sound to play when selecting this credit.
-  final Sound? sound;
+  Sound? sound;
 
   /// Convert an instance to JSON.
   Map<String, dynamic> toJson() => _$WorldCreditToJson(this);

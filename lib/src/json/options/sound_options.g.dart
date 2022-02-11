@@ -7,6 +7,7 @@ part of 'sound_options.dart';
 // **************************************************************************
 
 SoundOptions _$SoundOptionsFromJson(Map<String, dynamic> json) => SoundOptions(
+      defaultGain: (json['defaultGain'] as num?)?.toDouble() ?? 0.7,
       menuMoveSound: json['menuMoveSound'] == null
           ? null
           : Sound.fromJson(json['menuMoveSound'] as Map<String, dynamic>),
@@ -20,6 +21,7 @@ SoundOptions _$SoundOptionsFromJson(Map<String, dynamic> json) => SoundOptions(
 
 Map<String, dynamic> _$SoundOptionsToJson(SoundOptions instance) =>
     <String, dynamic>{
+      'defaultGain': instance.defaultGain,
       'menuMoveSound': instance.menuMoveSound,
       'menuActivateSound': instance.menuActivateSound,
       'defaultPannerStrategy':

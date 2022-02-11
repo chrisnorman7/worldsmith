@@ -9,10 +9,8 @@ part 'world_options.g.dart';
 @JsonSerializable()
 class WorldOptions {
   /// Create an instance.
-  const WorldOptions({
+  WorldOptions({
     this.framesPerSecond = 60,
-    this.creditsMenuTitle = 'Acknowledgements',
-    this.creditMusicId,
   });
 
   /// Create an instance from a JSON object.
@@ -23,13 +21,7 @@ class WorldOptions {
   ///
   /// The lower you set this, the slower your game will run, but the less
   /// resources it will use.
-  final int framesPerSecond;
-
-  /// The title of the "Credits" menu.
-  final String creditsMenuTitle;
-
-  /// The ID of an asset from the music assets store for credits music.
-  final String? creditMusicId;
+  int framesPerSecond;
 
   /// Convert an instance to JSON.
   Map<String, dynamic> toJson() => _$WorldOptionsToJson(this);
