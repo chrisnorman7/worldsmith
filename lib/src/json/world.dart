@@ -150,7 +150,7 @@ class World {
   AssetStore get musicAssetStore => getAssetStore(
         name: 'music',
         assets: musicAssets,
-        comment: 'Game and zone music',
+        comment: 'Musical assets',
       );
 
   /// Interface sounds.
