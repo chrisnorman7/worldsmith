@@ -37,12 +37,13 @@ Ambiance? getAmbiance({
 }
 
 /// Play the given [sound] through the given [channel].
-PlaySound playSound(
-        {required SoundChannel channel,
-        required Sound sound,
-        required AssetList assets,
-        bool keepAlive = false,
-        bool looping = false}) =>
+PlaySound playSound({
+  required SoundChannel channel,
+  required Sound sound,
+  required AssetList assets,
+  bool keepAlive = false,
+  bool looping = false,
+}) =>
     channel.playSound(
       getAssetReferenceReference(assets: assets, id: sound.id)!.reference,
       gain: sound.gain,
