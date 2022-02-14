@@ -6,3 +6,4 @@ export 'src/functions/get_main_menu.dart';
 export 'src/functions/load.dart';
 export 'src/functions/menus.dart';
 export 'src/functions/run.dart';
+export 'src/functions/save.dart';
