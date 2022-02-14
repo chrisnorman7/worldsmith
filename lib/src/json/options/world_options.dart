@@ -10,12 +10,16 @@ part 'world_options.g.dart';
 class WorldOptions {
   /// Create an instance.
   WorldOptions({
+    this.version = '0.0.0',
     this.framesPerSecond = 60,
   });
 
   /// Create an instance from a JSON object.
   factory WorldOptions.fromJson(Map<String, dynamic> json) =>
       _$WorldOptionsFromJson(json);
+
+  /// The version of the game.
+  String version;
 
   /// The frames per second for this game.
   ///
