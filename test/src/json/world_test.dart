@@ -132,7 +132,7 @@ void main() {
         () {
           final store = world.musicAssetStore;
           expect(store.assets, world.musicAssets);
-          expect(store.comment, 'Game and zone music');
+          expect(store.comment, 'Musical assets');
           expect(store.destination, r'assets\music');
           expect(store.filename, r'assets\music.dart');
         },

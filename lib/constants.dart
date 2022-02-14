@@ -15,3 +15,9 @@ const defaultDirections = {
   'West': CardinalDirections.west,
   'Northwest': CardinalDirections.northwest,
 };
+
+/// The type for event callbacks.
+typedef EventCallback<T> = void Function(T event);
+
+/// The filename for encrypted world files.
+const encryptedWorldFilename = 'world.data';
