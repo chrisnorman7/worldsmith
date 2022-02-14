@@ -31,6 +31,5 @@ World loadEncrypted(
 }) {
   final asset = AssetReference.file(filename, encryptionKey: encryptionKey);
   final bytes = asset.load(Random());
-  final utf8 = Utf8Decoder();
-  return loadString(utf8.convert(bytes));
+  return loadString(String.fromCharCodes(bytes));
 }
