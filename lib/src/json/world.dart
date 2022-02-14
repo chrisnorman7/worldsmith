@@ -101,7 +101,7 @@ class World {
 
   /// The menu activate sound.
   AssetReference? get menuActivateSound => getAssetReferenceReference(
-          assets: interfaceSoundsAssets, id: soundOptions.menuMoveSound?.id)
+          assets: interfaceSoundsAssets, id: soundOptions.menuActivateSound?.id)
       ?.reference;
 
   /// The options for the main menu.
