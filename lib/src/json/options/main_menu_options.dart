@@ -17,6 +17,7 @@ class MainMenuOptions {
     this.savedGameTitle = 'Play Saved Game',
     this.creditsTitle = 'Show Credits',
     this.exitTitle = 'Exit',
+    this.exitMessage = 'The game will now close.',
   });
 
   /// Create an instance from a JSON object.
@@ -43,6 +44,9 @@ class MainMenuOptions {
 
   /// The title of the "Exit" option.
   String exitTitle;
+
+  /// The title that will be shown as the game closes.
+  String exitMessage;
 
   /// Convert an instance to JSON.
   Map<String, dynamic> toJson() => _$MainMenuOptionsToJson(this);

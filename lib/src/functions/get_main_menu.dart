@@ -51,6 +51,7 @@ Menu getMainMenu({
         makeButton(
           world,
           () {
+            game.outputText(options.exitMessage);
             final fadeTime = options.fadeTime;
             if (fadeTime != null) {
               game

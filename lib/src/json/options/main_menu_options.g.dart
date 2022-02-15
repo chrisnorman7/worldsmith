@@ -17,6 +17,7 @@ MainMenuOptions _$MainMenuOptionsFromJson(Map<String, dynamic> json) =>
       savedGameTitle: json['savedGameTitle'] as String? ?? 'Play Saved Game',
       creditsTitle: json['creditsTitle'] as String? ?? 'Show Credits',
       exitTitle: json['exitTitle'] as String? ?? 'Exit',
+      exitMessage: json['exitMessage'] as String? ?? 'The game will now close.',
     );
 
 Map<String, dynamic> _$MainMenuOptionsToJson(MainMenuOptions instance) =>
@@ -28,4 +29,5 @@ Map<String, dynamic> _$MainMenuOptionsToJson(MainMenuOptions instance) =>
       'savedGameTitle': instance.savedGameTitle,
       'creditsTitle': instance.creditsTitle,
       'exitTitle': instance.exitTitle,
+      'exitMessage': instance.exitMessage,
     };
