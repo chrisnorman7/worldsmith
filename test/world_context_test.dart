@@ -5,6 +5,8 @@ import 'package:worldsmith/worldsmith.dart';
 import 'package:ziggurat/ziggurat.dart';
 import 'package:ziggurat_sounds/ziggurat_sounds.dart';
 
+class _ButtonException implements Exception {}
+
 void main() {
   group(
     'WorldContext class',
@@ -72,6 +74,98 @@ void main() {
           expect(ambiance.sound, pauseMusic.reference);
           expect(ambiance.gain, 3.0);
           expect(ambiance.position, isNull);
+        },
+      );
+      test(
+        '.getMenuItemMessage',
+        () {
+          final world = World();
+          final game = Game(world.title);
+          final worldContext = WorldContext(game: game, world: world);
+          var message = worldContext.getMenuItemMessage(text: 'Testing');
+          expect(message.text, 'Testing');
+          expect(message.gain, world.soundOptions.defaultGain);
+          expect(message.keepAlive, isTrue);
+          expect(message.sound, isNull);
+          final reference = AssetReferenceReference(
+            variableName: 'move',
+            reference: AssetReference.file('menu_move.mp3'),
+          );
+          world
+            ..interfaceSoundsAssets.add(reference)
+            ..soundOptions.menuMoveSound =
+                Sound(id: reference.variableName, gain: 4.0);
+          message = worldContext.getMenuItemMessage(text: 'Sound now');
+          expect(message.gain, 4.0);
+          expect(message.keepAlive, isTrue);
+          expect(message.sound, reference.reference);
+          expect(message.text, 'Sound now');
+        },
+      );
+      test(
+        '.getSoundMessage',
+        () {
+          final reference1 = AssetReferenceReference(
+            variableName: '1',
+            reference: AssetReference.file('1.mp3'),
+          );
+          final reference2 = AssetReferenceReference(
+            variableName: '2',
+            reference: AssetReference.file('2.mp3'),
+          );
+          final world = World(interfaceSoundsAssets: [reference1, reference2]);
+          final game = Game(world.title);
+          final worldContext = WorldContext(game: game, world: world);
+          var message = worldContext.getSoundMessage(
+            sound: Sound(id: reference1.variableName, gain: 2.0),
+            assets: world.interfaceSoundsAssets,
+            text: 'Testing 1',
+          );
+          expect(message.gain, 2.0);
+          expect(message.keepAlive, isFalse);
+          expect(message.sound, reference1.reference);
+          expect(message.text, 'Testing 1');
+          message = worldContext.getSoundMessage(
+            sound: Sound(id: reference2.variableName, gain: 5.0),
+            assets: world.interfaceSoundsAssets,
+            text: 'Testing 2',
+            keepAlive: true,
+          );
+          expect(message.gain, 5.0);
+          expect(message.keepAlive, isTrue);
+          expect(message.sound, reference2.reference);
+          expect(message.text, 'Testing 2');
+        },
+      );
+      test(
+        'getButton',
+        () {
+          final activateSound = AssetReferenceReference(
+            variableName: 'activate',
+            reference: AssetReference.file('activate.mp3'),
+          );
+          final moveSound = AssetReferenceReference(
+            variableName: 'move',
+            reference: AssetReference.file('activate.mp3'),
+          );
+          final world = World(
+            interfaceSoundsAssets: [activateSound, moveSound],
+            soundOptions: SoundOptions(
+              menuActivateSound: Sound(
+                id: activateSound.variableName,
+                gain: 3.0,
+              ),
+              menuMoveSound: Sound(id: moveSound.variableName, gain: 5.0),
+            ),
+          );
+          final game = Game(world.title);
+          final worldContext = WorldContext(game: game, world: world);
+          final button = worldContext.getButton(() {
+            throw _ButtonException();
+          });
+          expect(button.activateSound, activateSound.reference);
+          expect(button.onActivate, isNotNull);
+          expect(() => button.onActivate!(), throwsA(isA<_ButtonException>()));
         },
       );
     },

@@ -60,7 +60,7 @@ class WorldContext {
   /// The function that will be called to get a zone level.
   final ZoneMenuBuilder<ZoneLevel> zoneMenuBuilder;
 
-  /// Make a message suitable for a [MenuItem] label.
+  /// Get a message suitable for a [MenuItem] label.
   Message getMenuItemMessage({String? text}) => Message(
         gain: world.soundOptions.menuMoveSound?.gain ??
             world.soundOptions.defaultGain,
@@ -69,7 +69,7 @@ class WorldContext {
         text: text,
       );
 
-  /// Make a message with the given [sound].
+  /// Get a message with the given [sound].
   Message getSoundMessage({
     required Sound sound,
     required AssetList assets,
@@ -86,7 +86,7 @@ class WorldContext {
         text: text,
       );
 
-  /// Make a button with the proper activate sound.
+  /// Get a button with the proper activate sound.
   Button getButton(TaskFunction func) =>
       Button(func, activateSound: world.menuActivateSound);
 }
