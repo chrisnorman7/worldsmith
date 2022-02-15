@@ -7,5 +7,6 @@ import 'package:ziggurat/ziggurat.dart';
 Future<void> main() {
   final world = World(title: 'Example World');
   final game = Game(world.title, triggerMap: defaultTriggerMap);
-  return runWorld(WorldContext(game: game, world: world));
+  final worldContext = WorldContext(game: game, world: world);
+  return runWorld(worldContext);
 }

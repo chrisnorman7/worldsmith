@@ -1,39 +1,74 @@
-<!-- 
-This README describes the package. If you publish this package to pub.dev,
-this README's contents appear on the landing page for your package.
+# worldsmith
 
-For information about how to write a good package README, see the guide for
-[writing package pages](https://dart.dev/guides/libraries/writing-package-pages). 
-
-For general information about developing packages, see the Dart guide for
-[creating packages](https://dart.dev/guides/libraries/create-library-packages)
-and the Flutter guide for
-[developing packages and plugins](https://flutter.dev/developing-packages). 
--->
-
-TODO: Put a short description of the package here that helps potential users
-know whether this package might be useful for them.
+This package lets you build RPG's by creating objects.
 
 ## Features
 
-TODO: List what your package can do. Maybe include images, gifs, or videos.
+- Create games by just creating objects.
+- Dump the worlds you create to json.
 
 ## Getting started
 
-TODO: List prerequisites and provide or point to information on how to
-start using the package.
+Create a world:
+
+```dart
+import 'package:worldsmith/worldsmith.dart';
+
+Future<void> main() {
+  final world = World(title: 'Example World');
+}
+```
+
+Now create a game that can serve as the interface between worldsmith and ziggurat.
+
+```dart
+import 'package:worldsmith/command_triggers.dart';
+import 'package:worldsmith/world_context.dart';
+import 'package:worldsmith/worldsmith.dart';
+import 'package:ziggurat/ziggurat.dart';
+
+Future<void> main() {
+  final world = World(title: 'Example World');
+  final game = Game(world.title, triggerMap: defaultTriggerMap);
+}
+```
+
+Now create a `WorldContext` instance.
+
+```dart
+import 'package:worldsmith/command_triggers.dart';
+import 'package:worldsmith/world_context.dart';
+import 'package:worldsmith/worldsmith.dart';
+import 'package:ziggurat/ziggurat.dart';
+
+Future<void> main() {
+  final world = World(title: 'Example World');
+  final game = Game(world.title, triggerMap: defaultTriggerMap);
+  final worldContext = WorldContext(game: game, world: world);
+}
+```
+
+Now run the world.
+
+```dart
+import 'package:worldsmith/command_triggers.dart';
+import 'package:worldsmith/functions.dart';
+import 'package:worldsmith/world_context.dart';
+import 'package:worldsmith/worldsmith.dart';
+import 'package:ziggurat/ziggurat.dart';
+
+Future<void> main() {
+  final world = World(title: 'Example World');
+  final game = Game(world.title, triggerMap: defaultTriggerMap);
+  final worldContext = WorldContext(game: game, world: world);
+  return runWorld(worldContext);
+}
+```
 
 ## Usage
 
-TODO: Include short and useful examples for package users. Add longer examples
-to `/example` folder. 
-
-```dart
-const like = 'sample';
-```
+This package is intended to be used from within an editor which is still under development. Users can still use this package to create games in pure code.
 
 ## Additional information
 
-TODO: Tell users more about the package: where to find more information, how to 
-contribute to the package, how to file issues, what response they can expect 
-from the package authors, and more.
+This package is still in extremely early days. If you have any problems, please [submit an issue](https://github.com/chrisnorman7/worldsmith).
