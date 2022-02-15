@@ -1,7 +1,6 @@
 /// Create RPGs with [ziggurat](https://pub.dev/packages/ziggurat).
 library worldsmith;
 
-export 'src/functions/load.dart';
 export 'src/json/equipment_position.dart';
 export 'src/json/options/credits_menu_options.dart';
 export 'src/json/options/main_menu_options.dart';

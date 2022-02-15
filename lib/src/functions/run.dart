@@ -3,61 +3,46 @@ import 'dart:math';
 import 'package:dart_sdl/dart_sdl.dart';
 import 'package:dart_synthizer/dart_synthizer.dart';
 import 'package:ziggurat/sound.dart';
-import 'package:ziggurat/ziggurat.dart';
 import 'package:ziggurat_sounds/ziggurat_sounds.dart';
 
-import '../../command_triggers.dart';
 import '../../constants.dart';
-import '../json/world.dart';
-import 'get_main_menu.dart';
+import '../../world_context.dart';
 
-/// Run the given [world].
+/// Run the given [worldContext].
+///
+/// If [sdl] is not `null`, then it should call [Sdl.init] itself.
 Future<void> runWorld(
-  World world, {
+  WorldContext worldContext, {
+  Sdl? sdl,
   EventCallback<SoundEvent>? onSound,
 }) async {
-  final game = Game(
-    world.title,
-    triggerMap: TriggerMap(
-      [
-        walkForwardsCommandTrigger,
-        walkBackwardsCommandTrigger,
-        sidestepLeftCommandTrigger,
-        sidestepRightCommandTrigger,
-        turnLeftCommandTrigger,
-        turnRightCommandTrigger,
-        pauseMenuCommandTrigger,
-        showCoordinatesCommandTrigger,
-        showFacingCommandTrigger,
-      ],
-    ),
-  );
   Synthizer? synthizer;
   Context? context;
   if (onSound == null) {
     synthizer = Synthizer()..initialize();
     context = synthizer.createContext();
     final soundManager = SoundManager(
-      game: game,
+      game: worldContext.game,
       context: context,
       bufferCache: BufferCache(
         synthizer: context.synthizer,
         maxSize: pow(1024, 3).floor(),
-        random: game.random,
+        random: worldContext.game.random,
       ),
     );
     onSound = soundManager.handleEvent;
   }
-  game.sounds.listen(onSound);
-  final sdl = Sdl()..init();
+  worldContext.game.sounds.listen(onSound);
+  sdl ??= Sdl()..init();
   try {
-    await game.run(
+    await worldContext.game.run(
       sdl,
-      framesPerSecond: world.globalOptions.framesPerSecond,
-      onStart: () => game
-        ..setDefaultPannerStrategy(world.soundOptions.defaultPannerStrategy)
+      framesPerSecond: worldContext.world.globalOptions.framesPerSecond,
+      onStart: () => worldContext.game
+        ..setDefaultPannerStrategy(
+            worldContext.world.soundOptions.defaultPannerStrategy)
         ..pushLevel(
-          getMainMenu(game: game, world: world),
+          worldContext.mainMenuBuilder(worldContext),
         ),
     );
   } catch (e) {

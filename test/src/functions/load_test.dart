@@ -3,7 +3,7 @@ import 'dart:io';
 
 import 'package:test/test.dart';
 import 'package:worldsmith/constants.dart';
-import 'package:worldsmith/src/functions/save.dart';
+import 'package:worldsmith/functions.dart';
 import 'package:worldsmith/worldsmith.dart';
 
 final worldFile = File('world.json');

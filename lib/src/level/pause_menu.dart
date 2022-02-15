@@ -1,50 +1,42 @@
 /// Provides the [PauseMenu] class.
 import 'package:ziggurat/menus.dart';
-import 'package:ziggurat/sound.dart';
 import 'package:ziggurat/ziggurat.dart';
 
-import '../functions/menus.dart';
-import '../json/world.dart';
+import '../../world_context.dart';
 import '../json/zones/zone.dart';
 
 /// The pause menu.
 class PauseMenu extends Menu {
   /// Create an instance.
-  PauseMenu({
-    required Game game,
-    required this.world,
-    required this.zone,
-  }) : super(
-          game: game,
-          title: Message(text: world.pauseMenuOptions.title),
-          ambiances: [
-            if (world.pauseMenuOptions.music != null)
-              Ambiance(
-                sound: world.creditsMenuMusic!,
-                gain: world.creditsMenuOptions.music!.gain,
-              ),
-          ],
+  PauseMenu(this.worldContext, this.zone)
+      : super(
+          game: worldContext.game,
+          title: Message(text: worldContext.world.pauseMenuOptions.title),
+          ambiances: worldContext.pauseMenuAmbiances,
           items: [
             MenuItem(
-                makeMenuItemMessage(world, text: zone.name), menuItemLabel),
+              worldContext.getMenuItemMessage(text: zone.name),
+              menuItemLabel,
+            ),
             MenuItem(
-              makeMenuItemMessage(world,
-                  text: world.pauseMenuOptions.returnToGameTitle),
-              makeButton(
-                world,
-                () => game.popLevel(
-                  ambianceFadeTime: world.pauseMenuOptions.fadeTime,
+              worldContext.getMenuItemMessage(
+                text: worldContext.world.pauseMenuOptions.returnToGameTitle,
+              ),
+              worldContext.getButton(
+                () => worldContext.game.popLevel(
+                  ambianceFadeTime:
+                      worldContext.world.pauseMenuOptions.fadeTime,
                 ),
               ),
             )
           ],
-          onCancel: () => game.popLevel(
-            ambianceFadeTime: world.pauseMenuOptions.fadeTime,
+          onCancel: () => worldContext.game.popLevel(
+            ambianceFadeTime: worldContext.world.pauseMenuOptions.fadeTime,
           ),
         );
 
-  /// The world to use.
-  final World world;
+  /// The world context to use.
+  final WorldContext worldContext;
 
   /// The zone that has been paused.
   final Zone zone;

@@ -73,3 +73,18 @@ const showFacingCommandTrigger = CommandTrigger(
   button: GameControllerButton.b,
   keyboardKey: CommandKeyboardKey(ScanCode.SCANCODE_F),
 );
+
+/// The default trigger map.
+const defaultTriggerMap = TriggerMap(
+  [
+    walkForwardsCommandTrigger,
+    walkBackwardsCommandTrigger,
+    sidestepLeftCommandTrigger,
+    sidestepRightCommandTrigger,
+    turnLeftCommandTrigger,
+    turnRightCommandTrigger,
+    pauseMenuCommandTrigger,
+    showCoordinatesCommandTrigger,
+    showFacingCommandTrigger,
+  ],
+);

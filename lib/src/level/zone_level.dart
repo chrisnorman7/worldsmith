@@ -8,12 +8,11 @@ import 'package:ziggurat/ziggurat.dart';
 
 import '../../command_triggers.dart';
 import '../../util.dart';
+import '../../world_context.dart';
 import '../json/options/walking_options.dart';
-import '../json/world.dart';
 import '../json/zones/box.dart';
 import '../json/zones/terrain.dart';
 import '../json/zones/zone.dart';
-import 'pause_menu.dart';
 import 'walking_mode.dart';
 
 const _origin = Point(0.0, 0.0);
@@ -22,8 +21,7 @@ const _origin = Point(0.0, 0.0);
 class ZoneLevel extends Level {
   /// Create an instance.
   ZoneLevel({
-    required Game game,
-    required this.world,
+    required this.worldContext,
     required this.zone,
     int heading = 0,
     Point<double> coordinates = _origin,
@@ -31,22 +29,21 @@ class ZoneLevel extends Level {
     this.timeSinceLastWalked = 0,
   })  : _heading = heading,
         _coordinates = coordinates,
-        affectedInterfaceSounds = game.createSoundChannel(),
+        affectedInterfaceSounds = worldContext.game.createSoundChannel(),
         boxReverbs = {},
         super(
-          game: game,
+          game: worldContext.game,
           ambiances: [
             if (zone.music != null)
-              getAmbiance(assets: world.musicAssets, sound: zone.music)!
+              getAmbiance(
+                assets: worldContext.world.musicAssets,
+                sound: zone.music,
+              )!
           ],
         ) {
     commands[pauseMenuCommandTrigger.name] = Command(
       onStart: () => game.pushLevel(
-        PauseMenu(
-          game: game,
-          world: world,
-          zone: zone,
-        ),
+        worldContext.pauseMenuBuilder(worldContext, zone),
       ),
     );
     commands[showCoordinatesCommandTrigger.name] = Command(
@@ -99,8 +96,8 @@ class ZoneLevel extends Level {
     }
   }
 
-  /// The world to get metadata from.
-  final World world;
+  /// The world context to use.
+  final WorldContext worldContext;
 
   /// The zone to use.
   final Zone zone;
@@ -160,7 +157,8 @@ class ZoneLevel extends Level {
   /// Get the terrain at the current position.
   Terrain getTerrain([Box? box]) {
     box ??= getBox();
-    return world.getTerrain(box?.terrainId ?? zone.defaultTerrainId);
+    return worldContext.world
+        .getTerrain(box?.terrainId ?? zone.defaultTerrainId);
   }
 
   /// Get the current walking options.
@@ -194,7 +192,7 @@ class ZoneLevel extends Level {
   void showFacing() {
     String? direction;
     int? difference;
-    for (final entry in world.directions.entries) {
+    for (final entry in worldContext.world.directions.entries) {
       final value = entry.value.floor();
       final d = max<int>(_heading, value) - min<int>(_heading, value);
       if (difference == null || difference > d) {
@@ -235,7 +233,7 @@ class ZoneLevel extends Level {
     }
     var reverb = boxReverbs[box.id];
     if (reverb == null) {
-      reverb = game.createReverb(world.getReverb(reverbId));
+      reverb = game.createReverb(worldContext.world.getReverb(reverbId));
       boxReverbs[box.id] = reverb;
     }
     return reverb;
@@ -273,7 +271,7 @@ class ZoneLevel extends Level {
     playSound(
       channel: affectedInterfaceSounds,
       sound: options.sound,
-      assets: world.terrainAssets,
+      assets: worldContext.world.terrainAssets,
     );
     coordinates = destination;
     timeSinceLastWalked = 0;

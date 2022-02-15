@@ -1,6 +1,7 @@
 import 'dart:math';
 
 import 'package:test/test.dart';
+import 'package:worldsmith/world_context.dart';
 import 'package:worldsmith/worldsmith.dart';
 
 import '../../custom_game.dart';
@@ -12,8 +13,9 @@ void main() {
     () {
       final pondZone = PondZone.generate();
       final world = World(zones: [pondZone.zone]);
-      final game = CustomGame('Test Game');
-      final level = ZoneLevel(game: game, world: world, zone: pondZone.zone);
+      final game = CustomGame(world.title);
+      final worldContext = WorldContext(game: game, world: world);
+      final level = ZoneLevel(worldContext: worldContext, zone: pondZone.zone);
       test(
         'Initialisation',
         () {
