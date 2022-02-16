@@ -13,8 +13,6 @@ CreditsMenuOptions _$CreditsMenuOptionsFromJson(Map<String, dynamic> json) =>
           ? null
           : Sound.fromJson(json['music'] as Map<String, dynamic>),
       fadeTime: (json['fadeTime'] as num?)?.toDouble() ?? 3.0,
-      zoneOverviewLabel:
-          json['zoneOverviewLabel'] as String? ?? 'Zone Overview',
     );
 
 Map<String, dynamic> _$CreditsMenuOptionsToJson(CreditsMenuOptions instance) =>
@@ -22,5 +20,4 @@ Map<String, dynamic> _$CreditsMenuOptionsToJson(CreditsMenuOptions instance) =>
       'title': instance.title,
       'music': instance.music,
       'fadeTime': instance.fadeTime,
-      'zoneOverviewLabel': instance.zoneOverviewLabel,
     };

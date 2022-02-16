@@ -13,6 +13,7 @@ class PauseMenuOptions {
     this.title = 'Pause Menu',
     this.music,
     this.fadeTime,
+    this.zoneOverviewLabel = 'Map Overview',
     this.returnToGameTitle = 'Return To Game',
   });
 
@@ -28,6 +29,9 @@ class PauseMenuOptions {
 
   /// The fade time.
   double? fadeTime;
+
+  /// The label for the "Show Zone Map" item.
+  String zoneOverviewLabel;
 
   /// The title of the "Return to game" menu item.
   String returnToGameTitle;
