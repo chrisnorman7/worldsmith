@@ -1,6 +1,6 @@
 # worldsmith
 
-This package lets you build RPG's by creating objects.
+This package lets you build RPG's by creating objects in pure Dart.
 
 ## Features
 
