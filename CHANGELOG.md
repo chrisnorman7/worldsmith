@@ -1,5 +1,11 @@
 # Changelog
 
+## [0.6.0]
+
+### Changed
+
+* Consolidate the [worldsmith_utils](https://pub.dev/packages/worldsmith_utils) package into this one.
+
 ## [0.5.0]
 
 ### Changed
