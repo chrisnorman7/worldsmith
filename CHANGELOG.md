@@ -1,5 +1,11 @@
 # Changelog
 
+## [0.6.1]
+
+### Added
+
+* Updated readme.
+
 ## [0.6.0]
 
 ### Changed
