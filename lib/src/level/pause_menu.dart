@@ -20,6 +20,13 @@ class PauseMenu extends Menu {
             ),
             MenuItem(
               worldContext.getMenuItemMessage(
+                  text: worldContext.world.pauseMenuOptions.zoneOverviewLabel),
+              worldContext.getButton(
+                () => worldContext.game.outputText('Not implemented.'),
+              ),
+            ),
+            MenuItem(
+              worldContext.getMenuItemMessage(
                 text: worldContext.world.pauseMenuOptions.returnToGameTitle,
               ),
               worldContext.getButton(
@@ -28,7 +35,7 @@ class PauseMenu extends Menu {
                       worldContext.world.pauseMenuOptions.fadeTime,
                 ),
               ),
-            )
+            ),
           ],
           onCancel: () => worldContext.game.popLevel(
             ambianceFadeTime: worldContext.world.pauseMenuOptions.fadeTime,
