@@ -10,6 +10,7 @@ dependencies:
   dart_synthizer: ^0.7.7
   encrypt: ^5.0.1
   json_annotation: ^4.4.0
+  open_url: ^2.0.0
   path: ^1.8.1
   ziggurat: ^0.33.0
   ziggurat_sounds: ^0.13.0
