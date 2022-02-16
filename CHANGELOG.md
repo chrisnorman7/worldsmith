@@ -1,5 +1,11 @@
 # Changelog
 
+## [0.5.0]
+
+### Changed
+
+* Use the [open_url](https://pub.dev/packages/open_url) package for opening credit URLs.
+
 ## [0.4.0]
 
 ### Added
