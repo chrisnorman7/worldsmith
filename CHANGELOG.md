@@ -1,5 +1,11 @@
 # Changelog
 
+## [0.4.0]
+
+### Added
+
+* Credit URLs will now open in the user's web browser.
+
 ## [0.3.0]
 
 ## Added
