@@ -1,13 +1,17 @@
 {
   "cSpell.words": [
+    "abbr",
     "analyzer",
     "dpad",
+    "editbin",
     "encrypter",
     "formals",
     "SCANCODE",
     "sdl",
     "synthizer",
     "unpanned",
-    "worldsmith"
+    "vcvars",
+    "worldsmith",
+    "writeln"
   ]
 }
