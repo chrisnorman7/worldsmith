@@ -1,4 +1,6 @@
 /// Provides the [CreditsMenu] class.
+import 'dart:io';
+
 import 'package:ziggurat/menus.dart';
 import 'package:ziggurat/ziggurat.dart';
 
@@ -31,7 +33,17 @@ class CreditsMenu extends Menu {
                 credit.url == null
                     ? menuItemLabel
                     : worldContext.getButton(
-                        () => worldContext.game.outputText(credit.url!),
+                        () {
+                          final url = credit.url!;
+                          worldContext.game.outputText('Opening $url.');
+                          final String processName;
+                          if (Platform.isWindows) {
+                            processName = 'start';
+                          } else {
+                            processName = 'open';
+                          }
+                          Process.runSync(processName, url.split(' '));
+                        },
                       ),
               )
           ],
