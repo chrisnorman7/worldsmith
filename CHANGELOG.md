@@ -1,5 +1,16 @@
 # Changelog
 
+## [0.3.0]
+
+## Added
+
+* Added an ID to the `WorldCredit` class.
+* More tests.
+
+### Fixed
+
+* Fixed a bug with the default `getCreditsMenu` function.
+
 ## [0.2.1]
 
 ### Added
