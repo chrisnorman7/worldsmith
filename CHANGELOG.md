@@ -1,5 +1,11 @@
 # Changelog
 
+## [0.7.0]
+
+### Added
+
+* Added a "Zone Overview" menu item to `PauseMenu`.
+
 ## [0.6.1]
 
 ### Added
