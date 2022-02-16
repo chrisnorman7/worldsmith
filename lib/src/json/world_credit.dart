@@ -12,6 +12,7 @@ part 'world_credit.g.dart';
 class WorldCredit {
   /// Create an instance.
   WorldCredit({
+    required this.id,
     required this.title,
     this.url,
     this.sound,
@@ -20,6 +21,9 @@ class WorldCredit {
   /// Create an instance from a JSON object.
   factory WorldCredit.fromJson(Map<String, dynamic> json) =>
       _$WorldCreditFromJson(json);
+
+  /// The ID of this credit.
+  final String id;
 
   /// The title of this credit.
   String title;

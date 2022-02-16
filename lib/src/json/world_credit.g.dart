@@ -7,6 +7,7 @@ part of 'world_credit.dart';
 // **************************************************************************
 
 WorldCredit _$WorldCreditFromJson(Map<String, dynamic> json) => WorldCredit(
+      id: json['id'] as String,
       title: json['title'] as String,
       url: json['url'] as String?,
       sound: json['sound'] == null
@@ -16,6 +17,7 @@ WorldCredit _$WorldCreditFromJson(Map<String, dynamic> json) => WorldCredit(
 
 Map<String, dynamic> _$WorldCreditToJson(WorldCredit instance) =>
     <String, dynamic>{
+      'id': instance.id,
       'title': instance.title,
       'url': instance.url,
       'sound': instance.sound,
