@@ -80,6 +80,28 @@ void main() {
           expect(game.strings.last, 'Northwest');
         },
       );
+      test(
+        '.size',
+        () {
+          final end = pondZone.zone.getAbsoluteCoordinates(
+            pondZone.eastBank.end,
+          );
+          final expected = Point(
+            end.x + level.coordinatesOffset.x,
+            end.y + level.coordinatesOffset.y,
+          );
+          expect(
+            level.size,
+            expected,
+          );
+          expect(
+            () => level.getBox(
+              Point(expected.x.toDouble(), expected.y.toDouble()),
+            ),
+            throwsA(isA<RangeError>()),
+          );
+        },
+      );
     },
   );
 }
