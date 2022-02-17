@@ -1,5 +1,15 @@
 # Changelog
 
+## [0.8.0]
+
+### Added
+
+* Added a `size` property to the `ZoneLevel` class.
+
+### Fixed
+
+* Destroy reverbs and sound channels when popping `ZoneLevel` instances.
+
 ## [0.7.0]
 
 ### Added
