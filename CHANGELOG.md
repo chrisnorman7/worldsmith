@@ -1,5 +1,11 @@
 # Changelog
 
+## [0.11.0]
+
+### Changed
+
+* The `ZoneLevel` class now uses box IDs rather than indices to store references to boxes.
+
 ## [0.10.0]
 
 ### Changed

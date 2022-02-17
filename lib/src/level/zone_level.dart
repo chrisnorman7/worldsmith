@@ -80,8 +80,7 @@ class ZoneLevel extends Level {
       ),
     );
     // Second pass: Change `null` to box indices.
-    for (var i = 0; i < zone.boxes.length; i++) {
-      final box = zone.boxes[i];
+    for (final box in zone.boxes) {
       final start = zone.getAbsoluteCoordinates(box.start);
       final end = zone.getAbsoluteCoordinates(box.end);
       for (var x = start.x + coordinatesOffset.x;
@@ -90,7 +89,7 @@ class ZoneLevel extends Level {
         for (var y = start.y + coordinatesOffset.y;
             y < end.y + coordinatesOffset.y;
             y++) {
-          tiles[x][y] = i;
+          tiles[x][y] = box.id;
         }
       }
     }
@@ -139,7 +138,7 @@ class ZoneLevel extends Level {
   int timeSinceLastWalked;
 
   /// The loaded tiles.
-  late final List<List<int?>> tiles;
+  late final List<List<String?>> tiles;
 
   /// The difference between the origin and the minimum coordinates from boxes.
   late final Point<int> coordinatesOffset;
@@ -155,11 +154,11 @@ class ZoneLevel extends Level {
   /// If the coordinates are out of range, [RangeError] will be thrown.
   Box? getBox([Point<double>? where]) {
     where ??= _coordinates;
-    final index = tiles[where.x.floor()][where.y.floor()];
-    if (index == null) {
+    final id = tiles[where.x.floor()][where.y.floor()];
+    if (id == null) {
       return null;
     }
-    return zone.boxes[index];
+    return zone.getBox(id);
   }
 
   /// Get the terrain at the current position.
