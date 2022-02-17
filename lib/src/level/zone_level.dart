@@ -225,6 +225,16 @@ class ZoneLevel extends Level {
     resetState();
   }
 
+  /// Destroy all the created reverbs, and the sound channel.
+  @override
+  void onPop(double? fadeLength) {
+    super.onPop(fadeLength);
+    while (boxReverbs.isNotEmpty) {
+      boxReverbs.remove(boxReverbs.keys.first)!.destroy();
+    }
+    affectedInterfaceSounds.destroy();
+  }
+
   /// Get the reverb for the given [box].
   CreateReverb? getReverb(Box box) {
     final reverbId = box.reverbId;
