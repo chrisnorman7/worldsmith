@@ -264,6 +264,10 @@ class ZoneLevel extends Level {
       _heading.toDouble(),
       options.distance,
     );
+    if (destination.x < 0 || destination.y < 0) {
+      // Avoid getting `RangeError` thrown.
+      return;
+    }
     final newBox = getBox(destination);
     if (newBox != oldBox) {
       // Boxes are different.

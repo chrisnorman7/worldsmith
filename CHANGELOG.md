@@ -1,5 +1,11 @@
 # Changelog
 
+## [0.12.0]
+
+### Fixed
+
+* Fixed a bug where lower coordinates were not checked when walking, leading to a `RangeError` being thrown.
+
 ## [0.11.0]
 
 ### Changed
