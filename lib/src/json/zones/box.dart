@@ -30,10 +30,10 @@ class Box {
   String name;
 
   /// The start coordinates of this box.
-  Coordinates start;
+  final Coordinates start;
 
   /// The end coordinates of this box.
-  Coordinates end;
+  final Coordinates end;
 
   /// The ID of the type of terrain for this box.
   String terrainId;
