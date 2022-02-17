@@ -1,5 +1,11 @@
 # Changelog
 
+## [0.9.0]
+
+### Changed
+
+* Made `Box.start` and `Box.end` non-final.
+
 ## [0.8.0]
 
 ### Added
