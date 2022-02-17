@@ -144,7 +144,15 @@ class ZoneLevel extends Level {
   /// The difference between the origin and the minimum coordinates from boxes.
   late final Point<int> coordinatesOffset;
 
+  /// The size of the [zone].
+  ///
+  /// As coordinates, the returned value represents a point just northeast of
+  /// the northeast corner of the most northeast box.
+  Point<int> get size => Point(tiles.length, tiles.first.length);
+
   /// Get the box that resides at the provided [coordinates].
+  ///
+  /// If the coordinates are out of range, [RangeError] will be thrown.
   Box? getBox([Point<double>? where]) {
     where ??= _coordinates;
     final index = tiles[where.x.floor()][where.y.floor()];
