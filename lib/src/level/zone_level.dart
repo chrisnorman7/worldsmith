@@ -266,8 +266,10 @@ class ZoneLevel extends Level {
         destination.y >= s.y) {
       final f = worldContext.onEdgeOfZoneLevel;
       if (f != null) {
-        return f(this);
+        return f(this, destination);
       }
+      final message = zone.edgeMessage;
+      game.outputMessage(worldContext.getCustomMessage(message));
       return;
     }
     final newBox = getBox(destination);

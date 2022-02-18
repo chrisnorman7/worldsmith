@@ -3,6 +3,7 @@ import 'dart:math';
 
 import 'package:json_annotation/json_annotation.dart';
 
+import '../messages/custom_message.dart';
 import '../sound.dart';
 import '../world.dart';
 import 'box.dart';
@@ -22,7 +23,8 @@ class Zone {
     required this.defaultTerrainId,
     this.music,
     this.topDownMap = true,
-  });
+    CustomMessage? collideEdgeMessage,
+  }) : edgeMessage = collideEdgeMessage ?? CustomMessage();
 
   /// Create an instance from a JSON object.
   factory Zone.fromJson(Map<String, dynamic> json) => _$ZoneFromJson(json);
@@ -44,6 +46,9 @@ class Zone {
 
   /// Whether or not a top-down map of this zone can be viewed.
   bool topDownMap;
+
+  /// The message to use when colliding with the edge of this zone.
+  final CustomMessage edgeMessage;
 
   /// Get a box by its [id].
   Box getBox(String id) => boxes.firstWhere((element) => element.id == id);

@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:ziggurat/menus.dart';
 import 'package:ziggurat/sound.dart';
 import 'package:ziggurat/ziggurat.dart';
@@ -65,7 +67,8 @@ class WorldContext {
   final ZoneMenuBuilder<ZoneLevel> zoneMenuBuilder;
 
   /// A function to be called when hitting the edge of a [ZoneLevel].
-  final EventCallback<ZoneLevel>? onEdgeOfZoneLevel;
+  final void Function(ZoneLevel zoneLevel, Point<double> coordinates)?
+      onEdgeOfZoneLevel;
 
   /// Get a message suitable for a [MenuItem] label.
   Message getMenuItemMessage({String? text}) => Message(
