@@ -264,8 +264,15 @@ class ZoneLevel extends Level {
       _heading.toDouble(),
       options.distance,
     );
-    if (destination.x < 0 || destination.y < 0) {
-      // Avoid getting `RangeError` thrown.
+    final s = size;
+    if (destination.x < 0 ||
+        destination.y < 0 ||
+        destination.x >= s.x ||
+        destination.y >= s.y) {
+      final f = worldContext.onEdgeOfZoneLevel;
+      if (f != null) {
+        return f(this);
+      }
       return;
     }
     final newBox = getBox(destination);

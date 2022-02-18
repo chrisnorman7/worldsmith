@@ -22,6 +22,7 @@ class WorldContext {
     this.pauseMenuBuilder = getPauseMenu,
     this.creditsMenuBuilder = getCreditsMenu,
     this.zoneMenuBuilder = getZoneLevel,
+    this.onEdgeOfZoneLevel,
   });
 
   /// The game to use.
@@ -59,6 +60,9 @@ class WorldContext {
 
   /// The function that will be called to get a zone level.
   final ZoneMenuBuilder<ZoneLevel> zoneMenuBuilder;
+
+  /// A function to be called when hitting the edge of a [ZoneLevel].
+  final EventCallback<ZoneLevel>? onEdgeOfZoneLevel;
 
   /// Get a message suitable for a [MenuItem] label.
   Message getMenuItemMessage({String? text}) => Message(
