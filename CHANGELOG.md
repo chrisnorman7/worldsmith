@@ -2,9 +2,14 @@
 
 ## [0.12.0]
 
+### Added
+
+* Added an event for hitting the edge of a zone.
+
 ### Fixed
 
 * Fixed a bug where lower coordinates were not checked when walking, leading to a `RangeError` being thrown.
+* Make sure the proper reverb is set when walking.
 
 ## [0.11.0]
 
