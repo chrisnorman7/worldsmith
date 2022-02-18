@@ -9,6 +9,7 @@ import 'package:ziggurat/ziggurat.dart';
 import '../../command_triggers.dart';
 import '../../util.dart';
 import '../../world_context.dart';
+import '../json/messages/custom_message.dart';
 import '../json/options/walking_options.dart';
 import '../json/zones/box.dart';
 import '../json/zones/terrain.dart';
@@ -257,7 +258,11 @@ class ZoneLevel extends Level {
   }
 
   /// Move directly to the given [destination].
-  void moveTo({required Point<double> destination, WalkingOptions? options}) {
+  void moveTo({
+    required Point<double> destination,
+    WalkingOptions? options,
+    bool updateLastWalked = true,
+  }) {
     final oldBox = getBox();
     final s = size;
     if (destination.x < 0 ||
@@ -275,31 +280,26 @@ class ZoneLevel extends Level {
     final newBox = getBox(destination);
     if (newBox != oldBox) {
       // Boxes are different.
-      final String text;
+      final CustomMessage message;
       if (newBox == null) {
-        affectedInterfaceSounds.setReverb(null);
         if (oldBox != null) {
-          text = 'Leaving ${oldBox.name}.';
+          message = oldBox.leaveMessage;
         } else {
-          text = 'Both boxes are null, new box was tested first.';
+          message = CustomMessage(
+            text: "Both boxes are null, and the compiler somehow doesn't know "
+                'that.',
+          );
         }
       } else {
-        affectedInterfaceSounds.setReverb(getReverb(newBox));
-        if (oldBox == null) {
-          text = 'Entering ${newBox.name}.';
-        } else {
-          text = 'Both boxes are null, old box was tested first.';
-        }
+        message = newBox.enterMessage;
       }
-      game.outputText(text);
+      game.outputMessage(worldContext.getCustomMessage(message));
     }
     if (newBox == null) {
       affectedInterfaceSounds.setReverb(null);
     } else {
       final reverb = getReverb(newBox);
-      if (reverb == null) {
-        affectedInterfaceSounds.setReverb(null);
-      } else if (affectedInterfaceSounds.reverb != reverb.id) {
+      if (reverb == null || affectedInterfaceSounds.reverb != reverb.id) {
         affectedInterfaceSounds.setReverb(reverb);
       }
     }
@@ -312,7 +312,9 @@ class ZoneLevel extends Level {
       );
     }
     coordinates = destination;
-    timeSinceLastWalked = 0;
+    if (updateLastWalked) {
+      timeSinceLastWalked = 0;
+    }
   }
 
   /// Walk a bit.

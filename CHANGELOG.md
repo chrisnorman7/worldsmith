@@ -13,6 +13,7 @@
 
 * Fixed a bug where lower coordinates were not checked when walking, leading to a `RangeError` being thrown.
 * Make sure the proper reverb is set when walking.
+* Tightened up walking code.
 
 ## [0.11.0]
 
