@@ -101,6 +101,7 @@ class WorldContext {
     CustomMessage message, {
     Map<String, String> replacements = const {},
     bool keepAlive = false,
+    AssetReference? nullSound,
   }) {
     var text = message.text;
     if (text != null) {
@@ -134,6 +135,8 @@ class WorldContext {
         id: sound.id,
       )!
           .reference;
+    } else if (nullSound != null) {
+      assetReference = nullSound;
     }
     final gain = sound?.gain ?? world.soundOptions.defaultGain;
     return Message(

@@ -13,11 +13,25 @@ MainMenuOptions _$MainMenuOptionsFromJson(Map<String, dynamic> json) =>
           ? null
           : Sound.fromJson(json['music'] as Map<String, dynamic>),
       fadeTime: (json['fadeTime'] as num?)?.toDouble() ?? 4.0,
-      newGameTitle: json['newGameTitle'] as String? ?? 'Start New Game',
-      savedGameTitle: json['savedGameTitle'] as String? ?? 'Play Saved Game',
-      creditsTitle: json['creditsTitle'] as String? ?? 'Show Credits',
-      exitTitle: json['exitTitle'] as String? ?? 'Exit',
-      exitMessage: json['exitMessage'] as String? ?? 'The game will now close.',
+      newGameMessage: json['newGameMessage'] == null
+          ? null
+          : CustomMessage.fromJson(
+              json['newGameMessage'] as Map<String, dynamic>),
+      savedGameMessage: json['savedGameMessage'] == null
+          ? null
+          : CustomMessage.fromJson(
+              json['savedGameMessage'] as Map<String, dynamic>),
+      creditsMessage: json['creditsMessage'] == null
+          ? null
+          : CustomMessage.fromJson(
+              json['creditsMessage'] as Map<String, dynamic>),
+      exitMessage: json['exitMessage'] == null
+          ? null
+          : CustomMessage.fromJson(json['exitMessage'] as Map<String, dynamic>),
+      onExitMessage: json['onExitMessage'] == null
+          ? null
+          : CustomMessage.fromJson(
+              json['onExitMessage'] as Map<String, dynamic>),
     );
 
 Map<String, dynamic> _$MainMenuOptionsToJson(MainMenuOptions instance) =>
@@ -25,9 +39,9 @@ Map<String, dynamic> _$MainMenuOptionsToJson(MainMenuOptions instance) =>
       'title': instance.title,
       'music': instance.music,
       'fadeTime': instance.fadeTime,
-      'newGameTitle': instance.newGameTitle,
-      'savedGameTitle': instance.savedGameTitle,
-      'creditsTitle': instance.creditsTitle,
-      'exitTitle': instance.exitTitle,
+      'newGameMessage': instance.newGameMessage,
+      'savedGameMessage': instance.savedGameMessage,
+      'creditsMessage': instance.creditsMessage,
       'exitMessage': instance.exitMessage,
+      'onExitMessage': instance.onExitMessage,
     };

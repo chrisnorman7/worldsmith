@@ -17,57 +17,72 @@ class MainMenu extends Menu {
             if (worldContext.world.mainMenuMusic != null)
               worldContext.world.mainMenuMusic!,
           ],
-          items: [
-            MenuItem(
-              worldContext.getMenuItemMessage(
-                text: worldContext.world.mainMenuOptions.newGameTitle,
-              ),
-              worldContext.getButton(() => _unimplemented(worldContext.game)),
+          items: [],
+        ) {
+    final world = worldContext.world;
+    final options = world.mainMenuOptions;
+    final fadeTime = options.fadeTime;
+    final menuMoveAsset = world.menuMoveSound;
+    menuItems.addAll(
+      [
+        MenuItem(
+          worldContext.getCustomMessage(
+            options.newGameMessage,
+            keepAlive: true,
+            nullSound: menuMoveAsset,
+          ),
+          worldContext.getButton(() => _unimplemented(worldContext.game)),
+        ),
+        MenuItem(
+          worldContext.getCustomMessage(
+            options.savedGameMessage,
+            keepAlive: true,
+            nullSound: menuMoveAsset,
+          ),
+          worldContext.getButton(() => _unimplemented(worldContext.game)),
+        ),
+        if (world.credits.isNotEmpty)
+          MenuItem(
+            worldContext.getCustomMessage(
+              options.creditsMessage,
+              keepAlive: true,
+              nullSound: menuMoveAsset,
             ),
-            MenuItem(
-              worldContext.getMenuItemMessage(
-                text: worldContext.world.mainMenuOptions.savedGameTitle,
+            worldContext.getButton(
+              () => worldContext.game.replaceLevel(
+                worldContext.creditsMenuBuilder(worldContext),
+                ambianceFadeTime: fadeTime,
               ),
-              worldContext.getButton(() => _unimplemented(worldContext.game)),
             ),
-            if (worldContext.world.credits.isNotEmpty)
-              MenuItem(
-                worldContext.getMenuItemMessage(
-                  text: worldContext.world.mainMenuOptions.creditsTitle,
-                ),
-                worldContext.getButton(
-                  () => worldContext.game.replaceLevel(
-                    worldContext.creditsMenuBuilder(worldContext),
-                    ambianceFadeTime:
-                        worldContext.world.mainMenuOptions.fadeTime,
-                  ),
-                ),
-              ),
-            MenuItem(
-              worldContext.getMenuItemMessage(
-                text: worldContext.world.mainMenuOptions.exitTitle,
-              ),
-              worldContext.getButton(
-                () {
-                  final game = worldContext.game;
-                  final world = worldContext.world;
-                  game.outputText(world.mainMenuOptions.exitMessage);
-                  final fadeTime = world.mainMenuOptions.fadeTime;
-                  if (fadeTime != null) {
-                    game
-                      ..popLevel(ambianceFadeTime: fadeTime)
-                      ..registerTask(
-                        runAfter: (fadeTime * 1000).floor(),
-                        func: game.stop,
-                      );
-                  } else {
-                    game.stop();
-                  }
-                },
-              ),
-            )
-          ],
-        );
+          ),
+        MenuItem(
+          worldContext.getCustomMessage(
+            options.exitMessage,
+            keepAlive: true,
+            nullSound: menuMoveAsset,
+          ),
+          worldContext.getButton(
+            () {
+              final game = worldContext.game
+                ..outputMessage(
+                  worldContext.getCustomMessage(options.onExitMessage),
+                );
+              if (fadeTime != null) {
+                game
+                  ..popLevel(ambianceFadeTime: fadeTime)
+                  ..registerTask(
+                    runAfter: (fadeTime * 1000).floor(),
+                    func: game.stop,
+                  );
+              } else {
+                game.stop();
+              }
+            },
+          ),
+        )
+      ],
+    );
+  }
 
   /// The world context to work with.
   final WorldContext worldContext;

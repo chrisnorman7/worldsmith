@@ -11,12 +11,7 @@ part 'world_credit.g.dart';
 @JsonSerializable()
 class WorldCredit {
   /// Create an instance.
-  WorldCredit({
-    required this.id,
-    required this.title,
-    this.url,
-    this.sound,
-  });
+  WorldCredit({required this.id, required this.title, this.url, this.sound});
 
   /// Create an instance from a JSON object.
   factory WorldCredit.fromJson(Map<String, dynamic> json) =>
@@ -31,7 +26,7 @@ class WorldCredit {
   /// The URL to open when this credit is clicked.
   String? url;
 
-  /// The sound to play when selecting this credit.
+  /// The sound for this credit.
   Sound? sound;
 
   /// Convert an instance to JSON.

@@ -13,9 +13,14 @@ PauseMenuOptions _$PauseMenuOptionsFromJson(Map<String, dynamic> json) =>
           ? null
           : Sound.fromJson(json['music'] as Map<String, dynamic>),
       fadeTime: (json['fadeTime'] as num?)?.toDouble(),
-      zoneOverviewLabel: json['zoneOverviewLabel'] as String? ?? 'Map Overview',
-      returnToGameTitle:
-          json['returnToGameTitle'] as String? ?? 'Return To Game',
+      zoneOverviewMessage: json['zoneOverviewMessage'] == null
+          ? null
+          : CustomMessage.fromJson(
+              json['zoneOverviewMessage'] as Map<String, dynamic>),
+      returnToGameMessage: json['returnToGameMessage'] == null
+          ? null
+          : CustomMessage.fromJson(
+              json['returnToGameMessage'] as Map<String, dynamic>),
     );
 
 Map<String, dynamic> _$PauseMenuOptionsToJson(PauseMenuOptions instance) =>
@@ -23,6 +28,6 @@ Map<String, dynamic> _$PauseMenuOptionsToJson(PauseMenuOptions instance) =>
       'title': instance.title,
       'music': instance.music,
       'fadeTime': instance.fadeTime,
-      'zoneOverviewLabel': instance.zoneOverviewLabel,
-      'returnToGameTitle': instance.returnToGameTitle,
+      'zoneOverviewMessage': instance.zoneOverviewMessage,
+      'returnToGameMessage': instance.returnToGameMessage,
     };

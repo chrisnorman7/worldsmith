@@ -20,16 +20,20 @@ class PauseMenu extends Menu {
             ),
             if (zone.topDownMap)
               MenuItem(
-                worldContext.getMenuItemMessage(
-                  text: worldContext.world.pauseMenuOptions.zoneOverviewLabel,
+                worldContext.getCustomMessage(
+                  worldContext.world.pauseMenuOptions.zoneOverviewMessage,
+                  keepAlive: true,
+                  nullSound: worldContext.world.menuMoveSound,
                 ),
                 worldContext.getButton(
                   () => worldContext.game.outputText('Not implemented.'),
                 ),
               ),
             MenuItem(
-              worldContext.getMenuItemMessage(
-                text: worldContext.world.pauseMenuOptions.returnToGameTitle,
+              worldContext.getCustomMessage(
+                worldContext.world.pauseMenuOptions.returnToGameMessage,
+                keepAlive: true,
+                nullSound: worldContext.world.menuMoveSound,
               ),
               worldContext.getButton(
                 () => worldContext.game.popLevel(

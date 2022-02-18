@@ -1,6 +1,7 @@
 /// Provides the [MainMenuOptions] class.
 import 'package:json_annotation/json_annotation.dart';
 
+import '../messages/custom_message.dart';
 import '../sound.dart';
 
 part 'main_menu_options.g.dart';
@@ -13,12 +14,19 @@ class MainMenuOptions {
     this.title = 'Main Menu',
     this.music,
     this.fadeTime = 4.0,
-    this.newGameTitle = 'Start New Game',
-    this.savedGameTitle = 'Play Saved Game',
-    this.creditsTitle = 'Show Credits',
-    this.exitTitle = 'Exit',
-    this.exitMessage = 'The game will now close.',
-  });
+    CustomMessage? newGameMessage,
+    CustomMessage? savedGameMessage,
+    CustomMessage? creditsMessage,
+    CustomMessage? exitMessage,
+    CustomMessage? onExitMessage,
+  })  : newGameMessage =
+            newGameMessage ?? CustomMessage(text: 'Start New Game'),
+        savedGameMessage =
+            savedGameMessage ?? CustomMessage(text: 'Play Saved Game'),
+        creditsMessage = creditsMessage ?? CustomMessage(text: 'Show Credits'),
+        exitMessage = exitMessage ?? CustomMessage(text: 'Exit'),
+        onExitMessage =
+            onExitMessage ?? CustomMessage(text: 'The game will now close.');
 
   /// Create an instance from a JSON object.
   factory MainMenuOptions.fromJson(Map<String, dynamic> json) =>
@@ -33,20 +41,20 @@ class MainMenuOptions {
   /// How long to fade this menu.
   double? fadeTime;
 
-  /// The title of the "Play New Game" option.
-  String newGameTitle;
+  /// The message for the "Play New Game" option.
+  final CustomMessage newGameMessage;
 
-  /// The title of the "Play Saved Game" option.
-  String savedGameTitle;
+  /// The message for the "Play Saved Game" option.
+  final CustomMessage savedGameMessage;
 
-  /// The title of the "Credits" option.
-  String creditsTitle;
+  /// The message for the "Credits" option.
+  final CustomMessage creditsMessage;
 
-  /// The title of the "Exit" option.
-  String exitTitle;
+  /// The message for the "Exit" option.
+  final CustomMessage exitMessage;
 
-  /// The title that will be shown as the game closes.
-  String exitMessage;
+  /// The message that will be used as the game closes.
+  final CustomMessage onExitMessage;
 
   /// Convert an instance to JSON.
   Map<String, dynamic> toJson() => _$MainMenuOptionsToJson(this);

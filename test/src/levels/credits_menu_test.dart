@@ -1,11 +1,6 @@
 import 'package:test/test.dart';
-import 'package:worldsmith/src/json/options/credits_menu_options.dart';
-import 'package:worldsmith/src/json/options/sound_options.dart';
-import 'package:worldsmith/src/json/sound.dart';
-import 'package:worldsmith/src/json/world.dart';
-import 'package:worldsmith/src/json/world_credit.dart';
-import 'package:worldsmith/src/level/credits_menu.dart';
 import 'package:worldsmith/world_context.dart';
+import 'package:worldsmith/worldsmith.dart';
 import 'package:ziggurat/menus.dart';
 import 'package:ziggurat/ziggurat.dart';
 import 'package:ziggurat_sounds/ziggurat_sounds.dart';
