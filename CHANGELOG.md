@@ -15,6 +15,10 @@
 * Make sure the proper reverb is set when walking.
 * Tightened up walking code.
 
+### Changed
+
+* Started using `CustomMessage`s everywhere.
+
 ## [0.11.0]
 
 ### Changed
