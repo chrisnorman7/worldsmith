@@ -296,6 +296,16 @@ class ZoneLevel extends Level {
       }
       game.outputText(text);
     }
+    if (newBox == null) {
+      affectedInterfaceSounds.setReverb(null);
+    } else {
+      final reverb = getReverb(newBox);
+      if (reverb == null) {
+        affectedInterfaceSounds.setReverb(null);
+      } else if (affectedInterfaceSounds.reverb != reverb.id) {
+        affectedInterfaceSounds.setReverb(reverb);
+      }
+    }
     playSound(
       channel: affectedInterfaceSounds,
       sound: options.sound,
