@@ -1,6 +1,7 @@
 /// Provides the [Box] class.
 import 'package:json_annotation/json_annotation.dart';
 
+import '../messages/custom_message.dart';
 import 'coordinates.dart';
 import 'zone.dart';
 
@@ -18,7 +19,12 @@ class Box {
     required this.terrainId,
     this.enclosed = false,
     this.reverbId,
-  });
+    CustomMessage? enterMessage,
+    CustomMessage? exitMessage,
+  })  : enterMessage =
+            enterMessage ?? CustomMessage(text: 'Entering {box_name}.'),
+        leaveMessage =
+            exitMessage ?? CustomMessage(text: 'Leaving {box_name}.');
 
   /// Create an instance from a JSON object.
   factory Box.fromJson(Map<String, dynamic> json) => _$BoxFromJson(json);
@@ -45,6 +51,12 @@ class Box {
 
   /// The ID of the reverb preset to use in this box.
   String? reverbId;
+
+  /// The message that will be used when entering this box.
+  final CustomMessage enterMessage;
+
+  /// The message that will be used when leaving this box.
+  final CustomMessage leaveMessage;
 
   /// Convert an instance to JSON.
   Map<String, dynamic> toJson() => _$BoxToJson(this);

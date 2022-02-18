@@ -1,9 +1,12 @@
 import 'package:ziggurat/menus.dart';
 import 'package:ziggurat/sound.dart';
 import 'package:ziggurat/ziggurat.dart';
+import 'package:ziggurat_sounds/ziggurat_sounds.dart';
 
 import 'constants.dart';
 import 'functions.dart';
+import 'src/json/messages/custom_message.dart';
+import 'src/json/messages/custom_sound.dart';
 import 'src/json/sound.dart';
 import 'src/json/world.dart';
 import 'src/level/credits_menu.dart';
@@ -89,6 +92,54 @@ class WorldContext {
         )?.reference,
         text: text,
       );
+
+  /// Convert the given [message].
+  Message getCustomMessage(
+    CustomMessage message, {
+    Map<String, String> replacements = const {},
+    bool keepAlive = false,
+  }) {
+    var text = message.text;
+    if (text != null) {
+      for (final entry in replacements.entries) {
+        text = text?.replaceAll('{${entry.key}}', entry.value);
+      }
+    }
+    final sound = message.sound;
+    AssetReference? assetReference;
+    if (sound != null) {
+      final AssetStore assetStore;
+      switch (sound.assetStore) {
+        case CustomSoundAssetStore.credits:
+          assetStore = world.creditsAssetStore;
+          break;
+        case CustomSoundAssetStore.equipment:
+          assetStore = world.equipmentAssetStore;
+          break;
+        case CustomSoundAssetStore.interface:
+          assetStore = world.interfaceSoundsAssetStore;
+          break;
+        case CustomSoundAssetStore.music:
+          assetStore = world.musicAssetStore;
+          break;
+        case CustomSoundAssetStore.terrain:
+          assetStore = world.terrainAssetStore;
+          break;
+      }
+      assetReference = getAssetReferenceReference(
+        assets: assetStore.assets,
+        id: sound.id,
+      )!
+          .reference;
+    }
+    final gain = sound?.gain ?? world.soundOptions.defaultGain;
+    return Message(
+      gain: gain,
+      keepAlive: keepAlive,
+      sound: assetReference,
+      text: text,
+    );
+  }
 
   /// Get a button with the proper activate sound.
   Button getButton(TaskFunction func) =>

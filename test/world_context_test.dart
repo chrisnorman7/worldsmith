@@ -168,6 +168,36 @@ void main() {
           expect(() => button.onActivate!(), throwsA(isA<_ButtonException>()));
         },
       );
+      test(
+        '.getCustomMessage',
+        () {
+          final assetReferenceReference = AssetReferenceReference(
+            variableName: 'testing',
+            reference: AssetReference('testing.wav', AssetType.file),
+          );
+          final sound = CustomSound(
+            assetStore: CustomSoundAssetStore.interface,
+            id: assetReferenceReference.variableName,
+            gain: 1.0,
+          );
+          final customMessage = CustomMessage(
+            sound: sound,
+            text: 'I love {action_1} {action_2}.',
+          );
+          final worldContext = WorldContext(
+            game: Game('Custom Message'),
+            world: World(interfaceSoundsAssets: [assetReferenceReference]),
+          );
+          final message = worldContext.getCustomMessage(
+            customMessage,
+            replacements: {'action_1': 'writing', 'action_2': 'tests'},
+          );
+          expect(message.gain, sound.gain);
+          expect(message.keepAlive, isFalse);
+          expect(message.sound, assetReferenceReference.reference);
+          expect(message.text, 'I love writing tests.');
+        },
+      );
     },
   );
 }

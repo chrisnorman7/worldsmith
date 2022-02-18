@@ -2,6 +2,8 @@
 library worldsmith;
 
 export 'src/json/equipment_position.dart';
+export 'src/json/messages/custom_message.dart';
+export 'src/json/messages/custom_sound.dart';
 export 'src/json/options/credits_menu_options.dart';
 export 'src/json/options/main_menu_options.dart';
 export 'src/json/options/pause_menu_options.dart';

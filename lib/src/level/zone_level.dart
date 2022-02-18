@@ -256,14 +256,9 @@ class ZoneLevel extends Level {
     return reverb;
   }
 
-  /// Walk a bit.
-  void walk(WalkingOptions options) {
+  /// Move directly to the given [destination].
+  void moveTo({required Point<double> destination, WalkingOptions? options}) {
     final oldBox = getBox();
-    final destination = coordinatesInDirection(
-      _coordinates,
-      _heading.toDouble(),
-      options.distance,
-    );
     final s = size;
     if (destination.x < 0 ||
         destination.y < 0 ||
@@ -306,13 +301,26 @@ class ZoneLevel extends Level {
         affectedInterfaceSounds.setReverb(reverb);
       }
     }
-    playSound(
-      channel: affectedInterfaceSounds,
-      sound: options.sound,
-      assets: worldContext.world.terrainAssets,
-    );
+    final sound = options?.sound;
+    if (sound != null) {
+      playSound(
+        channel: affectedInterfaceSounds,
+        sound: sound,
+        assets: worldContext.world.terrainAssets,
+      );
+    }
     coordinates = destination;
     timeSinceLastWalked = 0;
+  }
+
+  /// Walk a bit.
+  void walk(WalkingOptions options) {
+    final destination = coordinatesInDirection(
+      _coordinates,
+      _heading.toDouble(),
+      options.distance,
+    );
+    moveTo(destination: destination, options: options);
   }
 
   /// Maybe walk.

@@ -5,6 +5,9 @@
 ### Added
 
 * Added an event for hitting the edge of a zone.
+* Added the `ZoneLevel.moveTo` method.
+* Added the `CustomMessage` and `CustomSound` classes.
+* Added the `WorldContext.getCustomMessage` method.
 
 ### Fixed
 
