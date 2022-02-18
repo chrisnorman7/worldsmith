@@ -8,6 +8,7 @@
 * Added the `ZoneLevel.moveTo` method.
 * Added the `CustomMessage` and `CustomSound` classes.
 * Added the `WorldContext.getCustomMessage` method.
+* Added the `WorldContext.getCustomSound` and `WorldContext.getAssetStore` methods.
 
 ### Fixed
 

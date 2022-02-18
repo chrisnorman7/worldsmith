@@ -96,32 +96,29 @@ class WorldContext {
         text: text,
       );
 
-  /// Get the sound from the given [sound].
-  AssetReference getCustomSound(CustomSound sound) {
-    final AssetStore assetStore;
-    switch (sound.assetStore) {
+  /// Get the asset store for the given [customSound].
+  AssetStore getAssetStore(CustomSound customSound) {
+    switch (customSound.assetStore) {
       case CustomSoundAssetStore.credits:
-        assetStore = world.creditsAssetStore;
-        break;
+        return world.creditsAssetStore;
       case CustomSoundAssetStore.equipment:
-        assetStore = world.equipmentAssetStore;
-        break;
+        return world.equipmentAssetStore;
       case CustomSoundAssetStore.interface:
-        assetStore = world.interfaceSoundsAssetStore;
-        break;
+        return world.interfaceSoundsAssetStore;
       case CustomSoundAssetStore.music:
-        assetStore = world.musicAssetStore;
-        break;
+        return world.musicAssetStore;
       case CustomSoundAssetStore.terrain:
-        assetStore = world.terrainAssetStore;
-        break;
+        return world.terrainAssetStore;
     }
-    return getAssetReferenceReference(
-      assets: assetStore.assets,
-      id: sound.id,
-    )!
-        .reference;
   }
+
+  /// Get the sound from the given [sound].
+  AssetReference getCustomSound(CustomSound sound) =>
+      getAssetReferenceReference(
+        assets: getAssetStore(sound).assets,
+        id: sound.id,
+      )!
+          .reference;
 
   /// Convert the given [message].
   Message getCustomMessage(
