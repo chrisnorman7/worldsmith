@@ -96,6 +96,33 @@ class WorldContext {
         text: text,
       );
 
+  /// Get the sound from the given [sound].
+  AssetReference getCustomSound(CustomSound sound) {
+    final AssetStore assetStore;
+    switch (sound.assetStore) {
+      case CustomSoundAssetStore.credits:
+        assetStore = world.creditsAssetStore;
+        break;
+      case CustomSoundAssetStore.equipment:
+        assetStore = world.equipmentAssetStore;
+        break;
+      case CustomSoundAssetStore.interface:
+        assetStore = world.interfaceSoundsAssetStore;
+        break;
+      case CustomSoundAssetStore.music:
+        assetStore = world.musicAssetStore;
+        break;
+      case CustomSoundAssetStore.terrain:
+        assetStore = world.terrainAssetStore;
+        break;
+    }
+    return getAssetReferenceReference(
+      assets: assetStore.assets,
+      id: sound.id,
+    )!
+        .reference;
+  }
+
   /// Convert the given [message].
   Message getCustomMessage(
     CustomMessage message, {
@@ -112,29 +139,7 @@ class WorldContext {
     final sound = message.sound;
     AssetReference? assetReference;
     if (sound != null) {
-      final AssetStore assetStore;
-      switch (sound.assetStore) {
-        case CustomSoundAssetStore.credits:
-          assetStore = world.creditsAssetStore;
-          break;
-        case CustomSoundAssetStore.equipment:
-          assetStore = world.equipmentAssetStore;
-          break;
-        case CustomSoundAssetStore.interface:
-          assetStore = world.interfaceSoundsAssetStore;
-          break;
-        case CustomSoundAssetStore.music:
-          assetStore = world.musicAssetStore;
-          break;
-        case CustomSoundAssetStore.terrain:
-          assetStore = world.terrainAssetStore;
-          break;
-      }
-      assetReference = getAssetReferenceReference(
-        assets: assetStore.assets,
-        id: sound.id,
-      )!
-          .reference;
+      assetReference = getCustomSound(sound);
     } else if (nullSound != null) {
       assetReference = nullSound;
     }
