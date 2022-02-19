@@ -299,6 +299,21 @@ class ZoneLevel extends Level {
     Sound? sound;
     if (newBox == null) {
       affectedInterfaceSounds.setReverb(null);
+      if (options == null) {
+        final terrain = worldContext.world.terrains.firstWhere(
+          (element) => element.id == zone.defaultTerrainId,
+        );
+        switch (walkingMode) {
+          case WalkingMode.stationary:
+            break;
+          case WalkingMode.slow:
+            sound = terrain.slowWalk.sound;
+            break;
+          case WalkingMode.fast:
+            sound = terrain.fastWalk.sound;
+            break;
+        }
+      }
     } else {
       final reverb = getReverb(newBox);
       if (reverb == null || affectedInterfaceSounds.reverb != reverb.id) {
