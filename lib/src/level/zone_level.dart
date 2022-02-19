@@ -11,6 +11,7 @@ import '../../util.dart';
 import '../../world_context.dart';
 import '../json/messages/custom_message.dart';
 import '../json/options/walking_options.dart';
+import '../json/sound.dart';
 import '../json/zones/box.dart';
 import '../json/zones/terrain.dart';
 import '../json/zones/zone.dart';
@@ -258,7 +259,7 @@ class ZoneLevel extends Level {
   }
 
   /// Move directly to the given [destination].
-  void moveTo({
+  Box? moveTo({
     required Point<double> destination,
     WalkingOptions? options,
     bool updateLastWalked = true,
@@ -271,11 +272,11 @@ class ZoneLevel extends Level {
         destination.y >= s.y) {
       final f = worldContext.onEdgeOfZoneLevel;
       if (f != null) {
-        return f(this, destination);
+        f(this, destination);
       }
       final message = zone.edgeMessage;
       game.outputMessage(worldContext.getCustomMessage(message));
-      return;
+      return oldBox;
     }
     final newBox = getBox(destination);
     if (newBox != oldBox) {
@@ -295,6 +296,7 @@ class ZoneLevel extends Level {
       }
       game.outputMessage(worldContext.getCustomMessage(message));
     }
+    Sound? sound;
     if (newBox == null) {
       affectedInterfaceSounds.setReverb(null);
     } else {
@@ -302,8 +304,20 @@ class ZoneLevel extends Level {
       if (reverb == null || affectedInterfaceSounds.reverb != reverb.id) {
         affectedInterfaceSounds.setReverb(reverb);
       }
+      if (options == null) {
+        final terrain = getTerrain(newBox);
+        switch (walkingMode) {
+          case WalkingMode.stationary:
+            break;
+          case WalkingMode.slow:
+            sound = terrain.slowWalk.sound;
+            break;
+          case WalkingMode.fast:
+            sound = terrain.fastWalk.sound;
+            break;
+        }
+      }
     }
-    final sound = options?.sound;
     if (sound != null) {
       playSound(
         channel: affectedInterfaceSounds,
@@ -315,6 +329,7 @@ class ZoneLevel extends Level {
     if (updateLastWalked) {
       timeSinceLastWalked = 0;
     }
+    return newBox;
   }
 
   /// Walk a bit.
