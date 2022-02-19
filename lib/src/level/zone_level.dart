@@ -260,7 +260,10 @@ class ZoneLevel extends Level {
         f(this, destination);
       }
       final message = zone.edgeMessage;
-      game.outputMessage(worldContext.getCustomMessage(message));
+      game.outputMessage(
+        worldContext.getCustomMessage(message),
+        soundChannel: affectedInterfaceSounds,
+      );
       return oldBox;
     }
     final newBox = getBox(destination);
