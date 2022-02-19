@@ -271,6 +271,9 @@ class ZoneLevel extends Level {
       // Boxes are different.
       final CustomMessage message;
       if (newBox == null) {
+        if (affectedInterfaceSounds.reverb != null) {
+          affectedInterfaceSounds.reverb = null;
+        }
         if (oldBox != null) {
           message = oldBox.leaveMessage;
         } else {
@@ -280,21 +283,23 @@ class ZoneLevel extends Level {
           );
         }
       } else {
+        final reverbId = newBox.reverbId;
+        if (reverbId == null) {
+          if (affectedInterfaceSounds.reverb != null) {
+            affectedInterfaceSounds.reverb = null;
+          }
+        } else {
+          final reverb = getReverb(newBox)!;
+          affectedInterfaceSounds.reverb = reverb.id;
+        }
         message = newBox.enterMessage;
       }
       game.outputMessage(worldContext.getCustomMessage(message));
     }
     final Terrain terrain;
     if (newBox == null) {
-      if (affectedInterfaceSounds.reverb != null) {
-        affectedInterfaceSounds.setReverb(null);
-      }
       terrain = worldContext.world.getTerrain(zone.defaultTerrainId);
     } else {
-      final reverb = getReverb(newBox);
-      if (affectedInterfaceSounds.reverb != reverb?.id) {
-        affectedInterfaceSounds.setReverb(reverb);
-      }
       terrain = worldContext.world.getTerrain(newBox.terrainId);
     }
     currentTerrain = terrain;
