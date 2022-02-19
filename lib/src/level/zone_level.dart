@@ -316,6 +316,8 @@ class ZoneLevel extends Level {
             sound = terrain.fastWalk.sound;
             break;
         }
+      } else {
+        sound = options.sound;
       }
     }
     if (sound != null) {
