@@ -29,7 +29,8 @@ class ZoneLevel extends Level {
     Point<double> coordinates = _origin,
     this.walkingMode = WalkingMode.stationary,
     this.timeSinceLastWalked = 0,
-  })  : _heading = heading,
+  })  : _firstStepTaken = false,
+        _heading = heading,
         _coordinates = coordinates,
         affectedInterfaceSounds = worldContext.game.createSoundChannel(),
         boxReverbs = {},
@@ -103,6 +104,9 @@ class ZoneLevel extends Level {
     }
   }
 
+  /// Set to `true` after the first step has been taken.
+  bool _firstStepTaken;
+
   /// The world context to use.
   final WorldContext worldContext;
 
@@ -162,6 +166,21 @@ class ZoneLevel extends Level {
   /// As coordinates, the returned value represents a point just northeast of
   /// the northeast corner of the most northeast box.
   Point<int> get size => Point(tiles.length, tiles.first.length);
+
+  /// Set the reverb for the [affectedInterfaceSounds].
+  ///
+  /// If the provided [box] is `null`, then the reverb will be null.
+  /// Otherwise, the reverb preset from the [box] will be used.
+  void setReverb(Box? box) {
+    if (box == null) {
+      if (affectedInterfaceSounds.reverb != null) {
+        affectedInterfaceSounds.reverb = null;
+      }
+    } else {
+      final reverb = getBoxReverb(box);
+      affectedInterfaceSounds.reverb = reverb?.id;
+    }
+  }
 
   /// Get the box that resides at the provided [coordinates].
   ///
@@ -230,7 +249,7 @@ class ZoneLevel extends Level {
   }
 
   /// Get the reverb for the given [box].
-  CreateReverb? getReverb(Box box) {
+  CreateReverb? getBoxReverb(Box box) {
     final reverbId = box.reverbId;
     if (reverbId == null) {
       return null;
@@ -267,13 +286,12 @@ class ZoneLevel extends Level {
       return oldBox;
     }
     final newBox = getBox(destination);
-    if (newBox != oldBox) {
+    if (newBox?.id != oldBox?.id) {
+      _firstStepTaken = true;
       // Boxes are different.
+      setReverb(newBox);
       final CustomMessage message;
       if (newBox == null) {
-        if (affectedInterfaceSounds.reverb != null) {
-          affectedInterfaceSounds.reverb = null;
-        }
         if (oldBox != null) {
           message = oldBox.leaveMessage;
         } else {
@@ -283,18 +301,12 @@ class ZoneLevel extends Level {
           );
         }
       } else {
-        final reverbId = newBox.reverbId;
-        if (reverbId == null) {
-          if (affectedInterfaceSounds.reverb != null) {
-            affectedInterfaceSounds.reverb = null;
-          }
-        } else {
-          final reverb = getReverb(newBox)!;
-          affectedInterfaceSounds.reverb = reverb.id;
-        }
         message = newBox.enterMessage;
       }
       game.outputMessage(worldContext.getCustomMessage(message));
+    }
+    if (_firstStepTaken == false) {
+      setReverb(newBox);
     }
     final Terrain terrain;
     if (newBox == null) {
