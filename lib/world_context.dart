@@ -96,9 +96,9 @@ class WorldContext {
         text: text,
       );
 
-  /// Get the asset store for the given [customSound].
-  AssetStore getAssetStore(CustomSound customSound) {
-    switch (customSound.assetStore) {
+  /// Get the asset store for the given [customSoundAssetStore].
+  AssetStore getAssetStore(CustomSoundAssetStore customSoundAssetStore) {
+    switch (customSoundAssetStore) {
       case CustomSoundAssetStore.credits:
         return world.creditsAssetStore;
       case CustomSoundAssetStore.equipment:
@@ -115,7 +115,7 @@ class WorldContext {
   /// Get the sound from the given [sound].
   AssetReference getCustomSound(CustomSound sound) =>
       getAssetReferenceReference(
-        assets: getAssetStore(sound).assets,
+        assets: getAssetStore(sound.assetStore).assets,
         id: sound.id,
       )!
           .reference;

@@ -201,33 +201,31 @@ void main() {
       test(
         '.getAssetStore',
         () {
-          final sound = CustomSound(
-            assetStore: CustomSoundAssetStore.credits,
-            id: 'whatever',
-          );
           final world = World();
           final worldContext = WorldContext(
             game: Game('Test asset stores'),
             world: world,
           );
           expect(
-            worldContext.getAssetStore(sound).assets,
+            worldContext.getAssetStore(CustomSoundAssetStore.credits).assets,
             world.creditsAssets,
           );
-          sound.assetStore = CustomSoundAssetStore.equipment;
           expect(
-            worldContext.getAssetStore(sound).assets,
+            worldContext.getAssetStore(CustomSoundAssetStore.equipment).assets,
             world.equipmentAssets,
           );
-          sound.assetStore = CustomSoundAssetStore.interface;
           expect(
-            worldContext.getAssetStore(sound).assets,
+            worldContext.getAssetStore(CustomSoundAssetStore.interface).assets,
             world.interfaceSoundsAssets,
           );
-          sound.assetStore = CustomSoundAssetStore.music;
-          expect(worldContext.getAssetStore(sound).assets, world.musicAssets);
-          sound.assetStore = CustomSoundAssetStore.terrain;
-          expect(worldContext.getAssetStore(sound).assets, world.terrainAssets);
+          expect(
+            worldContext.getAssetStore(CustomSoundAssetStore.music).assets,
+            world.musicAssets,
+          );
+          expect(
+            worldContext.getAssetStore(CustomSoundAssetStore.terrain).assets,
+            world.terrainAssets,
+          );
         },
       );
     },
