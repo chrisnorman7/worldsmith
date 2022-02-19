@@ -2,6 +2,7 @@
 import 'package:json_annotation/json_annotation.dart';
 import 'package:ziggurat/sound.dart';
 
+import 'messages/custom_sound.dart';
 import 'sound.dart';
 
 part 'reverb_preset_reference.g.dart';
@@ -27,7 +28,7 @@ class ReverbPresetReference {
   ReverbPreset reverbPreset;
 
   /// The sound to test the reverb with.
-  Sound? sound;
+  CustomSound? sound;
 
   /// Convert an instance to JSON.
   Map<String, dynamic> toJson() => _$ReverbPresetReferenceToJson(this);

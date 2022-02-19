@@ -14,7 +14,7 @@ ReverbPresetReference _$ReverbPresetReferenceFromJson(
           ReverbPreset.fromJson(json['reverbPreset'] as Map<String, dynamic>),
       sound: json['sound'] == null
           ? null
-          : Sound.fromJson(json['sound'] as Map<String, dynamic>),
+          : CustomSound.fromJson(json['sound'] as Map<String, dynamic>),
     );
 
 Map<String, dynamic> _$ReverbPresetReferenceToJson(
