@@ -33,6 +33,7 @@ class ZoneLevel extends Level {
         _coordinates = coordinates,
         affectedInterfaceSounds = worldContext.game.createSoundChannel(),
         boxReverbs = {},
+        currentTerrain = worldContext.world.getTerrain(zone.defaultTerrainId),
         super(
           game: worldContext.game,
           ambiances: [
@@ -95,6 +96,10 @@ class ZoneLevel extends Level {
         }
       }
     }
+    final box = getBox();
+    if (box != null) {
+      currentTerrain = worldContext.world.getTerrain(box.terrainId);
+    }
   }
 
   /// The world context to use.
@@ -133,6 +138,12 @@ class ZoneLevel extends Level {
   /// The loaded reverbs.
   final Map<String, CreateReverb> boxReverbs;
 
+  /// The current terrain.
+  Terrain currentTerrain;
+
+  /// The current walking options.
+  WalkingOptions? currentWalkingOptions;
+
   /// How fast the player is walking.
   WalkingMode walkingMode;
 
@@ -161,33 +172,6 @@ class ZoneLevel extends Level {
       return null;
     }
     return zone.getBox(id);
-  }
-
-  /// Get the terrain at the current position.
-  Terrain getTerrain([Box? box]) {
-    box ??= getBox();
-    return worldContext.world
-        .getTerrain(box?.terrainId ?? zone.defaultTerrainId);
-  }
-
-  /// Get the current walking options.
-  ///
-  /// If there is a box at the current [coordinates], then that box's terrain
-  /// will be used.
-  ///
-  /// Otherwise, the default terrain for the loaded [zone] will be returned.
-  ///
-  /// If the player is not walking, then `null` will be returned.
-  WalkingOptions? getWalkingOptions([Box? box]) {
-    final terrain = getTerrain(box);
-    switch (walkingMode) {
-      case WalkingMode.stationary:
-        return null;
-      case WalkingMode.slow:
-        return terrain.slowWalk;
-      case WalkingMode.fast:
-        return terrain.fastWalk;
-    }
   }
 
   /// Show the current coordinates.
@@ -261,7 +245,6 @@ class ZoneLevel extends Level {
   /// Move directly to the given [destination].
   Box? moveTo({
     required Point<double> destination,
-    WalkingOptions? options,
     bool updateLastWalked = true,
   }) {
     final oldBox = getBox();
@@ -297,43 +280,27 @@ class ZoneLevel extends Level {
       game.outputMessage(worldContext.getCustomMessage(message));
     }
     Sound? sound;
+    final Terrain terrain;
     if (newBox == null) {
       affectedInterfaceSounds.setReverb(null);
-      if (options == null) {
-        final terrain = worldContext.world.terrains.firstWhere(
-          (element) => element.id == zone.defaultTerrainId,
-        );
-        switch (walkingMode) {
-          case WalkingMode.stationary:
-            break;
-          case WalkingMode.slow:
-            sound = terrain.slowWalk.sound;
-            break;
-          case WalkingMode.fast:
-            sound = terrain.fastWalk.sound;
-            break;
-        }
-      }
+      terrain = worldContext.world.getTerrain(zone.defaultTerrainId);
     } else {
       final reverb = getReverb(newBox);
       if (reverb == null || affectedInterfaceSounds.reverb != reverb.id) {
         affectedInterfaceSounds.setReverb(reverb);
       }
-      if (options == null) {
-        final terrain = getTerrain(newBox);
-        switch (walkingMode) {
-          case WalkingMode.stationary:
-            break;
-          case WalkingMode.slow:
-            sound = terrain.slowWalk.sound;
-            break;
-          case WalkingMode.fast:
-            sound = terrain.fastWalk.sound;
-            break;
-        }
-      } else {
-        sound = options.sound;
-      }
+      terrain = worldContext.world.getTerrain(newBox.terrainId);
+    }
+    currentTerrain = terrain;
+    switch (walkingMode) {
+      case WalkingMode.stationary:
+        break;
+      case WalkingMode.slow:
+        sound = terrain.slowWalk.sound;
+        break;
+      case WalkingMode.fast:
+        sound = terrain.fastWalk.sound;
+        break;
     }
     if (sound != null) {
       playSound(
@@ -350,20 +317,20 @@ class ZoneLevel extends Level {
   }
 
   /// Walk a bit.
-  void walk(WalkingOptions options) {
+  Box? walk(WalkingOptions options) {
     final destination = coordinatesInDirection(
       _coordinates,
       _heading.toDouble(),
       options.distance,
     );
-    moveTo(destination: destination, options: options);
+    return moveTo(destination: destination);
   }
 
   /// Maybe walk.
   @override
   Future<void> tick(Sdl sdl, int timeDelta) async {
     super.tick(sdl, timeDelta);
-    final walkingOptions = getWalkingOptions();
+    final walkingOptions = currentWalkingOptions;
     if (walkingOptions != null) {
       timeSinceLastWalked += timeDelta;
       if (timeSinceLastWalked >= walkingOptions.interval) {
@@ -377,14 +344,16 @@ class ZoneLevel extends Level {
   void handleSdlEvent(Event event) {
     if (event is ControllerAxisEvent) {
       if (event.axis == GameControllerAxis.lefty) {
-        final terrain = getTerrain();
         final value = event.smallValue;
-        if (value >= terrain.fastWalk.joystickValue) {
+        if (value >= currentTerrain.fastWalk.joystickValue) {
           walkingMode = WalkingMode.fast;
-        } else if (value >= terrain.slowWalk.joystickValue) {
+          currentWalkingOptions = currentTerrain.fastWalk;
+        } else if (value >= currentTerrain.slowWalk.joystickValue) {
           walkingMode = WalkingMode.slow;
+          currentWalkingOptions = currentTerrain.slowWalk;
         } else {
           walkingMode = WalkingMode.stationary;
+          currentWalkingOptions = null;
         }
       }
     } else {
