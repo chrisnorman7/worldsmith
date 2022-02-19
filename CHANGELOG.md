@@ -9,6 +9,7 @@
 * Added the `CustomMessage` and `CustomSound` classes.
 * Added the `WorldContext.getCustomMessage` method.
 * Added the `WorldContext.getCustomSound` and `WorldContext.getAssetStore` methods.
+* Allow previewing of a reverb with any sound in your project.
 
 ### Fixed
 
