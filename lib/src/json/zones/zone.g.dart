@@ -17,6 +17,9 @@ Zone _$ZoneFromJson(Map<String, dynamic> json) => Zone(
           ? null
           : Sound.fromJson(json['music'] as Map<String, dynamic>),
       topDownMap: json['topDownMap'] as bool? ?? true,
+      edgeMessage: json['edgeMessage'] == null
+          ? null
+          : CustomMessage.fromJson(json['edgeMessage'] as Map<String, dynamic>),
     );
 
 Map<String, dynamic> _$ZoneToJson(Zone instance) => <String, dynamic>{
@@ -26,4 +29,5 @@ Map<String, dynamic> _$ZoneToJson(Zone instance) => <String, dynamic>{
       'defaultTerrainId': instance.defaultTerrainId,
       'music': instance.music,
       'topDownMap': instance.topDownMap,
+      'edgeMessage': instance.edgeMessage,
     };

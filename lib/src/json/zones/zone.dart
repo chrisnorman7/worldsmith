@@ -23,8 +23,8 @@ class Zone {
     required this.defaultTerrainId,
     this.music,
     this.topDownMap = true,
-    CustomMessage? collideEdgeMessage,
-  }) : edgeMessage = collideEdgeMessage ?? CustomMessage();
+    CustomMessage? edgeMessage,
+  }) : edgeMessage = edgeMessage ?? CustomMessage();
 
   /// Create an instance from a JSON object.
   factory Zone.fromJson(Map<String, dynamic> json) => _$ZoneFromJson(json);
