@@ -76,21 +76,22 @@ class ZoneLevel extends Level {
     );
     // Null all the tiles.
     tiles = List.generate(
-      maxCoordinates.x + coordinatesOffset.x,
-      (x) => List.generate(
-        maxCoordinates.y + coordinatesOffset.y,
-        (y) => null,
+      maxCoordinates.x + coordinatesOffset.x + 1,
+      (x) => List<String?>.filled(
+        maxCoordinates.y + coordinatesOffset.y + 1,
+        null,
       ),
+      growable: false,
     );
     // Second pass: Change `null` to box indices.
     for (final box in zone.boxes) {
       final start = zone.getAbsoluteCoordinates(box.start);
       final end = zone.getAbsoluteCoordinates(box.end);
       for (var x = start.x + coordinatesOffset.x;
-          x < end.x + coordinatesOffset.x;
+          x <= end.x + coordinatesOffset.x;
           x++) {
         for (var y = start.y + coordinatesOffset.y;
-            y < end.y + coordinatesOffset.y;
+            y <= end.y + coordinatesOffset.y;
             y++) {
           tiles[x][y] = box.id;
         }
@@ -245,6 +246,7 @@ class ZoneLevel extends Level {
   /// Move directly to the given [destination].
   Box? moveTo({
     required Point<double> destination,
+    required WalkingMode walkingMode,
     bool updateLastWalked = true,
   }) {
     final oldBox = getBox();
@@ -279,27 +281,32 @@ class ZoneLevel extends Level {
       }
       game.outputMessage(worldContext.getCustomMessage(message));
     }
-    Sound? sound;
     final Terrain terrain;
     if (newBox == null) {
-      affectedInterfaceSounds.setReverb(null);
+      if (affectedInterfaceSounds.reverb != null) {
+        affectedInterfaceSounds.setReverb(null);
+      }
       terrain = worldContext.world.getTerrain(zone.defaultTerrainId);
     } else {
       final reverb = getReverb(newBox);
-      if (reverb == null || affectedInterfaceSounds.reverb != reverb.id) {
+      if (affectedInterfaceSounds.reverb != reverb?.id) {
         affectedInterfaceSounds.setReverb(reverb);
       }
       terrain = worldContext.world.getTerrain(newBox.terrainId);
     }
     currentTerrain = terrain;
+    Sound? sound;
     switch (walkingMode) {
       case WalkingMode.stationary:
+        currentWalkingOptions = null;
         break;
       case WalkingMode.slow:
         sound = terrain.slowWalk.sound;
+        currentWalkingOptions = terrain.slowWalk;
         break;
       case WalkingMode.fast:
-        sound = terrain.fastWalk.sound;
+        sound = terrain.slowWalk.sound;
+        currentWalkingOptions = terrain.slowWalk;
         break;
     }
     if (sound != null) {
@@ -323,7 +330,7 @@ class ZoneLevel extends Level {
       _heading.toDouble(),
       options.distance,
     );
-    return moveTo(destination: destination);
+    return moveTo(destination: destination, walkingMode: walkingMode);
   }
 
   /// Maybe walk.
