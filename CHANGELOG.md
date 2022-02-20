@@ -20,6 +20,7 @@
 ### Changed
 
 * Started using `CustomMessage`s everywhere.
+* Made generated code much more concise, with the use of the `WorldContext.loadEncrypted` constructor.
 
 ## [0.11.0]
 
