@@ -31,8 +31,9 @@ class MainMenu extends Menu {
       command = WorldCommand(
         id: '',
         name: 'Faked Start Game Command',
-        message:
-            CustomMessage(text: 'The start game commands has not been set.'),
+        message: CustomMessage(
+          text: 'The start game command has not been set.',
+        ),
       );
     } else {
       command = world.getCommand(startGameCommandId);
