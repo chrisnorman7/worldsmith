@@ -341,4 +341,24 @@ class WorldContext {
       }
     }
   }
+
+  /// Run the command with the given [id].
+  ///
+  /// If the id is `null`, nothing happens.
+  void runWorldCommandId(
+    String? id, {
+    AssetReference? nullSound,
+    SoundChannel? soundChannel,
+    ZoneLevel? zoneLevel,
+  }) {
+    if (id != null) {
+      final command = world.getCommand(id);
+      runCommand(
+        command: command,
+        nullSound: nullSound,
+        soundChannel: soundChannel,
+        zoneLevel: zoneLevel,
+      );
+    }
+  }
 }
