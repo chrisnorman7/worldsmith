@@ -3,6 +3,8 @@ import 'package:ziggurat/menus.dart';
 import 'package:ziggurat/ziggurat.dart';
 
 import '../../world_context.dart';
+import '../json/commands/world_command.dart';
+import '../json/messages/custom_message.dart';
 
 void _unimplemented(Game game) => game.outputText('Unimplemented.');
 
@@ -23,6 +25,18 @@ class MainMenu extends Menu {
     final options = world.mainMenuOptions;
     final fadeTime = options.fadeTime;
     final menuMoveAsset = world.menuMoveSound;
+    final startGameCommandId = world.mainMenuOptions.startGameCommandId;
+    final WorldCommand command;
+    if (startGameCommandId == null) {
+      command = WorldCommand(
+        id: '',
+        name: 'Faked Start Game Command',
+        message:
+            CustomMessage(text: 'The start game commands has not been set.'),
+      );
+    } else {
+      command = world.getCommand(startGameCommandId);
+    }
     menuItems.addAll(
       [
         MenuItem(
@@ -31,7 +45,7 @@ class MainMenu extends Menu {
             keepAlive: true,
             nullSound: menuMoveAsset,
           ),
-          worldContext.getButton(() => _unimplemented(worldContext.game)),
+          worldContext.getWorldCommandButton(command),
         ),
         MenuItem(
           worldContext.getCustomMessage(
