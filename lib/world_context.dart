@@ -31,14 +31,18 @@ class WorldContext {
   const WorldContext({
     required this.game,
     required this.world,
+    this.customCommands = const {},
+    this.errorHandler,
   });
 
   /// Return an instance with its [world] loaded from an encrypted file.
-  WorldContext.loadEncrypted(
-      {required String encryptionKey,
-      String filename = encryptedWorldFilename,
-      Game? game})
-      : game = game ?? Game('Worldsmith Game', triggerMap: defaultTriggerMap),
+  WorldContext.loadEncrypted({
+    required String encryptionKey,
+    String filename = encryptedWorldFilename,
+    Game? game,
+    this.customCommands = const {},
+    this.errorHandler,
+  })  : game = game ?? Game('Worldsmith Game', triggerMap: defaultTriggerMap),
         world = World.loadEncrypted(
             encryptionKey: encryptionKey, filename: filename);
 
@@ -47,6 +51,15 @@ class WorldContext {
 
   /// The world to use.
   final World world;
+
+  /// The map of custom commands.
+  ///
+  /// These commands are used when the [WorldCommand] class has a custom command
+  /// string assigned.
+  final Map<String, EventCallback<WorldContext>> customCommands;
+
+  /// A function that will handle errors from [WorldCommand] instances.
+  final void Function(Object e, StackTrace? s)? errorHandler;
 
   /// The ambiances for the main menu.
   List<Ambiance> get mainMenuAmbiances {
@@ -288,6 +301,25 @@ class WorldContext {
       );
       final level = getZoneLevel(zone)..coordinates = coordinates.toDouble();
       game.replaceLevel(level, ambianceFadeTime: zoneTeleport.fadeTime);
+    }
+    final customCommandName = command.customCommandName;
+    if (customCommandName != null) {
+      try {
+        final f = customCommands[customCommandName];
+        if (f == null) {
+          throw UnimplementedError(
+            'There is no command named $customCommandName.',
+          );
+        }
+        f(this);
+      } catch (e, s) {
+        final f = errorHandler;
+        if (f != null) {
+          f(e, s);
+        } else {
+          rethrow;
+        }
+      }
     }
     final callCommand = command.callCommand;
     if (callCommand != null) {
