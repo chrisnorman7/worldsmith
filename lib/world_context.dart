@@ -10,6 +10,7 @@ import 'package:ziggurat/sound.dart';
 import 'package:ziggurat/ziggurat.dart';
 import 'package:ziggurat_sounds/ziggurat_sounds.dart';
 
+import 'command_triggers.dart';
 import 'constants.dart';
 import 'src/json/messages/custom_message.dart';
 import 'src/json/messages/custom_sound.dart';
@@ -28,8 +29,16 @@ class WorldContext {
   const WorldContext({
     required this.game,
     required this.world,
-    this.onEdgeOfZoneLevel,
   });
+
+  /// Return an instance with its [world] loaded from an encrypted file.
+  WorldContext.loadEncrypted(
+      {required String encryptionKey,
+      String filename = encryptedWorldFilename,
+      Game? game})
+      : game = game ?? Game('Worldsmith Game', triggerMap: defaultTriggerMap),
+        world = World.loadEncrypted(
+            encryptionKey: encryptionKey, filename: filename);
 
   /// The game to use.
   final Game game;
@@ -55,9 +64,8 @@ class WorldContext {
     return [if (music != null) music];
   }
 
-  /// A function to be called when hitting the edge of a [ZoneLevel].
-  final void Function(ZoneLevel zoneLevel, Point<double> coordinates)?
-      onEdgeOfZoneLevel;
+  /// A function that will be called when hitting the edge of a [ZoneLevel].
+  void onEdgeOfZoneLevel(ZoneLevel zoneLevel, Point<double> coordinates) {}
 
   /// Get a message suitable for a [MenuItem] label.
   Message getMenuItemMessage({String? text}) => Message(

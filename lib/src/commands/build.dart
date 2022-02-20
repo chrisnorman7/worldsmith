@@ -14,18 +14,13 @@ const dart = 'dart';
 
 /// The default code for `bin/game.dart`..
 const code = '''/// {worldTitle}.
-import 'package:worldsmith/command_triggers.dart';
-import 'package:worldsmith/functions.dart';
 import 'package:worldsmith/world_context.dart';
-import 'package:ziggurat/ziggurat.dart';
 
 const encryptionKey = '{encryptionKey}';
 
 Future<void> main() async {
-  final world = loadEncrypted(encryptionKey);
-  final game = Game(world.title, triggerMap: defaultTriggerMap);
-  final worldContext = WorldContext(game: game, world: world);
-  await runWorld(worldContext);
+  final worldContext = WorldContext.loadEncrypted(encryptionKey: encryptionKey);
+  await worldContext.run();
 }
 ''';
 

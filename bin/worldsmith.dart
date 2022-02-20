@@ -1,4 +1,3 @@
-// ignore_for_file: avoid_print
 import 'package:args/command_runner.dart';
 import 'package:worldsmith/commands.dart';
 
@@ -12,6 +11,7 @@ Future<void> main(List<String> args) async {
   try {
     await command.run(args);
   } on UsageException catch (e) {
+    // ignore: avoid_print
     print(e);
   }
 }
