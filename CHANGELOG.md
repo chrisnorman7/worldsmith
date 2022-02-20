@@ -1,5 +1,15 @@
 # Changelog
 
+## [0.13.0]
+
+### Added
+
+* Added world commands.
+
+### Removed
+
+* Removed some unused constants.
+
 ## [0.12.0]
 
 ### Added

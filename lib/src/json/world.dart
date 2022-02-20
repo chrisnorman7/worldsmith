@@ -10,6 +10,7 @@ import 'package:ziggurat_sounds/ziggurat_sounds.dart';
 
 import '../../constants.dart';
 import '../../util.dart';
+import 'commands/command_category.dart';
 import 'equipment_position.dart';
 import 'options/credits_menu_options.dart';
 import 'options/main_menu_options.dart';
@@ -44,6 +45,9 @@ typedef ZonesList = List<Zone>;
 /// The type for a list of reverb references.
 typedef ReverbsList = List<ReverbPresetReference>;
 
+/// A list of command categories.
+typedef CommandCategoryList = List<CommandCategory>;
+
 /// The top-level world object.
 @JsonSerializable()
 class World {
@@ -66,6 +70,7 @@ class World {
     ZonesList? zones,
     PauseMenuOptions? pauseMenuOptions,
     ReverbsList? reverbs,
+    CommandCategoryList? commandCategories,
   })  : globalOptions = globalOptions ?? WorldOptions(),
         soundOptions = soundOptions ?? SoundOptions(),
         mainMenuOptions = mainMenuOptions ?? MainMenuOptions(),
@@ -84,7 +89,8 @@ class World {
         terrains = terrains ?? [],
         zones = zones ?? [],
         pauseMenuOptions = pauseMenuOptions ?? PauseMenuOptions(),
-        reverbs = reverbs ?? [];
+        reverbs = reverbs ?? [],
+        commandCategories = commandCategories ?? [];
 
   /// Create an instance from a JSON object.
   factory World.fromJson(Map<String, dynamic> json) => _$WorldFromJson(json);
@@ -236,6 +242,13 @@ class World {
         (element) => element.id == id,
       )
       .reverbPreset;
+
+  /// A list of command categories.
+  final CommandCategoryList commandCategories;
+
+  /// Get a list of all commands from the [commandCategories].
+  CommandList get commands =>
+      [for (final category in commandCategories) ...category.commands];
 
   /// Convert an instance to JSON.
   Map<String, dynamic> toJson() => _$WorldToJson(this);

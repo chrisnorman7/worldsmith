@@ -1,6 +1,11 @@
 /// Create RPGs with [ziggurat](https://pub.dev/packages/ziggurat).
 library worldsmith;
 
+export 'src/json/commands/call_command.dart';
+export 'src/json/commands/command_category.dart';
+export 'src/json/commands/local_teleport.dart';
+export 'src/json/commands/world_command.dart';
+export 'src/json/commands/zone_teleport.dart';
 export 'src/json/equipment_position.dart';
 export 'src/json/messages/custom_message.dart';
 export 'src/json/messages/custom_sound.dart';

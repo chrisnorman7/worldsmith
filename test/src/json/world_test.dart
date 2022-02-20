@@ -1,6 +1,6 @@
 import 'package:test/test.dart';
 import 'package:worldsmith/constants.dart';
-import 'package:worldsmith/src/json/world.dart';
+import 'package:worldsmith/worldsmith.dart';
 import 'package:ziggurat/sound.dart';
 import 'package:ziggurat/ziggurat.dart';
 import 'package:ziggurat_sounds/ziggurat_sounds.dart';
@@ -145,6 +145,31 @@ void main() {
           expect(store.comment, 'Terrain sounds');
           expect(store.destination, r'assets\terrain');
           expect(store.filename, r'assets\terrain.dart');
+        },
+      );
+    },
+  );
+  group(
+    'Command Categories',
+    () {
+      final command1 = WorldCommand(id: 'command1', name: 'Command 1');
+      final command2 = WorldCommand(id: 'command2', name: 'Command 2');
+      final command3 = WorldCommand(id: 'command3', name: 'Command 3');
+      final category1 = CommandCategory(
+        id: 'category1',
+        name: 'Category 1',
+        commands: [command1],
+      );
+      final category2 = CommandCategory(
+        id: 'category2',
+        name: 'Category 2',
+        commands: [command2, command3],
+      );
+      final world = World(commandCategories: [category1, category2]);
+      test(
+        'World.commands',
+        () {
+          expect(world.commands, [command1, command2, command3]);
         },
       );
     },

@@ -66,6 +66,9 @@ World _$WorldFromJson(Map<String, dynamic> json) => World(
           ?.map(
               (e) => ReverbPresetReference.fromJson(e as Map<String, dynamic>))
           .toList(),
+      commandCategories: (json['commandCategories'] as List<dynamic>?)
+          ?.map((e) => CommandCategory.fromJson(e as Map<String, dynamic>))
+          .toList(),
     );
 
 Map<String, dynamic> _$WorldToJson(World instance) => <String, dynamic>{
@@ -86,4 +89,5 @@ Map<String, dynamic> _$WorldToJson(World instance) => <String, dynamic>{
       'zones': instance.zones,
       'pauseMenuOptions': instance.pauseMenuOptions,
       'reverbs': instance.reverbs,
+      'commandCategories': instance.commandCategories,
     };
