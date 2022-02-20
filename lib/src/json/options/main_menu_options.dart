@@ -19,6 +19,7 @@ class MainMenuOptions {
     CustomMessage? creditsMessage,
     CustomMessage? exitMessage,
     CustomMessage? onExitMessage,
+    this.startGameCommandId,
   })  : newGameMessage =
             newGameMessage ?? CustomMessage(text: 'Start New Game'),
         savedGameMessage =
@@ -55,6 +56,9 @@ class MainMenuOptions {
 
   /// The message that will be used as the game closes.
   final CustomMessage onExitMessage;
+
+  /// The command to run to start a new game.
+  String? startGameCommandId;
 
   /// Convert an instance to JSON.
   Map<String, dynamic> toJson() => _$MainMenuOptionsToJson(this);

@@ -32,6 +32,7 @@ MainMenuOptions _$MainMenuOptionsFromJson(Map<String, dynamic> json) =>
           ? null
           : CustomMessage.fromJson(
               json['onExitMessage'] as Map<String, dynamic>),
+      startGameCommandId: json['startGameCommandId'] as String?,
     );
 
 Map<String, dynamic> _$MainMenuOptionsToJson(MainMenuOptions instance) =>
@@ -44,4 +45,5 @@ Map<String, dynamic> _$MainMenuOptionsToJson(MainMenuOptions instance) =>
       'creditsMessage': instance.creditsMessage,
       'exitMessage': instance.exitMessage,
       'onExitMessage': instance.onExitMessage,
+      'startGameCommandId': instance.startGameCommandId,
     };

@@ -6,6 +6,7 @@
 
 * Added world commands.
 * Added the `WorldContext.errorHandler` callback to handle runtime errors.
+* Added the `MainMenuOptions.startGameCommandId` field.
 
 ### Removed
 
