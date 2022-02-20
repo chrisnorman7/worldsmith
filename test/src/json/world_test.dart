@@ -172,6 +172,14 @@ void main() {
           expect(world.commands, [command1, command2, command3]);
         },
       );
+      test(
+        'World.getCommand',
+        () {
+          expect(world.getCommand(command1.id), command1);
+          expect(world.getCommand(command2.id), command2);
+          expect(world.getCommand(command3.id), command3);
+        },
+      );
     },
   );
 }

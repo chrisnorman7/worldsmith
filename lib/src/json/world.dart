@@ -11,6 +11,7 @@ import 'package:ziggurat_sounds/ziggurat_sounds.dart';
 import '../../constants.dart';
 import '../../util.dart';
 import 'commands/command_category.dart';
+import 'commands/world_command.dart';
 import 'equipment_position.dart';
 import 'options/credits_menu_options.dart';
 import 'options/main_menu_options.dart';
@@ -249,6 +250,11 @@ class World {
   /// Get a list of all commands from the [commandCategories].
   CommandList get commands =>
       [for (final category in commandCategories) ...category.commands];
+
+  /// Get the command with the given [id].
+  WorldCommand getCommand(String id) => commands.firstWhere(
+        (element) => element.id == id,
+      );
 
   /// Convert an instance to JSON.
   Map<String, dynamic> toJson() => _$WorldToJson(this);
