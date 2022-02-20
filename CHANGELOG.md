@@ -5,6 +5,7 @@
 ### Added
 
 * Added world commands.
+* Added the `WorldContext.errorHandler` callback to handle runtime errors.
 
 ### Removed
 
