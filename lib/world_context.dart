@@ -12,6 +12,7 @@ import 'package:ziggurat_sounds/ziggurat_sounds.dart';
 
 import 'command_triggers.dart';
 import 'constants.dart';
+import 'src/json/commands/world_command.dart';
 import 'src/json/messages/custom_message.dart';
 import 'src/json/messages/custom_sound.dart';
 import 'src/json/sound.dart';
@@ -232,6 +233,56 @@ class WorldContext {
       context?.destroy();
       synthizer?.shutdown();
       sdl.quit();
+    }
+  }
+
+  /// Run the given [command].
+  void runCommand({
+    required WorldCommand command,
+    ZoneLevel? zoneLevel,
+    SoundChannel? soundChannel,
+    AssetReference? nullSound,
+  }) {
+    final message = command.message;
+    if (message.sound != null || message.text != null) {
+      game.outputMessage(
+        getCustomMessage(
+          message,
+          nullSound: nullSound,
+        ),
+        soundChannel: soundChannel,
+      );
+    }
+    final localTeleport = command.localTeleport;
+    if (localTeleport != null && zoneLevel != null) {
+      final destination = localTeleport.getCoordinates(
+        zone: zoneLevel.zone,
+        random: game.random,
+      );
+      zoneLevel.moveTo(destination: destination.toDouble());
+    }
+    final zoneTeleport = command.zoneTeleport;
+    if (zoneTeleport != null) {
+      final zone = world.getZone(zoneTeleport.zoneId);
+      final coordinates = zoneTeleport.getCoordinates(
+        zone: zone,
+        random: game.random,
+      );
+      final level = getZoneLevel(zone)..coordinates = coordinates.toDouble();
+      game.replaceLevel(level, ambianceFadeTime: zoneTeleport.fadeTime);
+    }
+    final callCommand = command.callCommand;
+    if (callCommand != null) {
+      final callAfter = callCommand.callAfter;
+      final command = world.getCommand(callCommand.commandId);
+      if (callAfter == null) {
+        runCommand(command: command);
+      } else {
+        game.registerTask(
+          runAfter: callAfter,
+          func: () => runCommand(command: command),
+        );
+      }
     }
   }
 }
