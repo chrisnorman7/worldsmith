@@ -1,16 +1,21 @@
+import 'dart:convert';
+import 'dart:io';
 import 'dart:math';
 
+import 'package:dart_sdl/dart_sdl.dart';
+import 'package:dart_synthizer/dart_synthizer.dart';
+import 'package:encrypt/encrypt.dart';
 import 'package:ziggurat/menus.dart';
 import 'package:ziggurat/sound.dart';
 import 'package:ziggurat/ziggurat.dart';
 import 'package:ziggurat_sounds/ziggurat_sounds.dart';
 
 import 'constants.dart';
-import 'functions.dart';
 import 'src/json/messages/custom_message.dart';
 import 'src/json/messages/custom_sound.dart';
 import 'src/json/sound.dart';
 import 'src/json/world.dart';
+import 'src/json/zones/zone.dart';
 import 'src/level/credits_menu.dart';
 import 'src/level/main_menu.dart';
 import 'src/level/pause_menu.dart';
@@ -23,10 +28,6 @@ class WorldContext {
   const WorldContext({
     required this.game,
     required this.world,
-    this.mainMenuBuilder = getMainMenu,
-    this.pauseMenuBuilder = getPauseMenu,
-    this.creditsMenuBuilder = getCreditsMenu,
-    this.zoneMenuBuilder = getZoneLevel,
     this.onEdgeOfZoneLevel,
   });
 
@@ -36,17 +37,11 @@ class WorldContext {
   /// The world to use.
   final World world;
 
-  /// The function that will be used to get the main menu.
-  final MenuBuilder<MainMenu> mainMenuBuilder;
-
   /// The ambiances for the main menu.
   List<Ambiance> get mainMenuAmbiances {
     final music = world.mainMenuMusic;
     return [if (music != null) music];
   }
-
-  /// The function that will get the pause menu.
-  final ZoneMenuBuilder<PauseMenu> pauseMenuBuilder;
 
   /// Get the ambiances for the pause menu.
   List<Ambiance> get pauseMenuAmbiances {
@@ -54,17 +49,11 @@ class WorldContext {
     return [if (music != null) music];
   }
 
-  /// The function that will get the credits menu.
-  final MenuBuilder<CreditsMenu> creditsMenuBuilder;
-
   /// The ambiances for the credits menu.
   List<Ambiance> get creditsMenuAmbiances {
     final music = world.creditsMenuMusic;
     return [if (music != null) music];
   }
-
-  /// The function that will be called to get a zone level.
-  final ZoneMenuBuilder<ZoneLevel> zoneMenuBuilder;
 
   /// A function to be called when hitting the edge of a [ZoneLevel].
   final void Function(ZoneLevel zoneLevel, Point<double> coordinates)?
@@ -152,4 +141,89 @@ class WorldContext {
   /// Get a button with the proper activate sound.
   Button getButton(TaskFunction func) =>
       Button(func, activateSound: world.menuActivateSound);
+
+  /// Get the main menu for the given [WorldContext].
+  MainMenu getMainMenu() => MainMenu(this);
+
+  /// Returns a menu that will show credits.
+  CreditsMenu getCreditsMenu() => CreditsMenu(this);
+
+  /// Return a zone level.
+  ZoneLevel getZoneLevel(Zone zone) =>
+      ZoneLevel(worldContext: this, zone: zone);
+
+  /// Returns the pause menu.
+  PauseMenu getPauseMenu(Zone zone) => PauseMenu(this, zone);
+
+  /// Returns the given [world] as a JSON string.
+  String getWorldJsonString({bool compact = true}) {
+    final json = world.toJson();
+    if (compact) {
+      return jsonEncode(json);
+    }
+    return indentedJsonEncoder.convert(json);
+  }
+
+  /// Save the given [world] with a random encryption key.
+  ///
+  /// The encryption key will be returned.
+  String saveEncrypted({String filename = encryptedWorldFilename}) {
+    final file = File(filename);
+    final encryptionKey = SecureRandom(32).base64;
+    final key = Key.fromBase64(encryptionKey);
+    final iv = IV.fromLength(16);
+    final encrypter = Encrypter(AES(key));
+    final data = encrypter
+        .encrypt(
+          getWorldJsonString(compact: false),
+          iv: iv,
+        )
+        .bytes;
+    file.writeAsBytesSync(data);
+    return encryptionKey;
+  }
+
+  /// Run this world.
+  ///
+  /// If [sdl] is not `null`, then it should call [Sdl.init] itself.
+  Future<void> run({
+    Sdl? sdl,
+    EventCallback<SoundEvent>? onSound,
+  }) async {
+    Synthizer? synthizer;
+    Context? context;
+    if (onSound == null) {
+      synthizer = Synthizer()..initialize();
+      context = synthizer.createContext();
+      final soundManager = SoundManager(
+        game: game,
+        context: context,
+        bufferCache: BufferCache(
+          synthizer: synthizer,
+          maxSize: pow(1024, 3).floor(),
+          random: game.random,
+        ),
+      );
+      onSound = soundManager.handleEvent;
+    }
+    game.sounds.listen(onSound);
+    sdl ??= Sdl()..init();
+    try {
+      await game.run(
+        sdl,
+        framesPerSecond: world.globalOptions.framesPerSecond,
+        onStart: () => game
+          ..setDefaultPannerStrategy(world.soundOptions.defaultPannerStrategy)
+          ..pushLevel(
+            getMainMenu(),
+          ),
+      );
+    } catch (e) {
+      rethrow;
+    } finally {
+      context?.destroy();
+      synthizer?.shutdown();
+      sdl.quit();
+    }
+  }
 }

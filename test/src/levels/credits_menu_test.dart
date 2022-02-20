@@ -51,7 +51,7 @@ void main() {
       );
       final game = Game(world.title);
       final worldContext = WorldContext(game: game, world: world);
-      final creditsMenu = worldContext.creditsMenuBuilder(worldContext);
+      final creditsMenu = worldContext.getCreditsMenu();
       test(
         'Initialisation',
         () {

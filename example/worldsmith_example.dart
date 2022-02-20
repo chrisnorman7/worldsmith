@@ -1,5 +1,4 @@
 import 'package:worldsmith/command_triggers.dart';
-import 'package:worldsmith/functions.dart';
 import 'package:worldsmith/world_context.dart';
 import 'package:worldsmith/worldsmith.dart';
 import 'package:ziggurat/ziggurat.dart';
@@ -19,5 +18,5 @@ Future<void> main() {
   );
   final game = Game(world.title, triggerMap: defaultTriggerMap);
   final worldContext = WorldContext(game: game, world: world);
-  return runWorld(worldContext);
+  return worldContext.run();
 }

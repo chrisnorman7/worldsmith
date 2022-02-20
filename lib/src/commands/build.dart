@@ -3,9 +3,11 @@ import 'dart:io';
 
 import 'package:args/command_runner.dart';
 import 'package:path/path.dart' as path;
+import 'package:ziggurat/ziggurat.dart' show Game;
 
 import '../../constants.dart';
-import '../../functions.dart';
+import '../../world_context.dart';
+import '../json/world.dart';
 
 /// The dart executable.
 const dart = 'dart';
@@ -87,8 +89,10 @@ class BuildCommand extends Command<void> {
     final packageName = results['package'] as String;
     final sdlLib = results['sdl-lib'] as String?;
     final synthizerLib = results['synthizer-lib'] as String?;
-    final world = loadJson(results['filename'] as String);
+    final game = Game('World Builder');
+    final world = World.fromFilename(results['filename'] as String);
     print('World: ${world.title}');
+    final worldContext = WorldContext(game: game, world: world);
     final directory = Directory(packageName);
     if (directory.existsSync() == false) {
       print('Creating directory $packageName.');
@@ -103,8 +107,7 @@ class BuildCommand extends Command<void> {
     }
     final worldFilename = path.join(packageName, encryptedWorldFilename);
     print('Writing world to $worldFilename.');
-    final encryptionKey = saveEncrypted(
-      world,
+    final encryptionKey = worldContext.saveEncrypted(
       filename: worldFilename,
     );
     encryptionKeyFile.writeAsStringSync(encryptionKey);

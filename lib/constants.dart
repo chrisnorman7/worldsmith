@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:ziggurat/levels.dart';
 import 'package:ziggurat/menus.dart';
 import 'package:ziggurat/ziggurat.dart';
@@ -34,3 +36,9 @@ typedef ZoneMenuBuilder<T extends Level> = T Function(
 
 /// The filename for encrypted world files.
 const encryptedWorldFilename = 'world.data';
+
+/// A JSON encoder that indents.
+const indentedJsonEncoder = JsonEncoder.withIndent('  ');
+
+/// The type for all JSON.
+typedef JsonType = Map<String, dynamic>;

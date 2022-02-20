@@ -31,9 +31,12 @@ Ambiance? getAmbiance({
   if (sound == null) {
     return null;
   }
-  final asset =
-      getAssetReferenceReference(assets: assets, id: sound.id)!.reference;
-  return Ambiance(sound: asset, gain: sound.gain, position: position);
+  final reference = getAssetReferenceReference(assets: assets, id: sound.id);
+  return Ambiance(
+    sound: reference!.reference,
+    gain: sound.gain,
+    position: position,
+  );
 }
 
 /// Play the given [sound] through the given [channel].
@@ -58,7 +61,8 @@ AssetStore getAssetStore({
   required String comment,
 }) =>
     AssetStore(
-        filename: path.join(assetsDirectory, '$name.dart'),
-        destination: path.join(assetsDirectory, name),
-        assets: assets,
-        comment: comment);
+      filename: path.join(assetsDirectory, '$name.dart'),
+      destination: path.join(assetsDirectory, name),
+      assets: assets,
+      comment: comment,
+    );

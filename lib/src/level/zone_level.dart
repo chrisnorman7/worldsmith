@@ -47,7 +47,7 @@ class ZoneLevel extends Level {
         ) {
     commands[pauseMenuCommandTrigger.name] = Command(
       onStart: () => game.pushLevel(
-        worldContext.pauseMenuBuilder(worldContext, zone),
+        worldContext.getPauseMenu(zone),
       ),
     );
     commands[showCoordinatesCommandTrigger.name] = Command(

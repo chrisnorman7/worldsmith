@@ -40,7 +40,7 @@ class CreditsMenu extends Menu {
               )
           ],
           onCancel: () => worldContext.game.replaceLevel(
-            worldContext.mainMenuBuilder(worldContext),
+            worldContext.getMainMenu(),
             ambianceFadeTime: worldContext.world.creditsMenuOptions.fadeTime,
           ),
         );

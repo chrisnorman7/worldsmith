@@ -50,7 +50,7 @@ class MainMenu extends Menu {
             ),
             worldContext.getButton(
               () => worldContext.game.replaceLevel(
-                worldContext.creditsMenuBuilder(worldContext),
+                worldContext.getCreditsMenu(),
                 ambianceFadeTime: fadeTime,
               ),
             ),

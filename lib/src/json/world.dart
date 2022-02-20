@@ -1,4 +1,8 @@
 /// Provides the [World] class.
+import 'dart:convert';
+import 'dart:io';
+import 'dart:math';
+
 import 'package:json_annotation/json_annotation.dart';
 import 'package:ziggurat/sound.dart';
 import 'package:ziggurat/ziggurat.dart';
@@ -84,6 +88,35 @@ class World {
 
   /// Create an instance from a JSON object.
   factory World.fromJson(Map<String, dynamic> json) => _$WorldFromJson(json);
+
+  /// Load an instance from the provided [string].
+  factory World.fromString(String string) {
+    final json = jsonDecode(string) as JsonType;
+    return World.fromJson(json);
+  }
+
+  /// Return an instance loaded from the given [filename].
+  factory World.fromFilename(String filename) {
+    final file = File(filename);
+    final data = file.readAsStringSync();
+    return World.fromString(data);
+  }
+
+  /// Load an instance from an encrypted file.
+  ///
+  /// The given [encryptionKey] must be the one returned by a function like
+  /// [WorldContext.saveEncrypted.]
+  ///
+  /// If [filename] is not given, then the default [encryptedWorldFilename] is
+  /// used.
+  factory World.loadEncrypted({
+    required String encryptionKey,
+    String filename = encryptedWorldFilename,
+  }) {
+    final asset = AssetReference.file(filename, encryptionKey: encryptionKey);
+    final bytes = asset.load(Random());
+    return World.fromString(String.fromCharCodes(bytes));
+  }
 
   /// The title of the world.
   String title;

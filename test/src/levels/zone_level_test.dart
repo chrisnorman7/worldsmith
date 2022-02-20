@@ -13,6 +13,7 @@ void main() {
     () {
       final pondZone = PondZone.generate();
       final world = World(zones: [pondZone.zone]);
+      pondZone.generateTerrains(world);
       final game = CustomGame(world.title);
       final worldContext = WorldContext(game: game, world: world);
       final level = ZoneLevel(worldContext: worldContext, zone: pondZone.zone);
@@ -22,8 +23,8 @@ void main() {
           expect(level.coordinates, Point(0.0, 0.0));
           expect(level.coordinatesOffset, Point(2, 2));
           expect(level.heading, isZero);
-          expect(level.tiles.length, 9);
-          expect(level.tiles.first.length, 9);
+          expect(level.tiles.length, 10);
+          expect(level.tiles.first.length, 10);
         },
       );
       test(
@@ -87,8 +88,8 @@ void main() {
             pondZone.eastBank.end,
           );
           final expected = Point(
-            end.x + level.coordinatesOffset.x,
-            end.y + level.coordinatesOffset.y,
+            end.x + level.coordinatesOffset.x + 1,
+            end.y + level.coordinatesOffset.y + 1,
           );
           expect(
             level.size,

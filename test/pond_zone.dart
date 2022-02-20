@@ -131,4 +131,43 @@ class PondZone {
 
   /// The created zone.
   final Zone zone;
+
+  /// Generate the needed terrains.
+  void generateTerrains(World world) {
+    for (final box in [northBank, eastBank, southBank, westBank, pondBox]) {
+      final terrainId = box.terrainId;
+      world.terrains.add(
+        Terrain(
+          id: terrainId,
+          name: terrainId,
+          slowWalk: WalkingOptions(
+            interval: 500,
+            distance: 0.5,
+            sound: Sound(id: '${terrainId}_slow.mp3'),
+          ),
+          fastWalk: WalkingOptions(
+            interval: 250,
+            distance: 0.4,
+            sound: Sound(id: '${terrainId}_fast.mp3'),
+          ),
+        ),
+      );
+    }
+    world.terrains.add(
+      Terrain(
+        id: zone.defaultTerrainId,
+        name: 'Zone Terrain',
+        slowWalk: WalkingOptions(
+          interval: 500,
+          distance: 0.5,
+          sound: Sound(id: 'zone_terrain.mp3'),
+        ),
+        fastWalk: WalkingOptions(
+          interval: 400,
+          distance: 0.4,
+          sound: Sound(id: 'slow_walk.mp3'),
+        ),
+      ),
+    );
+  }
 }
