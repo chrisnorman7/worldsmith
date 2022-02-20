@@ -265,7 +265,6 @@ class ZoneLevel extends Level {
   /// Move directly to the given [destination].
   Box? moveTo({
     required Point<double> destination,
-    required WalkingMode walkingMode,
     bool updateLastWalked = true,
   }) {
     final oldBox = getBox();
@@ -347,7 +346,7 @@ class ZoneLevel extends Level {
       _heading.toDouble(),
       options.distance,
     );
-    return moveTo(destination: destination, walkingMode: walkingMode);
+    return moveTo(destination: destination);
   }
 
   /// Maybe walk.
