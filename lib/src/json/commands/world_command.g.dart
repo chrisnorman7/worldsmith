@@ -19,6 +19,8 @@ WorldCommand _$WorldCommandFromJson(Map<String, dynamic> json) => WorldCommand(
       zoneTeleport: json['zoneTeleport'] == null
           ? null
           : ZoneTeleport.fromJson(json['zoneTeleport'] as Map<String, dynamic>),
+      walkingMode:
+          $enumDecodeNullable(_$WalkingModeEnumMap, json['walkingMode']),
       callCommand: json['callCommand'] == null
           ? null
           : CallCommand.fromJson(json['callCommand'] as Map<String, dynamic>),
@@ -31,5 +33,12 @@ Map<String, dynamic> _$WorldCommandToJson(WorldCommand instance) =>
       'message': instance.message,
       'localTeleport': instance.localTeleport,
       'zoneTeleport': instance.zoneTeleport,
+      'walkingMode': _$WalkingModeEnumMap[instance.walkingMode],
       'callCommand': instance.callCommand,
     };
+
+const _$WalkingModeEnumMap = {
+  WalkingMode.stationary: 'stationary',
+  WalkingMode.slow: 'slow',
+  WalkingMode.fast: 'fast',
+};

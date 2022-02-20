@@ -1,5 +1,6 @@
 import 'package:json_annotation/json_annotation.dart';
 
+import '../../level/walking_mode.dart';
 import '../messages/custom_message.dart';
 import 'call_command.dart';
 import 'local_teleport.dart';
@@ -17,6 +18,7 @@ class WorldCommand {
     CustomMessage? message,
     this.localTeleport,
     this.zoneTeleport,
+    this.walkingMode,
     this.callCommand,
   }) : message = message ?? CustomMessage();
 
@@ -38,6 +40,9 @@ class WorldCommand {
 
   /// Teleport to another zone.
   ZoneTeleport? zoneTeleport;
+
+  /// Set a new walking mode.
+  WalkingMode? walkingMode;
 
   /// Call another command.
   CallCommand? callCommand;

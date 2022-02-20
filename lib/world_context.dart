@@ -21,6 +21,7 @@ import 'src/json/zones/zone.dart';
 import 'src/level/credits_menu.dart';
 import 'src/level/main_menu.dart';
 import 'src/level/pause_menu.dart';
+import 'src/level/walking_mode.dart';
 import 'src/level/zone_level.dart';
 import 'util.dart';
 
@@ -253,13 +254,30 @@ class WorldContext {
         soundChannel: soundChannel,
       );
     }
-    final localTeleport = command.localTeleport;
-    if (localTeleport != null && zoneLevel != null) {
-      final destination = localTeleport.getCoordinates(
-        zone: zoneLevel.zone,
-        random: game.random,
-      );
-      zoneLevel.moveTo(destination: destination.toDouble());
+    if (zoneLevel != null) {
+      final localTeleport = command.localTeleport;
+      if (localTeleport != null) {
+        final destination = localTeleport.getCoordinates(
+          zone: zoneLevel.zone,
+          random: game.random,
+        );
+        zoneLevel.moveTo(destination: destination.toDouble());
+      }
+      final walkingMode = command.walkingMode;
+      if (walkingMode != null) {
+        zoneLevel.walkingMode = walkingMode;
+        switch (walkingMode) {
+          case WalkingMode.stationary:
+            zoneLevel.currentWalkingOptions = null;
+            break;
+          case WalkingMode.slow:
+            zoneLevel.currentWalkingOptions = zoneLevel.currentTerrain.slowWalk;
+            break;
+          case WalkingMode.fast:
+            zoneLevel.currentWalkingOptions = zoneLevel.currentTerrain.fastWalk;
+            break;
+        }
+      }
     }
     final zoneTeleport = command.zoneTeleport;
     if (zoneTeleport != null) {
