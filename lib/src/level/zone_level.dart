@@ -367,16 +367,19 @@ class ZoneLevel extends Level {
   void handleSdlEvent(Event event) {
     if (event is ControllerAxisEvent) {
       if (event.axis == GameControllerAxis.lefty) {
-        final value = event.smallValue;
-        if (value >= currentTerrain.fastWalk.joystickValue) {
-          walkingMode = WalkingMode.fast;
-          currentWalkingOptions = currentTerrain.fastWalk;
-        } else if (value >= currentTerrain.slowWalk.joystickValue) {
-          walkingMode = WalkingMode.slow;
-          currentWalkingOptions = currentTerrain.slowWalk;
-        } else {
-          walkingMode = WalkingMode.stationary;
-          currentWalkingOptions = null;
+        final value = event.smallValue * -1;
+        if (value > 0) {
+          print(value);
+          if (value >= currentTerrain.fastWalk.joystickValue) {
+            walkingMode = WalkingMode.fast;
+            currentWalkingOptions = currentTerrain.fastWalk;
+          } else if (value >= currentTerrain.slowWalk.joystickValue) {
+            walkingMode = WalkingMode.slow;
+            currentWalkingOptions = currentTerrain.slowWalk;
+          } else {
+            walkingMode = WalkingMode.stationary;
+            currentWalkingOptions = null;
+          }
         }
       }
     } else {
