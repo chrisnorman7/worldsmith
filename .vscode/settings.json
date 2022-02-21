@@ -6,6 +6,7 @@
     "editbin",
     "encrypter",
     "formals",
+    "LALT",
     "SCANCODE",
     "sdl",
     "synthizer",

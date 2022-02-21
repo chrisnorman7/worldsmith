@@ -28,7 +28,7 @@ class ZoneLevel extends Level {
     int heading = 0,
     Point<double> coordinates = _origin,
     this.walkingMode = WalkingMode.stationary,
-    this.timeSinceLastWalked = 0,
+    this.timeSinceLastWalked = 1000000,
   })  : _firstStepTaken = false,
         _heading = heading,
         _coordinates = coordinates,
@@ -55,6 +55,20 @@ class ZoneLevel extends Level {
     );
     commands[showFacingCommandTrigger.name] = Command(
       onStart: showFacing,
+    );
+    commands[walkFastForwardsCommandTrigger.name] = Command(
+      onStart: () {
+        currentWalkingOptions = currentTerrain.fastWalk;
+        walkingMode = WalkingMode.fast;
+      },
+      onStop: stopWalking,
+    );
+    commands[walkSlowForwardsCommandTrigger.name] = Command(
+      onStart: () {
+        currentWalkingOptions = currentTerrain.slowWalk;
+        walkingMode = WalkingMode.slow;
+      },
+      onStop: stopWalking,
     );
     var minCoordinates = Point(0, 0);
     var maxCoordinates = Point(0, 0);
@@ -102,6 +116,13 @@ class ZoneLevel extends Level {
     if (box != null) {
       currentTerrain = worldContext.world.getTerrain(box.terrainId);
     }
+  }
+
+  /// Stop walking.
+  void stopWalking() {
+    currentWalkingOptions = null;
+    walkingMode = WalkingMode.stationary;
+    timeSinceLastWalked = 1000000;
   }
 
   /// Set to `true` after the first step has been taken.
@@ -322,7 +343,7 @@ class ZoneLevel extends Level {
         break;
       case WalkingMode.fast:
         sound = terrain.slowWalk.sound;
-        currentWalkingOptions = terrain.slowWalk;
+        currentWalkingOptions = terrain.fastWalk;
         break;
     }
     if (sound != null) {
@@ -369,7 +390,6 @@ class ZoneLevel extends Level {
       if (event.axis == GameControllerAxis.lefty) {
         final value = event.smallValue * -1;
         if (value > 0) {
-          print(value);
           if (value >= currentTerrain.fastWalk.joystickValue) {
             walkingMode = WalkingMode.fast;
             currentWalkingOptions = currentTerrain.fastWalk;
@@ -377,8 +397,7 @@ class ZoneLevel extends Level {
             walkingMode = WalkingMode.slow;
             currentWalkingOptions = currentTerrain.slowWalk;
           } else {
-            walkingMode = WalkingMode.stationary;
-            currentWalkingOptions = null;
+            stopWalking();
           }
         }
       }

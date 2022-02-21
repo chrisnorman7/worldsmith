@@ -2,20 +2,34 @@
 import 'package:dart_sdl/dart_sdl.dart';
 import 'package:ziggurat/ziggurat.dart';
 
-/// Walk forwards.
-const walkForwardsCommandTrigger = CommandTrigger(
-  name: 'walk_forwards',
+/// Walk forwards, fast.
+const walkFastForwardsCommandTrigger = CommandTrigger(
+  name: 'walk_forwards_fast',
   description: 'Walk forwards',
   button: GameControllerButton.dpadUp,
   keyboardKey: CommandKeyboardKey(ScanCode.SCANCODE_W),
 );
 
-/// Walk backwards.
-const walkBackwardsCommandTrigger = CommandTrigger(
-  name: 'walk_backwards',
+/// Walk backwards, fast.
+const walkFastBackwardsCommandTrigger = CommandTrigger(
+  name: 'walk_backwards_fast',
   description: 'Walk backwards',
   button: GameControllerButton.dpadDown,
   keyboardKey: CommandKeyboardKey(ScanCode.SCANCODE_S),
+);
+
+/// Walk forwards, slowly.
+const walkSlowForwardsCommandTrigger = CommandTrigger(
+  name: 'walk_forwards_slow',
+  description: 'Walk forwards slowly',
+  keyboardKey: CommandKeyboardKey(ScanCode.SCANCODE_W, altKey: true),
+);
+
+/// Walk backwards, slowly.
+const walkSlowBackwardsCommandTrigger = CommandTrigger(
+  name: 'walk_backwards_slow',
+  description: 'Walk backwards slowly',
+  keyboardKey: CommandKeyboardKey(ScanCode.SCANCODE_S, altKey: true),
 );
 
 /// Sidestep left.
@@ -77,8 +91,10 @@ const showFacingCommandTrigger = CommandTrigger(
 /// The default trigger map.
 const defaultTriggerMap = TriggerMap(
   [
-    walkForwardsCommandTrigger,
-    walkBackwardsCommandTrigger,
+    walkSlowForwardsCommandTrigger,
+    walkSlowBackwardsCommandTrigger,
+    walkFastForwardsCommandTrigger,
+    walkFastBackwardsCommandTrigger,
     sidestepLeftCommandTrigger,
     sidestepRightCommandTrigger,
     turnLeftCommandTrigger,
