@@ -4,6 +4,7 @@ import 'package:args/command_runner.dart';
 import 'package:path/path.dart' as path;
 import 'package:ziggurat/ziggurat.dart' show Game;
 
+import '../../command_triggers.dart';
 import '../../world_context.dart';
 import '../json/world.dart';
 
@@ -37,7 +38,7 @@ class RunCommand extends Command<void> {
     final results = argResults!;
     final filename = results['filename'] as String;
     final world = World.fromFilename(filename);
-    final game = Game(world.title);
+    final game = Game(world.title, triggerMap: defaultTriggerMap);
     final worldContext = WorldContext(game: game, world: world);
     return worldContext.run();
   }
