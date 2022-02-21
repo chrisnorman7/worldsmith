@@ -12,6 +12,7 @@ import 'package:ziggurat_sounds/ziggurat_sounds.dart';
 
 import 'command_triggers.dart';
 import 'constants.dart';
+import 'src/json/commands/call_command.dart';
 import 'src/json/commands/world_command.dart';
 import 'src/json/messages/custom_message.dart';
 import 'src/json/messages/custom_sound.dart';
@@ -262,6 +263,7 @@ class WorldContext {
     ZoneLevel? zoneLevel,
     SoundChannel? soundChannel,
     AssetReference? nullSound,
+    List<CallCommand> calledCommands = const [],
   }) {
     final message = command.message;
     if (message.sound != null || message.text != null) {
@@ -329,14 +331,41 @@ class WorldContext {
     }
     final callCommand = command.callCommand;
     if (callCommand != null) {
+      if (calledCommands.contains(callCommand)) {
+        final category = world.commandCategories.firstWhere(
+          (element) => element.commands
+              .where(
+                (element) => element.id == callCommand.commandId,
+              )
+              .isNotEmpty,
+        );
+        final commandName = category.commands.firstWhere(
+          (element) => element.id == callCommand.commandId,
+        );
+        throw UnsupportedError(
+          'The $commandName command from the ${category.name} is attempting '
+          'to call itself.',
+        );
+      }
       final callAfter = callCommand.callAfter;
       final command = world.getCommand(callCommand.commandId);
       if (callAfter == null) {
-        runCommand(command: command);
+        runCommand(
+          command: command,
+          calledCommands: [...calledCommands, callCommand],
+          nullSound: nullSound,
+          soundChannel: soundChannel,
+          zoneLevel: zoneLevel,
+        );
       } else {
         game.registerTask(
           runAfter: callAfter,
-          func: () => runCommand(command: command),
+          func: () => runCommand(
+            command: command,
+            nullSound: nullSound,
+            soundChannel: soundChannel,
+            zoneLevel: zoneLevel,
+          ),
         );
       }
     }
