@@ -280,4 +280,34 @@ void main() {
       );
     },
   );
+  group(
+    '.runCommand',
+    () {
+      final command1 = WorldCommand(id: 'command1', name: 'Command 1');
+      final command2 = WorldCommand(id: 'command2', name: 'Command 2');
+      final category1 = CommandCategory(
+        id: 'category1',
+        name: 'Category 1',
+        commands: [command1],
+      );
+      final category2 = CommandCategory(
+        id: 'category2',
+        name: 'Category 2',
+        commands: [command2],
+      );
+      final world = World(commandCategories: [category1, category2]);
+      final worldContext = WorldContext(game: game, world: world);
+      test(
+        'Detect command loops',
+        () {
+          command2.callCommand = CallCommand(commandId: command1.id);
+          command1.callCommand = CallCommand(commandId: command2.id);
+          expect(
+            () => worldContext.runCommand(command: command1),
+            throwsA(isA<UnsupportedError>()),
+          );
+        },
+      );
+    },
+  );
 }
