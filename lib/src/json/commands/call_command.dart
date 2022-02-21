@@ -13,7 +13,7 @@ class CallCommand {
       _$CallCommandFromJson(json);
 
   /// The ID of the command to call.
-  final String commandId;
+  String commandId;
 
   /// How many milliseconds should the game wait before calling the command.
   int? callAfter;
