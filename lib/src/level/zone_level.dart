@@ -30,6 +30,7 @@ class ZoneLevel extends Level {
     this.walkingMode = WalkingMode.stationary,
     this.timeSinceLastWalked = 1000000,
   })  : _firstStepTaken = false,
+        _slowWalk = false,
         _heading = heading,
         _coordinates = coordinates,
         affectedInterfaceSounds = worldContext.game.createSoundChannel(),
@@ -56,19 +57,33 @@ class ZoneLevel extends Level {
     commands[showFacingCommandTrigger.name] = Command(
       onStart: showFacing,
     );
-    commands[walkFastForwardsCommandTrigger.name] = Command(
+    commands[walkForwardsCommandTrigger.name] = Command(
       onStart: () {
-        currentWalkingOptions = currentTerrain.fastWalk;
-        walkingMode = WalkingMode.fast;
+        if (_slowWalk) {
+          currentWalkingOptions = currentTerrain.slowWalk;
+          walkingMode = WalkingMode.slow;
+        } else {
+          currentWalkingOptions = currentTerrain.fastWalk;
+          walkingMode = WalkingMode.fast;
+        }
       },
       onStop: stopWalking,
     );
-    commands[walkSlowForwardsCommandTrigger.name] = Command(
+    commands[slowWalkCommandTrigger.name] = Command(
       onStart: () {
-        currentWalkingOptions = currentTerrain.slowWalk;
-        walkingMode = WalkingMode.slow;
+        _slowWalk = true;
+        if (currentWalkingOptions != null) {
+          currentWalkingOptions = currentTerrain.slowWalk;
+          walkingMode = WalkingMode.slow;
+        }
       },
-      onStop: stopWalking,
+      onStop: () {
+        _slowWalk = false;
+        if (currentWalkingOptions != null) {
+          currentWalkingOptions = currentTerrain.fastWalk;
+          walkingMode = WalkingMode.fast;
+        }
+      },
     );
     var minCoordinates = Point(0, 0);
     var maxCoordinates = Point(0, 0);
@@ -127,6 +142,9 @@ class ZoneLevel extends Level {
 
   /// Set to `true` after the first step has been taken.
   bool _firstStepTaken;
+
+  /// Whether or not to slow walk.
+  bool _slowWalk;
 
   /// The world context to use.
   final WorldContext worldContext;
