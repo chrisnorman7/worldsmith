@@ -168,7 +168,6 @@ class ZoneLevel extends Level {
   void stopWalking() {
     currentWalkingOptions = null;
     walkingMode = WalkingMode.stationary;
-    timeSinceLastWalked = 1000000;
   }
 
   /// Set to `true` after the first step has been taken.
