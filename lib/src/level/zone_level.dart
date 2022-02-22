@@ -7,6 +7,7 @@ import 'package:ziggurat/sound.dart';
 import 'package:ziggurat/ziggurat.dart';
 
 import '../../command_triggers.dart';
+import '../../constants.dart';
 import '../../util.dart';
 import '../../world_context.dart';
 import '../json/messages/custom_message.dart';
@@ -28,7 +29,7 @@ class ZoneLevel extends Level {
     int initialHeading = 0,
     Point<double> coordinates = _origin,
     this.walkingMode = WalkingMode.stationary,
-    this.walkingBackwards = false,
+    this.walkingDirection = WalkingDirection.forwards,
     this.timeSinceLastWalked = 1000000,
   })  : _firstStepTaken = false,
         _slowWalk = false,
@@ -71,14 +72,8 @@ class ZoneLevel extends Level {
       walkForwardsCommandTrigger.name,
       Command(
         onStart: () {
-          walkingBackwards = false;
-          if (_slowWalk) {
-            currentWalkingOptions = currentTerrain.slowWalk;
-            walkingMode = WalkingMode.slow;
-          } else {
-            currentWalkingOptions = currentTerrain.fastWalk;
-            walkingMode = WalkingMode.fast;
-          }
+          walkingDirection = WalkingDirection.forwards;
+          startWalking();
         },
         onStop: stopWalking,
       ),
@@ -87,13 +82,30 @@ class ZoneLevel extends Level {
       walkBackwardsCommandTrigger.name,
       Command(
         onStart: () {
-          startCommand(walkForwardsCommandTrigger.name);
-          walkingBackwards = true;
+          walkingDirection = WalkingDirection.backwards;
+          startWalking();
         },
-        onStop: () {
-          walkingBackwards = false;
-          stopWalking();
+        onStop: stopWalking,
+      ),
+    );
+    registerCommand(
+      sidestepLeftCommandTrigger.name,
+      Command(
+        onStart: () {
+          walkingDirection = WalkingDirection.left;
+          startWalking();
         },
+        onStop: stopWalking,
+      ),
+    );
+    registerCommand(
+      sidestepRightCommandTrigger.name,
+      Command(
+        onStart: () {
+          walkingDirection = WalkingDirection.right;
+          startWalking();
+        },
+        onStop: stopWalking,
       ),
     );
     registerCommand(
@@ -179,8 +191,20 @@ class ZoneLevel extends Level {
     }
   }
 
+  /// Start walking.
+  void startWalking() {
+    if (_slowWalk) {
+      currentWalkingOptions = currentTerrain.slowWalk;
+      walkingMode = WalkingMode.slow;
+    } else {
+      currentWalkingOptions = currentTerrain.fastWalk;
+      walkingMode = WalkingMode.fast;
+    }
+  }
+
   /// Stop walking.
   void stopWalking() {
+    walkingDirection = WalkingDirection.forwards;
     currentWalkingOptions = null;
     walkingMode = WalkingMode.stationary;
   }
@@ -236,8 +260,8 @@ class ZoneLevel extends Level {
   /// How fast the player is walking.
   WalkingMode walkingMode;
 
-  /// Whether or not the player is walking backwards.
-  bool walkingBackwards;
+  /// The direction the player is walking in.
+  WalkingDirection walkingDirection;
 
   /// The number of milliseconds since the [walk] method was called.
   int timeSinceLastWalked;
@@ -429,10 +453,20 @@ class ZoneLevel extends Level {
 
   /// Walk a bit.
   Box? walk(WalkingOptions options) {
-    var bearing = heading;
-    print(walkingBackwards);
-    if (walkingBackwards) {
-      bearing = (bearing + 180) % 360;
+    final int bearing;
+    switch (walkingDirection) {
+      case WalkingDirection.forwards:
+        bearing = heading;
+        break;
+      case WalkingDirection.backwards:
+        bearing = (heading + 180) % 360;
+        break;
+      case WalkingDirection.left:
+        bearing = (heading - 90) % 360;
+        break;
+      case WalkingDirection.right:
+        bearing = (heading + 90) % 360;
+        break;
     }
     final destination = coordinatesInDirection(
       _coordinates,
@@ -462,10 +496,10 @@ class ZoneLevel extends Level {
       if (event.axis == GameControllerAxis.lefty) {
         var value = event.smallValue;
         if (value < 0) {
-          walkingBackwards = false;
+          walkingDirection = WalkingDirection.forwards;
           value = event.smallValue * -1;
         } else {
-          walkingBackwards = true;
+          walkingDirection = WalkingDirection.backwards;
         }
         if (value >= currentTerrain.fastWalk.joystickValue) {
           walkingMode = WalkingMode.fast;
