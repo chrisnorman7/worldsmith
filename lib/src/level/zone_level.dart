@@ -267,21 +267,25 @@ class ZoneLevel extends Level {
     game.outputText('$x, $y');
   }
 
-  /// Show the facing direction.
-  void showFacing() {
+  /// Get the nearest direction.
+  String getDirectionName([int? bearing]) {
+    bearing ??= heading;
     String? direction;
     int? difference;
     for (final entry in worldContext.world.directions.entries) {
       final value = entry.value.floor();
-      final d = max<int>(_heading, value) - min<int>(_heading, value);
+      final d = max<int>(bearing, value) - min<int>(bearing, value);
       if (difference == null || difference > d) {
         difference = d;
         direction = entry.key;
       }
     }
-    if (direction != null) {
-      game.outputText('$direction ($heading degrees.');
-    }
+    return direction ?? 'Unknown';
+  }
+
+  /// Show the facing direction.
+  void showFacing() {
+    game.outputText('${getDirectionName()} ($heading degrees.');
   }
 
   /// Reset state.
