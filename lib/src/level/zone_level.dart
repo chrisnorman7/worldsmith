@@ -254,6 +254,9 @@ class ZoneLevel extends Level {
   /// The direction the player is walking in.
   WalkingDirection walkingDirection;
 
+  /// The amount to add to the [heading] each [tick].
+  double? turnAmount;
+
   /// The speed the player is currently walking at.
   WalkingMode get walkingMode {
     final terrain = currentTerrain;
@@ -489,6 +492,14 @@ class ZoneLevel extends Level {
         walk(walkingOptions);
       }
     }
+    final turnModifier = turnAmount;
+    if (turnModifier != null) {
+      final degrees = (turnModifier * 5).floor();
+      if (degrees.abs() > 0) {
+        game.outputText(degrees.floor().toString());
+        heading += degrees;
+      }
+    }
   }
 
   /// Handle SDL events.
@@ -512,6 +523,13 @@ class ZoneLevel extends Level {
           _slowWalk = true;
         } else {
           stopWalking();
+        }
+      } else if (event.axis == GameControllerAxis.rightx) {
+        final value = event.smallValue;
+        if (value.abs() >= 0.1) {
+          turnAmount = value;
+        } else {
+          turnAmount = null;
         }
       }
     } else {
