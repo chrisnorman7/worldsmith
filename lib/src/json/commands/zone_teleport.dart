@@ -15,7 +15,12 @@ class ZoneTeleport extends LocalTeleport {
     required Coordinates minCoordinates,
     Coordinates? maxCoordinates,
     this.fadeTime,
-  }) : super(minCoordinates: minCoordinates, maxCoordinates: maxCoordinates);
+    int heading = 0,
+  }) : super(
+          minCoordinates: minCoordinates,
+          maxCoordinates: maxCoordinates,
+          heading: heading,
+        );
 
   /// Create an instance from a JSON object.
   factory ZoneTeleport.fromJson(Map<String, dynamic> json) =>
