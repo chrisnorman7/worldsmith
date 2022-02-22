@@ -24,7 +24,7 @@ class Zone {
     this.music,
     this.topDownMap = true,
     CustomMessage? edgeMessage,
-    this.turnAmount = 5,
+    this.turnAmount = 45,
   }) : edgeMessage = edgeMessage ?? CustomMessage();
 
   /// Create an instance from a JSON object.
