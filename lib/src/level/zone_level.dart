@@ -338,6 +338,9 @@ class ZoneLevel extends Level {
         worldContext.getCustomMessage(message),
         soundChannel: affectedInterfaceSounds,
       );
+      if (updateLastWalked) {
+        timeSinceLastWalked = 0;
+      }
       return oldBox;
     }
     final newBox = getBox(destination);
