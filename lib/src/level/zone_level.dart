@@ -104,9 +104,7 @@ class ZoneLevel extends Level {
       turnLeftCommandTrigger.name,
       Command(
         onStart: () {
-          print('Turn left.');
           heading = heading - zone.turnAmount;
-          print(heading);
         },
       ),
     );
@@ -114,9 +112,7 @@ class ZoneLevel extends Level {
       turnRightCommandTrigger.name,
       Command(
         onStart: () {
-          print('Turn right.');
           heading = heading + zone.turnAmount;
-          print(heading);
         },
       ),
     );
@@ -277,7 +273,6 @@ class ZoneLevel extends Level {
 
   /// Show the facing direction.
   void showFacing() {
-    print('Show facing: $_heading');
     final direction = worldContext.getDirectionName(heading);
     game.outputText('$direction ($heading degrees.');
   }
@@ -351,19 +346,28 @@ class ZoneLevel extends Level {
       // Boxes are different.
       setReverb(newBox);
       final CustomMessage message;
+      final String boxName;
       if (newBox == null) {
         if (oldBox != null) {
           message = oldBox.leaveMessage;
+          boxName = oldBox.name;
         } else {
           message = CustomMessage(
             text: "Both boxes are null, and the compiler somehow doesn't know "
                 'that.',
           );
+          boxName = 'No box';
         }
       } else {
         message = newBox.enterMessage;
+        boxName = newBox.name;
       }
-      game.outputMessage(worldContext.getCustomMessage(message));
+      game.outputMessage(
+        worldContext.getCustomMessage(
+          message,
+          replacements: {'box_name': boxName},
+        ),
+      );
     }
     if (_firstStepTaken == false) {
       setReverb(newBox);
