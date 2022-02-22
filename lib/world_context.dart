@@ -375,6 +375,21 @@ class WorldContext {
     }
   }
 
+  /// Get the name of the nearest direction to [bearing].
+  String getDirectionName(int bearing) {
+    String? direction;
+    int? difference;
+    for (final entry in world.directions.entries) {
+      final value = entry.value.floor();
+      final d = max<int>(bearing, value) - min<int>(bearing, value);
+      if (difference == null || difference > d) {
+        difference = d;
+        direction = entry.key;
+      }
+    }
+    return direction ?? 'Unknown';
+  }
+
   /// Run the command with the given [id].
   ///
   /// If the id is `null`, nothing happens.
