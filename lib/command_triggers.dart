@@ -44,15 +44,15 @@ const sidestepRightCommandTrigger = CommandTrigger(
 /// Turn left.
 const turnLeftCommandTrigger = CommandTrigger(
   name: 'turn_left',
-  description: 'Turn left 45 degrees',
+  description: 'Turn left a bit',
   button: GameControllerButton.a,
   keyboardKey: CommandKeyboardKey(ScanCode.SCANCODE_LEFT),
 );
 
 /// Turn right.
 const turnRightCommandTrigger = CommandTrigger(
-  name: 'turn_right',
-  description: 'Turn right 45 degrees',
+  name: 'turn_right a bit',
+  description: 'Turn right',
   button: GameControllerButton.y,
   keyboardKey: CommandKeyboardKey(ScanCode.SCANCODE_RIGHT),
 );
