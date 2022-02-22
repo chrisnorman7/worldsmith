@@ -28,6 +28,7 @@ class ZoneLevel extends Level {
     int initialHeading = 0,
     Point<double> coordinates = _origin,
     this.walkingMode = WalkingMode.stationary,
+    this.walkingBackwards = false,
     this.timeSinceLastWalked = 1000000,
   })  : _firstStepTaken = false,
         _slowWalk = false,
@@ -70,6 +71,7 @@ class ZoneLevel extends Level {
       walkForwardsCommandTrigger.name,
       Command(
         onStart: () {
+          walkingBackwards = false;
           if (_slowWalk) {
             currentWalkingOptions = currentTerrain.slowWalk;
             walkingMode = WalkingMode.slow;
@@ -79,6 +81,19 @@ class ZoneLevel extends Level {
           }
         },
         onStop: stopWalking,
+      ),
+    );
+    registerCommand(
+      walkBackwardsCommandTrigger.name,
+      Command(
+        onStart: () {
+          startCommand(walkForwardsCommandTrigger.name);
+          walkingBackwards = true;
+        },
+        onStop: () {
+          walkingBackwards = false;
+          stopWalking();
+        },
       ),
     );
     registerCommand(
@@ -220,6 +235,9 @@ class ZoneLevel extends Level {
 
   /// How fast the player is walking.
   WalkingMode walkingMode;
+
+  /// Whether or not the player is walking backwards.
+  bool walkingBackwards;
 
   /// The number of milliseconds since the [walk] method was called.
   int timeSinceLastWalked;
@@ -411,9 +429,14 @@ class ZoneLevel extends Level {
 
   /// Walk a bit.
   Box? walk(WalkingOptions options) {
+    var bearing = heading;
+    print(walkingBackwards);
+    if (walkingBackwards) {
+      bearing = (bearing + 180) % 360;
+    }
     final destination = coordinatesInDirection(
       _coordinates,
-      _heading.toDouble(),
+      bearing.toDouble(),
       options.distance,
     );
     return moveTo(destination: destination);
@@ -437,17 +460,21 @@ class ZoneLevel extends Level {
   void handleSdlEvent(Event event) {
     if (event is ControllerAxisEvent) {
       if (event.axis == GameControllerAxis.lefty) {
-        final value = event.smallValue * -1;
-        if (value > 0) {
-          if (value >= currentTerrain.fastWalk.joystickValue) {
-            walkingMode = WalkingMode.fast;
-            currentWalkingOptions = currentTerrain.fastWalk;
-          } else if (value >= currentTerrain.slowWalk.joystickValue) {
-            walkingMode = WalkingMode.slow;
-            currentWalkingOptions = currentTerrain.slowWalk;
-          } else {
-            stopWalking();
-          }
+        var value = event.smallValue;
+        if (value < 0) {
+          walkingBackwards = false;
+          value = event.smallValue * -1;
+        } else {
+          walkingBackwards = true;
+        }
+        if (value >= currentTerrain.fastWalk.joystickValue) {
+          walkingMode = WalkingMode.fast;
+          currentWalkingOptions = currentTerrain.fastWalk;
+        } else if (value >= currentTerrain.slowWalk.joystickValue) {
+          walkingMode = WalkingMode.slow;
+          currentWalkingOptions = currentTerrain.slowWalk;
+        } else {
+          stopWalking();
         }
       }
     } else {
