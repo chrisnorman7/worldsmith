@@ -25,13 +25,13 @@ class ZoneLevel extends Level {
   ZoneLevel({
     required this.worldContext,
     required this.zone,
-    int heading = 0,
+    int initialHeading = 0,
     Point<double> coordinates = _origin,
     this.walkingMode = WalkingMode.stationary,
     this.timeSinceLastWalked = 1000000,
   })  : _firstStepTaken = false,
         _slowWalk = false,
-        _heading = heading,
+        _heading = initialHeading,
         _coordinates = coordinates,
         affectedInterfaceSounds = worldContext.game.createSoundChannel(),
         boxReverbs = {},
@@ -103,13 +103,21 @@ class ZoneLevel extends Level {
     registerCommand(
       turnLeftCommandTrigger.name,
       Command(
-        onStart: () => heading -= zone.turnAmount,
+        onStart: () {
+          print('Turn left.');
+          heading = heading - zone.turnAmount;
+          print(heading);
+        },
       ),
     );
     registerCommand(
       turnRightCommandTrigger.name,
       Command(
-        onStart: () => heading += zone.turnAmount,
+        onStart: () {
+          print('Turn right.');
+          heading = heading + zone.turnAmount;
+          print(heading);
+        },
       ),
     );
     var minCoordinates = Point(0, 0);
@@ -187,7 +195,7 @@ class ZoneLevel extends Level {
 
   /// Set the player's heading.
   set heading(int value) {
-    _heading = value;
+    _heading = value % 360;
     game.setListenerOrientation(value.toDouble());
   }
 
@@ -269,6 +277,7 @@ class ZoneLevel extends Level {
 
   /// Show the facing direction.
   void showFacing() {
+    print('Show facing: $_heading');
     final direction = worldContext.getDirectionName(heading);
     game.outputText('$direction ($heading degrees.');
   }
