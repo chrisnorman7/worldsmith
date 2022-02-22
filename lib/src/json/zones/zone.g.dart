@@ -20,6 +20,7 @@ Zone _$ZoneFromJson(Map<String, dynamic> json) => Zone(
       edgeMessage: json['edgeMessage'] == null
           ? null
           : CustomMessage.fromJson(json['edgeMessage'] as Map<String, dynamic>),
+      turnAmount: json['turnAmount'] as int? ?? 5,
     );
 
 Map<String, dynamic> _$ZoneToJson(Zone instance) => <String, dynamic>{
@@ -30,4 +31,5 @@ Map<String, dynamic> _$ZoneToJson(Zone instance) => <String, dynamic>{
       'music': instance.music,
       'topDownMap': instance.topDownMap,
       'edgeMessage': instance.edgeMessage,
+      'turnAmount': instance.turnAmount,
     };

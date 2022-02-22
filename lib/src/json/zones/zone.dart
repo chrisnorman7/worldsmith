@@ -24,6 +24,7 @@ class Zone {
     this.music,
     this.topDownMap = true,
     CustomMessage? edgeMessage,
+    this.turnAmount = 5,
   }) : edgeMessage = edgeMessage ?? CustomMessage();
 
   /// Create an instance from a JSON object.
@@ -49,6 +50,9 @@ class Zone {
 
   /// The message to use when colliding with the edge of this zone.
   final CustomMessage edgeMessage;
+
+  /// The maximum turning amount in this zone.
+  int turnAmount;
 
   /// Get a box by its [id].
   Box getBox(String id) => boxes.firstWhere((element) => element.id == id);

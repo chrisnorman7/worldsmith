@@ -14,10 +14,12 @@ LocalTeleport _$LocalTeleportFromJson(Map<String, dynamic> json) =>
           ? null
           : Coordinates.fromJson(
               json['maxCoordinates'] as Map<String, dynamic>),
+      heading: json['heading'] as int? ?? 0,
     );
 
 Map<String, dynamic> _$LocalTeleportToJson(LocalTeleport instance) =>
     <String, dynamic>{
       'minCoordinates': instance.minCoordinates,
       'maxCoordinates': instance.maxCoordinates,
+      'heading': instance.heading,
     };

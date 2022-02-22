@@ -46,44 +46,71 @@ class ZoneLevel extends Level {
               )!
           ],
         ) {
-    commands[pauseMenuCommandTrigger.name] = Command(
-      onStart: () => game.pushLevel(
-        worldContext.getPauseMenu(zone),
+    registerCommand(
+      pauseMenuCommandTrigger.name,
+      Command(
+        onStart: () => game.pushLevel(
+          worldContext.getPauseMenu(zone),
+        ),
       ),
     );
-    commands[showCoordinatesCommandTrigger.name] = Command(
-      onStart: showCoordinates,
+    registerCommand(
+      showCoordinatesCommandTrigger.name,
+      Command(
+        onStart: showCoordinates,
+      ),
     );
-    commands[showFacingCommandTrigger.name] = Command(
-      onStart: showFacing,
+    registerCommand(
+      showFacingCommandTrigger.name,
+      Command(
+        onStart: showFacing,
+      ),
     );
-    commands[walkForwardsCommandTrigger.name] = Command(
-      onStart: () {
-        if (_slowWalk) {
-          currentWalkingOptions = currentTerrain.slowWalk;
-          walkingMode = WalkingMode.slow;
-        } else {
-          currentWalkingOptions = currentTerrain.fastWalk;
-          walkingMode = WalkingMode.fast;
-        }
-      },
-      onStop: stopWalking,
+    registerCommand(
+      walkForwardsCommandTrigger.name,
+      Command(
+        onStart: () {
+          if (_slowWalk) {
+            currentWalkingOptions = currentTerrain.slowWalk;
+            walkingMode = WalkingMode.slow;
+          } else {
+            currentWalkingOptions = currentTerrain.fastWalk;
+            walkingMode = WalkingMode.fast;
+          }
+        },
+        onStop: stopWalking,
+      ),
     );
-    commands[slowWalkCommandTrigger.name] = Command(
-      onStart: () {
-        _slowWalk = true;
-        if (currentWalkingOptions != null) {
-          currentWalkingOptions = currentTerrain.slowWalk;
-          walkingMode = WalkingMode.slow;
-        }
-      },
-      onStop: () {
-        _slowWalk = false;
-        if (currentWalkingOptions != null) {
-          currentWalkingOptions = currentTerrain.fastWalk;
-          walkingMode = WalkingMode.fast;
-        }
-      },
+    registerCommand(
+      slowWalkCommandTrigger.name,
+      Command(
+        onStart: () {
+          _slowWalk = true;
+          if (currentWalkingOptions != null) {
+            currentWalkingOptions = currentTerrain.slowWalk;
+            walkingMode = WalkingMode.slow;
+          }
+        },
+        onStop: () {
+          _slowWalk = false;
+          if (currentWalkingOptions != null) {
+            currentWalkingOptions = currentTerrain.fastWalk;
+            walkingMode = WalkingMode.fast;
+          }
+        },
+      ),
+    );
+    registerCommand(
+      turnLeftCommandTrigger.name,
+      Command(
+        onStart: () => heading -= zone.turnAmount,
+      ),
+    );
+    registerCommand(
+      turnRightCommandTrigger.name,
+      Command(
+        onStart: () => heading += zone.turnAmount,
+      ),
     );
     var minCoordinates = Point(0, 0);
     var maxCoordinates = Point(0, 0);
@@ -253,7 +280,7 @@ class ZoneLevel extends Level {
       }
     }
     if (direction != null) {
-      game.outputText(direction);
+      game.outputText('$direction ($heading degrees.');
     }
   }
 

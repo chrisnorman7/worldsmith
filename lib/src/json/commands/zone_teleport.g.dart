@@ -15,12 +15,13 @@ ZoneTeleport _$ZoneTeleportFromJson(Map<String, dynamic> json) => ZoneTeleport(
           : Coordinates.fromJson(
               json['maxCoordinates'] as Map<String, dynamic>),
       fadeTime: (json['fadeTime'] as num?)?.toDouble(),
-    );
+    )..heading = json['heading'] as int;
 
 Map<String, dynamic> _$ZoneTeleportToJson(ZoneTeleport instance) =>
     <String, dynamic>{
       'minCoordinates': instance.minCoordinates,
       'maxCoordinates': instance.maxCoordinates,
+      'heading': instance.heading,
       'zoneId': instance.zoneId,
       'fadeTime': instance.fadeTime,
     };

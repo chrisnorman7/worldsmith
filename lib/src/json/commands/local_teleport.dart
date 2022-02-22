@@ -11,7 +11,11 @@ part 'local_teleport.g.dart';
 @JsonSerializable()
 class LocalTeleport {
   /// Create an instance.
-  LocalTeleport({required this.minCoordinates, this.maxCoordinates});
+  LocalTeleport({
+    required this.minCoordinates,
+    this.maxCoordinates,
+    this.heading = 0,
+  });
 
   /// Create an instance from a JSON object.
   factory LocalTeleport.fromJson(Map<String, dynamic> json) =>
@@ -25,6 +29,9 @@ class LocalTeleport {
   /// If this value is `null`, then [minCoordinates] will be used with no
   /// randomisation.
   Coordinates? maxCoordinates;
+
+  /// The new heading to use.
+  int heading;
 
   /// Convert an instance to JSON.
   Map<String, dynamic> toJson() => _$LocalTeleportToJson(this);

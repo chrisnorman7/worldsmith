@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.14.0]
+
+### Added
+
+* Added the ability to set how far the player will turn in a given zone.
+* A new heading can now be set with teleport commands.
+
 ## [0.13.0]
 
 ### Added
