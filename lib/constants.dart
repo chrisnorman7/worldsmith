@@ -28,3 +28,18 @@ const indentedJsonEncoder = JsonEncoder.withIndent('  ');
 
 /// The type for all JSON.
 typedef JsonType = Map<String, dynamic>;
+
+/// The possible directions to walk in.
+enum WalkingDirection {
+  /// Forwards.
+  forwards,
+
+  /// Backwards.
+  backwards,
+
+  /// Sidestep left.
+  left,
+
+  /// Sidestep right.
+  right,
+}
