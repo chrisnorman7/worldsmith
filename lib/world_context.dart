@@ -288,7 +288,6 @@ class WorldContext {
       }
       final walkingMode = command.walkingMode;
       if (walkingMode != null) {
-        zoneLevel.walkingMode = walkingMode;
         switch (walkingMode) {
           case WalkingMode.stationary:
             zoneLevel.currentWalkingOptions = null;

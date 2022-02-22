@@ -28,7 +28,6 @@ class ZoneLevel extends Level {
     required this.zone,
     int initialHeading = 0,
     Point<double> coordinates = _origin,
-    this.walkingMode = WalkingMode.stationary,
     this.walkingDirection = WalkingDirection.forwards,
     this.timeSinceLastWalked = 1000000,
   })  : _firstStepTaken = false,
@@ -115,14 +114,12 @@ class ZoneLevel extends Level {
           _slowWalk = true;
           if (currentWalkingOptions != null) {
             currentWalkingOptions = currentTerrain.slowWalk;
-            walkingMode = WalkingMode.slow;
           }
         },
         onStop: () {
           _slowWalk = false;
           if (currentWalkingOptions != null) {
             currentWalkingOptions = currentTerrain.fastWalk;
-            walkingMode = WalkingMode.fast;
           }
         },
       ),
@@ -195,10 +192,8 @@ class ZoneLevel extends Level {
   void startWalking() {
     if (_slowWalk) {
       currentWalkingOptions = currentTerrain.slowWalk;
-      walkingMode = WalkingMode.slow;
     } else {
       currentWalkingOptions = currentTerrain.fastWalk;
-      walkingMode = WalkingMode.fast;
     }
   }
 
@@ -206,7 +201,6 @@ class ZoneLevel extends Level {
   void stopWalking() {
     walkingDirection = WalkingDirection.forwards;
     currentWalkingOptions = null;
-    walkingMode = WalkingMode.stationary;
   }
 
   /// Set to `true` after the first step has been taken.
@@ -257,11 +251,21 @@ class ZoneLevel extends Level {
   /// The current walking options.
   WalkingOptions? currentWalkingOptions;
 
-  /// How fast the player is walking.
-  WalkingMode walkingMode;
-
   /// The direction the player is walking in.
   WalkingDirection walkingDirection;
+
+  /// The speed the player is currently walking at.
+  WalkingMode get walkingMode {
+    final terrain = currentTerrain;
+    final options = currentWalkingOptions;
+    if (options == terrain.fastWalk) {
+      return WalkingMode.fast;
+    } else if (options == terrain.slowWalk) {
+      return WalkingMode.slow;
+    } else {
+      return WalkingMode.stationary;
+    }
+  }
 
   /// The number of milliseconds since the [walk] method was called.
   int timeSinceLastWalked;
@@ -424,18 +428,16 @@ class ZoneLevel extends Level {
     }
     currentTerrain = terrain;
     Sound? sound;
-    switch (walkingMode) {
-      case WalkingMode.stationary:
-        currentWalkingOptions = null;
-        break;
-      case WalkingMode.slow:
+    if (currentWalkingOptions == null) {
+      currentWalkingOptions = null;
+    } else {
+      if (_slowWalk == true) {
         sound = terrain.slowWalk.sound;
         currentWalkingOptions = terrain.slowWalk;
-        break;
-      case WalkingMode.fast:
+      } else {
         sound = terrain.slowWalk.sound;
         currentWalkingOptions = terrain.fastWalk;
-        break;
+      }
     }
     if (sound != null) {
       playSound(
@@ -501,12 +503,13 @@ class ZoneLevel extends Level {
         } else {
           walkingDirection = WalkingDirection.backwards;
         }
-        if (value >= currentTerrain.fastWalk.joystickValue) {
-          walkingMode = WalkingMode.fast;
-          currentWalkingOptions = currentTerrain.fastWalk;
-        } else if (value >= currentTerrain.slowWalk.joystickValue) {
-          walkingMode = WalkingMode.slow;
-          currentWalkingOptions = currentTerrain.slowWalk;
+        final terrain = currentTerrain;
+        if (value >= terrain.fastWalk.joystickValue) {
+          currentWalkingOptions = terrain.fastWalk;
+          _slowWalk = false;
+        } else if (value >= terrain.slowWalk.joystickValue) {
+          currentWalkingOptions = terrain.slowWalk;
+          _slowWalk = true;
         } else {
           stopWalking();
         }
