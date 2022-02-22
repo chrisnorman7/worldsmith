@@ -64,21 +64,21 @@ void main() {
           game.strings.clear();
           level.showFacing();
           expect(game.strings.length, 1);
-          expect(game.strings.first, 'North');
+          expect(game.strings.first, 'North (0 degrees)');
           level
             ..heading = 45
             ..showFacing();
           expect(game.strings.length, 2);
-          expect(game.strings.last, 'Northeast');
+          expect(game.strings.last, 'Northeast (45 degrees)');
           level
             ..heading = 52
             ..showFacing();
           expect(game.strings.length, 3);
-          expect(game.strings.last, 'Northeast');
+          expect(game.strings.last, 'Northeast (52 degrees)');
           level
             ..heading = 359
             ..showFacing();
-          expect(game.strings.last, 'Northwest');
+          expect(game.strings.last, 'Northwest (359 degrees)');
         },
       );
       test(
