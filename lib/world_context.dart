@@ -260,6 +260,7 @@ class WorldContext {
   /// Run the given [command].
   void runCommand({
     required WorldCommand command,
+    Map<String, String> replacements = const {},
     ZoneLevel? zoneLevel,
     SoundChannel? soundChannel,
     AssetReference? nullSound,
@@ -271,6 +272,7 @@ class WorldContext {
         getCustomMessage(
           message,
           nullSound: nullSound,
+          replacements: replacements,
         ),
         soundChannel: soundChannel,
       );
@@ -355,6 +357,7 @@ class WorldContext {
       if (callAfter == null) {
         runCommand(
           command: command,
+          replacements: replacements,
           calledCommands: [...calledCommands, callCommand],
           nullSound: nullSound,
           soundChannel: soundChannel,
@@ -365,6 +368,7 @@ class WorldContext {
           runAfter: callAfter,
           func: () => runCommand(
             command: command,
+            replacements: replacements,
             nullSound: nullSound,
             soundChannel: soundChannel,
             zoneLevel: zoneLevel,
