@@ -16,6 +16,7 @@ class ZoneObject {
     required this.name,
     Coordinates? initialCoordinates,
     this.ambiance,
+    this.collideCommandId,
   }) : initialCoordinates = initialCoordinates ?? Coordinates(0, 0);
 
   /// Create an instance from a JSON object.
@@ -33,6 +34,9 @@ class ZoneObject {
 
   /// The ambiance for this object.
   Sound? ambiance;
+
+  /// The ID of a command to run when the player collides with this object.
+  String? collideCommandId;
 
   /// Convert an instance to JSON.
   Map<String, dynamic> toJson() => _$ZoneObjectToJson(this);

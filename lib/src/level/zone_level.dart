@@ -217,7 +217,7 @@ class ZoneLevel extends Level {
     }
   }
 
-  /// Get the box that resides at the provided [coordinates].
+  /// Get the box that resides at the provided coordinates.
   ///
   /// If the coordinates are out of range, [RangeError] will be thrown.
   Box? getBox([Point<double>? where]) {
@@ -227,6 +227,21 @@ class ZoneLevel extends Level {
       return null;
     }
     return zone.getBox(id);
+  }
+
+  /// Get the zone object at the given position.
+  ZoneObject? getZoneObject([Point<double>? where]) {
+    where ??= coordinates;
+    for (final object in zone.objects) {
+      final coordinates = zone.getAbsoluteCoordinates(
+        object.initialCoordinates,
+      );
+      if (where.x.floor() == coordinates.x &&
+          where.y.floor() == coordinates.y) {
+        worldContext.runWorldCommandId(object.collideCommandId);
+      }
+    }
+    return null;
   }
 
   /// Show the current coordinates.
