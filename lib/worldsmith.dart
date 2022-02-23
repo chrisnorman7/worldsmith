@@ -23,6 +23,7 @@ export 'src/json/zones/box.dart';
 export 'src/json/zones/coordinates.dart';
 export 'src/json/zones/terrain.dart';
 export 'src/json/zones/zone.dart';
+export 'src/json/zones/zone_object.dart';
 export 'src/level/credits_menu.dart';
 export 'src/level/pause_menu.dart';
 export 'src/level/walking_mode.dart';
