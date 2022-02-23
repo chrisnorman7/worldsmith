@@ -398,6 +398,7 @@ class WorldContext {
   /// If the id is `null`, nothing happens.
   void runWorldCommandId(
     String? id, {
+    Map<String, String> replacements = const {},
     AssetReference? nullSound,
     SoundChannel? soundChannel,
     ZoneLevel? zoneLevel,
@@ -406,6 +407,7 @@ class WorldContext {
       final command = world.getCommand(id);
       runCommand(
         command: command,
+        replacements: replacements,
         nullSound: nullSound,
         soundChannel: soundChannel,
         zoneLevel: zoneLevel,

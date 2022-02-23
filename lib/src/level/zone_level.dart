@@ -463,11 +463,17 @@ class ZoneLevel extends Level {
         destination.x >= s.x ||
         destination.y >= s.y) {
       worldContext.onEdgeOfZoneLevel(this, destination);
-      final message = zone.edgeMessage;
-      game.outputMessage(
-        worldContext.getCustomMessage(message),
-        soundChannel: affectedInterfaceSounds,
-      );
+      final commandId = zone.edgeCommandId;
+      if (commandId != null) {
+        worldContext.runWorldCommandId(
+          commandId,
+          replacements: {
+            'zone_name': zone.name,
+            'x': destination.x.toStringAsFixed(2),
+            'y': destination.y.toStringAsFixed(2)
+          },
+        );
+      }
       if (updateLastWalked) {
         timeSinceLastWalked = 0;
       }

@@ -24,11 +24,10 @@ class Zone {
     required this.defaultTerrainId,
     this.music,
     this.topDownMap = true,
-    CustomMessage? edgeMessage,
+    this.edgeCommandId,
     this.turnAmount = 45,
     List<ZoneObject>? objects,
-  })  : edgeMessage = edgeMessage ?? CustomMessage(),
-        objects = objects ?? [];
+  }) : objects = objects ?? [];
 
   /// Create an instance from a JSON object.
   factory Zone.fromJson(Map<String, dynamic> json) => _$ZoneFromJson(json);
@@ -51,8 +50,8 @@ class Zone {
   /// Whether or not a top-down map of this zone can be viewed.
   bool topDownMap;
 
-  /// The message to use when colliding with the edge of this zone.
-  final CustomMessage edgeMessage;
+  /// The ID of the command to use when colliding with the edge of this zone.
+  final String? edgeCommandId;
 
   /// The maximum turning amount in this zone.
   int turnAmount;
