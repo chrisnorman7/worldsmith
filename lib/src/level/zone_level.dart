@@ -454,6 +454,7 @@ class ZoneLevel extends Level {
   Box? moveTo({
     required Point<double> destination,
     bool updateLastWalked = true,
+    bool runWalkCommand = true,
   }) {
     final oldBox = getBox();
     final s = size;
@@ -505,6 +506,9 @@ class ZoneLevel extends Level {
       terrain = worldContext.world.getTerrain(zone.defaultTerrainId);
     } else {
       terrain = worldContext.world.getTerrain(newBox.terrainId);
+      if (runWalkCommand == true) {
+        worldContext.runWorldCommandId(newBox.walkCommandId);
+      }
     }
     currentTerrain = terrain;
     Sound? sound;
