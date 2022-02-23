@@ -188,21 +188,6 @@ class ZoneLevel extends Level {
     }
   }
 
-  /// Start walking.
-  void startWalking() {
-    if (_slowWalk) {
-      currentWalkingOptions = currentTerrain.slowWalk;
-    } else {
-      currentWalkingOptions = currentTerrain.fastWalk;
-    }
-  }
-
-  /// Stop walking.
-  void stopWalking() {
-    walkingDirection = WalkingDirection.forwards;
-    currentWalkingOptions = null;
-  }
-
   /// Set to `true` after the first step has been taken.
   bool _firstStepTaken;
 
@@ -367,6 +352,21 @@ class ZoneLevel extends Level {
       boxReverbs[box.id] = reverb;
     }
     return reverb;
+  }
+
+  /// Start walking.
+  void startWalking() {
+    if (_slowWalk) {
+      currentWalkingOptions = currentTerrain.slowWalk;
+    } else {
+      currentWalkingOptions = currentTerrain.fastWalk;
+    }
+  }
+
+  /// Stop walking.
+  void stopWalking() {
+    walkingDirection = WalkingDirection.forwards;
+    currentWalkingOptions = null;
   }
 
   /// Move directly to the given [destination].
