@@ -3,7 +3,6 @@ import 'dart:math';
 
 import 'package:json_annotation/json_annotation.dart';
 
-import '../messages/custom_message.dart';
 import '../sound.dart';
 import '../world.dart';
 import 'box.dart';

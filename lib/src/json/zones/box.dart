@@ -19,12 +19,9 @@ class Box {
     required this.terrainId,
     this.enclosed = false,
     this.reverbId,
-    CustomMessage? enterMessage,
-    CustomMessage? exitMessage,
-  })  : enterMessage =
-            enterMessage ?? CustomMessage(text: 'Entering {box_name}.'),
-        leaveMessage =
-            exitMessage ?? CustomMessage(text: 'Leaving {box_name}.');
+    this.enterCommandId,
+    this.leaveCommandId,
+  });
 
   /// Create an instance from a JSON object.
   factory Box.fromJson(Map<String, dynamic> json) => _$BoxFromJson(json);
@@ -52,11 +49,14 @@ class Box {
   /// The ID of the reverb preset to use in this box.
   String? reverbId;
 
-  /// The message that will be used when entering this box.
-  final CustomMessage enterMessage;
+  /// The ID of a command to be run when entering this box.
+  final String? enterCommandId;
 
-  /// The message that will be used when leaving this box.
-  final CustomMessage leaveMessage;
+  /// The ID of a command to be run when leaving this box.
+  ///
+  /// This command will only be called when the player is not entering a new
+  /// box.
+  final String? leaveCommandId;
 
   /// Convert an instance to JSON.
   Map<String, dynamic> toJson() => _$BoxToJson(this);

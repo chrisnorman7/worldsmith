@@ -14,10 +14,8 @@ Box _$BoxFromJson(Map<String, dynamic> json) => Box(
       terrainId: json['terrainId'] as String,
       enclosed: json['enclosed'] as bool? ?? false,
       reverbId: json['reverbId'] as String?,
-      enterMessage: json['enterMessage'] == null
-          ? null
-          : CustomMessage.fromJson(
-              json['enterMessage'] as Map<String, dynamic>),
+      enterCommandId: json['enterCommandId'] as String?,
+      leaveCommandId: json['leaveCommandId'] as String?,
     );
 
 Map<String, dynamic> _$BoxToJson(Box instance) => <String, dynamic>{
@@ -28,5 +26,6 @@ Map<String, dynamic> _$BoxToJson(Box instance) => <String, dynamic>{
       'terrainId': instance.terrainId,
       'enclosed': instance.enclosed,
       'reverbId': instance.reverbId,
-      'enterMessage': instance.enterMessage,
+      'enterCommandId': instance.enterCommandId,
+      'leaveCommandId': instance.leaveCommandId,
     };

@@ -10,7 +10,6 @@ import '../../command_triggers.dart';
 import '../../constants.dart';
 import '../../util.dart';
 import '../../world_context.dart';
-import '../json/messages/custom_message.dart';
 import '../json/options/walking_options.dart';
 import '../json/sound.dart';
 import '../json/zones/box.dart';
@@ -484,29 +483,19 @@ class ZoneLevel extends Level {
       _firstStepTaken = true;
       // Boxes are different.
       setReverb(newBox);
-      final CustomMessage message;
-      final String boxName;
       if (newBox == null) {
         if (oldBox != null) {
-          message = oldBox.leaveMessage;
-          boxName = oldBox.name;
-        } else {
-          message = CustomMessage(
-            text: "Both boxes are null, and the compiler somehow doesn't know "
-                'that.',
+          worldContext.runWorldCommandId(
+            oldBox.leaveCommandId,
+            replacements: {'box_name': oldBox.name},
           );
-          boxName = 'No box';
         }
       } else {
-        message = newBox.enterMessage;
-        boxName = newBox.name;
+        worldContext.runWorldCommandId(
+          newBox.enterCommandId,
+          replacements: {'box_name': newBox.name},
+        );
       }
-      game.outputMessage(
-        worldContext.getCustomMessage(
-          message,
-          replacements: {'box_name': boxName},
-        ),
-      );
     }
     if (_firstStepTaken == false) {
       setReverb(newBox);
