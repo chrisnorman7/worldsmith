@@ -46,6 +46,10 @@ World _$WorldFromJson(Map<String, dynamic> json) => World(
           ?.map((e) =>
               AssetReferenceReference.fromJson(e as Map<String, dynamic>))
           .toList(),
+      ambianceAssets: (json['ambianceAssets'] as List<dynamic>?)
+          ?.map((e) =>
+              AssetReferenceReference.fromJson(e as Map<String, dynamic>))
+          .toList(),
       directions: (json['directions'] as Map<String, dynamic>?)?.map(
         (k, e) => MapEntry(k, (e as num).toDouble()),
       ),
@@ -83,6 +87,7 @@ Map<String, dynamic> _$WorldToJson(World instance) => <String, dynamic>{
       'interfaceSoundsAssets': instance.interfaceSoundsAssets,
       'equipmentAssets': instance.equipmentAssets,
       'terrainAssets': instance.terrainAssets,
+      'ambianceAssets': instance.ambianceAssets,
       'directions': instance.directions,
       'equipmentPositions': instance.equipmentPositions,
       'terrains': instance.terrains,

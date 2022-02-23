@@ -9,6 +9,7 @@ import '../world.dart';
 import 'box.dart';
 import 'coordinates.dart';
 import 'terrain.dart';
+import 'zone_object.dart';
 
 part 'zone.g.dart';
 
@@ -25,7 +26,9 @@ class Zone {
     this.topDownMap = true,
     CustomMessage? edgeMessage,
     this.turnAmount = 45,
-  }) : edgeMessage = edgeMessage ?? CustomMessage();
+    List<ZoneObject>? objects,
+  })  : edgeMessage = edgeMessage ?? CustomMessage(),
+        objects = objects ?? [];
 
   /// Create an instance from a JSON object.
   factory Zone.fromJson(Map<String, dynamic> json) => _$ZoneFromJson(json);
@@ -53,6 +56,9 @@ class Zone {
 
   /// The maximum turning amount in this zone.
   int turnAmount;
+
+  /// The objects in this zone.
+  final List<ZoneObject> objects;
 
   /// Get a box by its [id].
   Box getBox(String id) => boxes.firstWhere((element) => element.id == id);

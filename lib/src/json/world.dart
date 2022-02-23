@@ -65,6 +65,7 @@ class World {
     AssetList? interfaceSoundsAssets,
     AssetList? equipmentAssets,
     AssetList? terrainAssets,
+    AssetList? ambianceAssets,
     DirectionsMap? directions,
     EquipmentPositions? equipmentPositions,
     TerrainsList? terrains,
@@ -82,6 +83,7 @@ class World {
         interfaceSoundsAssets = interfaceSoundsAssets ?? [],
         equipmentAssets = equipmentAssets ?? [],
         terrainAssets = terrainAssets ?? [],
+        ambianceAssets = ambianceAssets ?? [],
         directions = directions ??
             defaultDirections.map(
               MapEntry.new,
@@ -203,6 +205,16 @@ class World {
 
   /// Terrain sounds.
   final AssetList terrainAssets;
+
+  /// The list of assets to be used for ambiances.
+  final AssetList ambianceAssets;
+
+  /// The ambiances asset store.
+  AssetStore get ambianceAssetStore => getAssetStore(
+        name: 'ambiances',
+        assets: ambianceAssets,
+        comment: 'Ambiance assets',
+      );
 
   /// The asset store for terrain sounds.
   AssetStore get terrainAssetStore => getAssetStore(

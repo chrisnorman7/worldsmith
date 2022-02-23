@@ -21,6 +21,9 @@ Zone _$ZoneFromJson(Map<String, dynamic> json) => Zone(
           ? null
           : CustomMessage.fromJson(json['edgeMessage'] as Map<String, dynamic>),
       turnAmount: json['turnAmount'] as int? ?? 45,
+      objects: (json['objects'] as List<dynamic>?)
+          ?.map((e) => ZoneObject.fromJson(e as Map<String, dynamic>))
+          .toList(),
     );
 
 Map<String, dynamic> _$ZoneToJson(Zone instance) => <String, dynamic>{
@@ -32,4 +35,5 @@ Map<String, dynamic> _$ZoneToJson(Zone instance) => <String, dynamic>{
       'topDownMap': instance.topDownMap,
       'edgeMessage': instance.edgeMessage,
       'turnAmount': instance.turnAmount,
+      'objects': instance.objects,
     };
