@@ -175,7 +175,7 @@ class ZoneLevel extends Level {
   }
 
   /// Destroy every channel in [zoneObjectSoundChannels].
-  void destroyZoneObjectSoundChannels() {
+  void destroyZoneObjectSounds() {
     for (final object in zone.objects) {
       zoneObjectSoundChannels.remove(object.id)?.destroy();
       zoneObjectAmbiances.remove(object.id)?.sound.destroy();
@@ -418,6 +418,7 @@ class ZoneLevel extends Level {
     while (boxReverbs.isNotEmpty) {
       boxReverbs.remove(boxReverbs.keys.first)!.destroy();
     }
+    destroyZoneObjectSounds();
     affectedInterfaceSounds.destroy();
   }
 
