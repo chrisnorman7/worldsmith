@@ -7,6 +7,7 @@
 * Added the ability to set how far the player will turn in a given zone.
 * A new heading can now be set with teleport commands.
 * Added zone objects with the `ZoneObject` class.
+* Replace a bunch of `CustomMessage` properties with `WorldCommand` ones.
 
 ## [0.13.0]
 
