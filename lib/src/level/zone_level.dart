@@ -546,6 +546,10 @@ class ZoneLevel extends Level {
       );
     }
     coordinates = destination;
+    final object = getZoneObject();
+    if (object != null) {
+      worldContext.runWorldCommandId(object.collideCommandId);
+    }
     if (updateLastWalked) {
       timeSinceLastWalked = 0;
     }
