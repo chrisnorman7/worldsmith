@@ -16,6 +16,7 @@ Box _$BoxFromJson(Map<String, dynamic> json) => Box(
       reverbId: json['reverbId'] as String?,
       enterCommandId: json['enterCommandId'] as String?,
       leaveCommandId: json['leaveCommandId'] as String?,
+      walkCommandId: json['walkCommandId'] as String?,
     );
 
 Map<String, dynamic> _$BoxToJson(Box instance) => <String, dynamic>{
@@ -28,4 +29,5 @@ Map<String, dynamic> _$BoxToJson(Box instance) => <String, dynamic>{
       'reverbId': instance.reverbId,
       'enterCommandId': instance.enterCommandId,
       'leaveCommandId': instance.leaveCommandId,
+      'walkCommandId': instance.walkCommandId,
     };
