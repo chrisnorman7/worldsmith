@@ -36,6 +36,7 @@ class ZoneLevel extends Level {
         _coordinates = coordinates,
         _coordinatesOffset = Point(0, 0),
         _tiles = [],
+        _objects = [],
         _end = Point(0, 0),
         affectedInterfaceSounds = worldContext.game.createSoundChannel(),
         boxReverbs = {},
@@ -124,9 +125,14 @@ class ZoneLevel extends Level {
   int timeSinceLastWalked;
 
   final List<List<String?>> _tiles;
+  final List<List<String?>> _objects;
 
   /// The loaded tiles.
   List<List<String?>> get tiles => _tiles;
+
+  /// The objects that have been loaded from the [zone].
+  List<List<String?>> get objects => _objects;
+
   Point<int> _coordinatesOffset;
 
   /// The difference between the origin and the minimum coordinates from boxes.
@@ -232,14 +238,9 @@ class ZoneLevel extends Level {
   /// Get the zone object at the given position.
   ZoneObject? getZoneObject([Point<double>? where]) {
     where ??= coordinates;
-    for (final object in zone.objects) {
-      final coordinates = zone.getAbsoluteCoordinates(
-        object.initialCoordinates,
-      );
-      if (where.x.floor() == coordinates.x &&
-          where.y.floor() == coordinates.y) {
-        worldContext.runWorldCommandId(object.collideCommandId);
-      }
+    final objectId = _objects[where.x.floor()][where.y.floor()];
+    if (objectId != null) {
+      return zone.getZoneObject(objectId);
     }
     return null;
   }
@@ -386,10 +387,17 @@ class ZoneLevel extends Level {
       _end.x + coordinatesOffset.x + 1,
       _end.y + coordinatesOffset.y + 1,
     );
-    // Null all the tiles.
+    // Null all the tiles and objects.
     _tiles.clear();
+    _objects.clear();
     for (var i = 0; i < (_end.x + 1); i++) {
       _tiles.add(
+        List<String?>.filled(
+          _end.y + 1,
+          null,
+        ),
+      );
+      _objects.add(
         List<String?>.filled(
           _end.y + 1,
           null,
@@ -409,6 +417,13 @@ class ZoneLevel extends Level {
           _tiles[x][y] = box.id;
         }
       }
+    }
+    // Load all objects.
+    for (final object in zone.objects) {
+      final objectCoordinates = zone.getAbsoluteCoordinates(
+        object.initialCoordinates,
+      );
+      _objects[objectCoordinates.x][objectCoordinates.y] = object.id;
     }
     final box = getBox();
     if (box != null) {

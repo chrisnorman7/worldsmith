@@ -61,6 +61,11 @@ class Zone {
   /// Get a box by its [id].
   Box getBox(String id) => boxes.firstWhere((element) => element.id == id);
 
+  /// Get an object by its [id].
+  ZoneObject getZoneObject(String id) => objects.firstWhere(
+        (element) => element.id == id,
+      );
+
   /// Get the absolute coordinates for the given [Coordinates].
   Point<int> getAbsoluteCoordinates(Coordinates coordinates) {
     final clamp = coordinates.clamp;
