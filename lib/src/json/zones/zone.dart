@@ -50,7 +50,7 @@ class Zone {
   bool topDownMap;
 
   /// The ID of the command to use when colliding with the edge of this zone.
-  final String? edgeCommandId;
+  String? edgeCommandId;
 
   /// The maximum turning amount in this zone.
   int turnAmount;
