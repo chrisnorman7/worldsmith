@@ -16,15 +16,16 @@ void main() {
       pondZone.generateTerrains(world);
       final game = CustomGame(world.title);
       final worldContext = WorldContext(game: game, world: world);
-      final level = ZoneLevel(worldContext: worldContext, zone: pondZone.zone);
+      final level = ZoneLevel(worldContext: worldContext, zone: pondZone.zone)
+        ..onPush();
       test(
         'Initialisation',
         () {
           expect(level.coordinates, Point(0.0, 0.0));
           expect(level.coordinatesOffset, Point(2, 2));
           expect(level.heading, isZero);
-          expect(level.tiles.length, 10);
-          expect(level.tiles.first.length, 10);
+          expect(level.tiles.length, level.size.x + 1);
+          expect(level.tiles.first.length, level.size.y + 1);
         },
       );
       test(
@@ -97,7 +98,10 @@ void main() {
           );
           expect(
             () => level.getBox(
-              Point(expected.x.toDouble(), expected.y.toDouble()),
+              Point(
+                expected.x.toDouble() + 1,
+                expected.y.toDouble() + 1,
+              ),
             ),
             throwsA(isA<RangeError>()),
           );
