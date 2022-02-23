@@ -6,6 +6,7 @@
 
 * Added the ability to set how far the player will turn in a given zone.
 * A new heading can now be set with teleport commands.
+* Added zone objects with the `ZoneObject` class.
 
 ## [0.13.0]
 
