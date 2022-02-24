@@ -373,28 +373,31 @@ class WorldContext {
           'to call itself.',
         );
       }
-      final callAfter = callCommand.callAfter;
-      final command = world.getCommand(callCommand.commandId);
-      if (callAfter == null) {
-        runCommand(
-          command: command,
-          replacements: replacements,
-          calledCommands: [...calledCommands, callCommand],
-          nullSound: nullSound,
-          soundChannel: soundChannel,
-          zoneLevel: zoneLevel,
-        );
-      } else {
-        game.callAfter(
-          runAfter: callAfter,
-          func: () => runCommand(
+      if (callCommand.chance == 1 ||
+          game.random.nextInt(callCommand.chance) == 0) {
+        final callAfter = callCommand.callAfter;
+        final command = world.getCommand(callCommand.commandId);
+        if (callAfter == null) {
+          runCommand(
             command: command,
             replacements: replacements,
+            calledCommands: [...calledCommands, callCommand],
             nullSound: nullSound,
             soundChannel: soundChannel,
             zoneLevel: zoneLevel,
-          ),
-        );
+          );
+        } else {
+          game.callAfter(
+            runAfter: callAfter,
+            func: () => runCommand(
+              command: command,
+              replacements: replacements,
+              nullSound: nullSound,
+              soundChannel: soundChannel,
+              zoneLevel: zoneLevel,
+            ),
+          );
+        }
       }
     }
   }
