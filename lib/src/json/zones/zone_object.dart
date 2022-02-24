@@ -1,6 +1,7 @@
 /// Provides the [ZoneObject] class.
 import 'package:json_annotation/json_annotation.dart';
 
+import '../commands/call_command.dart';
 import '../sound.dart';
 import 'coordinates.dart';
 import 'zone.dart';
@@ -16,7 +17,7 @@ class ZoneObject {
     required this.name,
     Coordinates? initialCoordinates,
     this.ambiance,
-    this.collideCommandId,
+    this.collideCommand,
   }) : initialCoordinates = initialCoordinates ?? Coordinates(0, 0);
 
   /// Create an instance from a JSON object.
@@ -36,7 +37,7 @@ class ZoneObject {
   Sound? ambiance;
 
   /// The ID of a command to run when the player collides with this object.
-  String? collideCommandId;
+  CallCommand? collideCommand;
 
   /// Convert an instance to JSON.
   Map<String, dynamic> toJson() => _$ZoneObjectToJson(this);

@@ -335,6 +335,27 @@ class WorldContext {
       }
     }
     final callCommand = command.callCommand;
+    runCallCommand(
+      callCommand: callCommand,
+      calledCommands: calledCommands,
+      replacements: replacements,
+      nullSound: nullSound,
+      soundChannel: soundChannel,
+      zoneLevel: zoneLevel,
+    );
+  }
+
+  /// Call the specified [callCommand].
+  ///
+  /// If [callCommand] is `null`, nothing happens.
+  void runCallCommand({
+    required CallCommand? callCommand,
+    List<CallCommand> calledCommands = const [],
+    Map<String, String> replacements = const {},
+    AssetReference? nullSound,
+    SoundChannel? soundChannel,
+    ZoneLevel? zoneLevel,
+  }) {
     if (callCommand != null) {
       if (calledCommands.contains(callCommand)) {
         final category = world.commandCategories.firstWhere(

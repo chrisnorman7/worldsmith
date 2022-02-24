@@ -492,18 +492,16 @@ class ZoneLevel extends Level {
         destination.y < 0 ||
         destination.x >= s.x ||
         destination.y >= s.y) {
-      worldContext.onEdgeOfZoneLevel(this, destination);
-      final commandId = zone.edgeCommandId;
-      if (commandId != null) {
-        worldContext.runWorldCommandId(
-          commandId,
+      worldContext
+        ..onEdgeOfZoneLevel(this, destination)
+        ..runCallCommand(
+          callCommand: zone.edgeCommand,
           replacements: {
             'zone_name': zone.name,
             'x': destination.x.toStringAsFixed(2),
             'y': destination.y.toStringAsFixed(2)
           },
         );
-      }
       if (updateLastWalked) {
         timeSinceLastWalked = 0;
       }
@@ -516,14 +514,14 @@ class ZoneLevel extends Level {
       setReverb(newBox);
       if (newBox == null) {
         if (oldBox != null) {
-          worldContext.runWorldCommandId(
-            oldBox.leaveCommandId,
+          worldContext.runCallCommand(
+            callCommand: oldBox.leaveCommand,
             replacements: {'box_name': oldBox.name},
           );
         }
       } else {
-        worldContext.runWorldCommandId(
-          newBox.enterCommandId,
+        worldContext.runCallCommand(
+          callCommand: newBox.enterCommand,
           replacements: {'box_name': newBox.name},
         );
       }
@@ -537,7 +535,7 @@ class ZoneLevel extends Level {
     } else {
       terrain = worldContext.world.getTerrain(newBox.terrainId);
       if (runWalkCommand == true) {
-        worldContext.runWorldCommandId(newBox.walkCommandId);
+        worldContext.runCallCommand(callCommand: newBox.walkCommand);
       }
     }
     currentTerrain = terrain;
@@ -563,7 +561,7 @@ class ZoneLevel extends Level {
     coordinates = destination;
     final object = getZoneObject();
     if (object != null) {
-      worldContext.runWorldCommandId(object.collideCommandId);
+      worldContext.runCallCommand(callCommand: object.collideCommand);
     }
     if (updateLastWalked) {
       timeSinceLastWalked = 0;

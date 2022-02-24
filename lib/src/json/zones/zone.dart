@@ -3,6 +3,7 @@ import 'dart:math';
 
 import 'package:json_annotation/json_annotation.dart';
 
+import '../commands/call_command.dart';
 import '../sound.dart';
 import '../world.dart';
 import 'box.dart';
@@ -23,7 +24,7 @@ class Zone {
     required this.defaultTerrainId,
     this.music,
     this.topDownMap = true,
-    this.edgeCommandId,
+    this.edgeCommand,
     this.turnAmount = 45,
     List<ZoneObject>? objects,
   }) : objects = objects ?? [];
@@ -50,7 +51,7 @@ class Zone {
   bool topDownMap;
 
   /// The ID of the command to use when colliding with the edge of this zone.
-  String? edgeCommandId;
+  CallCommand? edgeCommand;
 
   /// The maximum turning amount in this zone.
   int turnAmount;

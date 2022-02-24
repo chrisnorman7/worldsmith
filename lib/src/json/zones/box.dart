@@ -1,6 +1,7 @@
 /// Provides the [Box] class.
 import 'package:json_annotation/json_annotation.dart';
 
+import '../commands/call_command.dart';
 import 'coordinates.dart';
 import 'zone.dart';
 
@@ -18,9 +19,9 @@ class Box {
     required this.terrainId,
     this.enclosed = false,
     this.reverbId,
-    this.enterCommandId,
-    this.leaveCommandId,
-    this.walkCommandId,
+    this.enterCommand,
+    this.leaveCommand,
+    this.walkCommand,
   });
 
   /// Create an instance from a JSON object.
@@ -50,16 +51,16 @@ class Box {
   String? reverbId;
 
   /// The ID of a command to be run when entering this box.
-  String? enterCommandId;
+  CallCommand? enterCommand;
 
   /// The ID of a command to be run when leaving this box.
   ///
   /// This command will only be called when the player is not entering a new
   /// box.
-  String? leaveCommandId;
+  CallCommand? leaveCommand;
 
   /// A command to be run every time the player walks in this box.
-  String? walkCommandId;
+  CallCommand? walkCommand;
 
   /// Convert an instance to JSON.
   Map<String, dynamic> toJson() => _$BoxToJson(this);
