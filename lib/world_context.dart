@@ -364,7 +364,7 @@ class WorldContext {
           zoneLevel: zoneLevel,
         );
       } else {
-        game.registerTask(
+        game.callAfter(
           runAfter: callAfter,
           func: () => runCommand(
             command: command,

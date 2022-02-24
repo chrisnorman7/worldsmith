@@ -85,7 +85,7 @@ class MainMenu extends Menu {
               if (fadeTime != null) {
                 game
                   ..popLevel(ambianceFadeTime: fadeTime)
-                  ..registerTask(
+                  ..callAfter(
                     runAfter: (fadeTime * 1000).floor(),
                     func: game.stop,
                   );
