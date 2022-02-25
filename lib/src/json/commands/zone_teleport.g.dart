@@ -20,9 +20,9 @@ ZoneTeleport _$ZoneTeleportFromJson(Map<String, dynamic> json) => ZoneTeleport(
 
 Map<String, dynamic> _$ZoneTeleportToJson(ZoneTeleport instance) =>
     <String, dynamic>{
+      'zoneId': instance.zoneId,
+      'fadeTime': instance.fadeTime,
       'minCoordinates': instance.minCoordinates,
       'maxCoordinates': instance.maxCoordinates,
       'heading': instance.heading,
-      'zoneId': instance.zoneId,
-      'fadeTime': instance.fadeTime,
     };

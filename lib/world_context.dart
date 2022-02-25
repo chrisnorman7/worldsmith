@@ -279,15 +279,7 @@ class WorldContext {
     }
     if (zoneLevel != null) {
       final localTeleport = command.localTeleport;
-      if (localTeleport != null) {
-        final destination = localTeleport.getCoordinates(
-          zone: zoneLevel.zone,
-          random: game.random,
-        );
-        zoneLevel
-          ..moveTo(destination: destination.toDouble())
-          ..heading = localTeleport.heading;
-      }
+      if (localTeleport != null) {}
       final walkingMode = command.walkingMode;
       if (walkingMode != null) {
         switch (walkingMode) {
