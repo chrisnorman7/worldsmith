@@ -9,6 +9,8 @@
 * Added zone objects with the `ZoneObject` class.
 * Replace a bunch of `CustomMessage` properties with `WorldCommand` ones.
 * Added a command to be run when walking in a box.
+* Added the `LocationMarker` class.
+* Separated the `ZoneTeleport` and `LocalTeleport` classes.
 
 ## [0.13.0]
 

@@ -8,10 +8,12 @@ part of 'local_teleport.dart';
 
 LocalTeleport _$LocalTeleportFromJson(Map<String, dynamic> json) =>
     LocalTeleport(
+      locationMarkerId: json['locationMarkerId'] as String,
       heading: json['heading'] as int? ?? 0,
     );
 
 Map<String, dynamic> _$LocalTeleportToJson(LocalTeleport instance) =>
     <String, dynamic>{
+      'locationMarkerId': instance.locationMarkerId,
       'heading': instance.heading,
     };

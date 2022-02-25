@@ -1,6 +1,6 @@
 import 'package:json_annotation/json_annotation.dart';
 
-import '../zones/coordinates.dart';
+import '../zones/location_marker.dart';
 
 part 'local_teleport.g.dart';
 
@@ -9,12 +9,16 @@ part 'local_teleport.g.dart';
 class LocalTeleport {
   /// Create an instance.
   LocalTeleport({
+    required this.locationMarkerId,
     this.heading = 0,
   });
 
   /// Create an instance from a JSON object.
   factory LocalTeleport.fromJson(Map<String, dynamic> json) =>
       _$LocalTeleportFromJson(json);
+
+  /// The ID of the [LocationMarker] to use.
+  String locationMarkerId;
 
   /// The new heading to use.
   int heading;

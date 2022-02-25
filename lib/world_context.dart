@@ -278,8 +278,18 @@ class WorldContext {
       );
     }
     if (zoneLevel != null) {
+      final zone = zoneLevel.zone;
       final localTeleport = command.localTeleport;
-      if (localTeleport != null) {}
+      if (localTeleport != null) {
+        final marker = zone.getLocationMarker(localTeleport.locationMarkerId);
+        final destination = zone.getAbsoluteCoordinates(marker.coordinates);
+        zoneLevel
+          ..moveTo(
+            destination: destination.toDouble(),
+            updateLastWalked: false,
+          )
+          ..heading = localTeleport.heading;
+      }
       final walkingMode = command.walkingMode;
       if (walkingMode != null) {
         switch (walkingMode) {

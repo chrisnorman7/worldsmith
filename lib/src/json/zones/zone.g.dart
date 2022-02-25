@@ -24,6 +24,9 @@ Zone _$ZoneFromJson(Map<String, dynamic> json) => Zone(
       objects: (json['objects'] as List<dynamic>?)
           ?.map((e) => ZoneObject.fromJson(e as Map<String, dynamic>))
           .toList(),
+      locationMarkers: (json['locationMarkers'] as List<dynamic>?)
+          ?.map((e) => LocationMarker.fromJson(e as Map<String, dynamic>))
+          .toList(),
     );
 
 Map<String, dynamic> _$ZoneToJson(Zone instance) => <String, dynamic>{
@@ -36,4 +39,5 @@ Map<String, dynamic> _$ZoneToJson(Zone instance) => <String, dynamic>{
       'edgeCommand': instance.edgeCommand,
       'turnAmount': instance.turnAmount,
       'objects': instance.objects,
+      'locationMarkers': instance.locationMarkers,
     };

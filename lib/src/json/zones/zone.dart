@@ -8,6 +8,7 @@ import '../sound.dart';
 import '../world.dart';
 import 'box.dart';
 import 'coordinates.dart';
+import 'location_marker.dart';
 import 'terrain.dart';
 import 'zone_object.dart';
 
@@ -27,7 +28,9 @@ class Zone {
     this.edgeCommand,
     this.turnAmount = 45,
     List<ZoneObject>? objects,
-  }) : objects = objects ?? [];
+    List<LocationMarker>? locationMarkers,
+  })  : objects = objects ?? [],
+        locationMarkers = locationMarkers ?? [];
 
   /// Create an instance from a JSON object.
   factory Zone.fromJson(Map<String, dynamic> json) => _$ZoneFromJson(json);
@@ -58,6 +61,14 @@ class Zone {
 
   /// The objects in this zone.
   final List<ZoneObject> objects;
+
+  /// The location markers in this zone.
+  final List<LocationMarker> locationMarkers;
+
+  /// Get the location marker with the given [id].
+  LocationMarker getLocationMarker(String id) => locationMarkers.firstWhere(
+        (element) => element.id == id,
+      );
 
   /// Get a box by its [id].
   Box getBox(String id) => boxes.firstWhere((element) => element.id == id);
