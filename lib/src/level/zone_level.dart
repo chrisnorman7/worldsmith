@@ -50,6 +50,11 @@ class ZoneLevel extends Level {
               getAmbiance(
                 assets: worldContext.world.musicAssets,
                 sound: zone.music,
+              )!,
+            for (final ambiance in zone.ambiances)
+              getAmbiance(
+                assets: worldContext.world.ambianceAssets,
+                sound: ambiance,
               )!
           ],
         );
