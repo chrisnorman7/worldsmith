@@ -25,6 +25,7 @@ void main() {
           expect(z.boxes, contains(westBank));
           expect(z.music, isNull);
           expect(z.topDownMap, isTrue);
+          expect(z.ambiances, isEmpty);
         },
       );
       test(

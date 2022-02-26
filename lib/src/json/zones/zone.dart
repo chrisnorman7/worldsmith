@@ -24,12 +24,14 @@ class Zone {
     required this.boxes,
     required this.defaultTerrainId,
     this.music,
+    List<Sound>? ambiances,
     this.topDownMap = true,
     this.edgeCommand,
     this.turnAmount = 45,
     List<ZoneObject>? objects,
     List<LocationMarker>? locationMarkers,
-  })  : objects = objects ?? [],
+  })  : ambiances = ambiances ?? [],
+        objects = objects ?? [],
         locationMarkers = locationMarkers ?? [];
 
   /// Create an instance from a JSON object.
@@ -49,6 +51,9 @@ class Zone {
 
   /// The music for this zone.
   Sound? music;
+
+  /// The ambiances for this zone.
+  final List<Sound> ambiances;
 
   /// Whether or not a top-down map of this zone can be viewed.
   bool topDownMap;

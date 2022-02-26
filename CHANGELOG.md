@@ -5,6 +5,7 @@
 ### Added
 
 * added options for configuring synthizer.
+* Added ambiances to zones.
 
 ## [0.15.0]
 
