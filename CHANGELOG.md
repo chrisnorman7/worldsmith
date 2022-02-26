@@ -1,5 +1,11 @@
 # Changelog
 
+## [0.16.0]
+
+### Added
+
+* added an option to include libsndfile with your project.
+
 ## [0.15.0]
 
 ### Added

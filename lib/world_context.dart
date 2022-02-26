@@ -223,7 +223,13 @@ class WorldContext {
     Synthizer? synthizer;
     Context? context;
     if (onSound == null) {
-      synthizer = Synthizer()..initialize();
+      final soundOptions = world.soundOptions;
+      synthizer = Synthizer()
+        ..initialize(
+          libsndfilePath: soundOptions.libsndfilePath,
+          logLevel: soundOptions.synthizerLogLevel,
+          loggingBackend: soundOptions.synthizerLoggingBackend,
+        );
       context = synthizer.createContext();
       final soundManager = SoundManager(
         game: game,
