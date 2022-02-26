@@ -4,7 +4,7 @@
 
 ### Added
 
-* added an option to include libsndfile with your project.
+* added options for configuring synthizer.
 
 ## [0.15.0]
 
