@@ -13,6 +13,24 @@ void main() {
   group(
     'ZoneLevel class',
     () {
+      final ambiance1Asset = AssetReference.file('ambiance1.mp3');
+      final ambiance2Asset = AssetReference.file('ambiance2.mp3');
+      final ambiance1Reference = AssetReferenceReference(
+        variableName: 'ambiance1',
+        reference: ambiance1Asset,
+      );
+      final ambiance2Reference = AssetReferenceReference(
+        variableName: 'ambiance2',
+        reference: ambiance2Asset,
+      );
+      final ambiance1 = Sound(
+        id: ambiance1Reference.variableName,
+        gain: 1.0,
+      );
+      final ambiance2 = Sound(
+        id: ambiance2Reference.variableName,
+        gain: 2.0,
+      );
       final slowWalkReference = AssetReferenceReference(
         variableName: 'slow_walk',
         reference: AssetReference.file('slow_walk.mp3'),
@@ -35,37 +53,46 @@ void main() {
           sound: Sound(id: fastWalkReference.variableName),
         ),
       );
+      final musicAsset = AssetReference.file('music.mp3');
+      final musicReference = AssetReferenceReference(
+        variableName: 'music',
+        reference: musicAsset,
+        comment: 'Level music',
+      );
+      final music = Sound(id: musicReference.variableName, gain: 2.0);
       final pondZone = PondZone.generate();
       final world = World(
         terrainAssets: [slowWalkReference, fastWalkReference],
         terrains: [defaultTerrain],
+        ambianceAssets: [ambiance1Reference, ambiance2Reference],
+        musicAssets: [musicReference],
       );
       final game = CustomGame(world.title);
       final worldContext = WorldContext(game: game, world: world);
       pondZone.generateTerrains(world);
-      final level = ZoneLevel(worldContext: worldContext, zone: pondZone.zone)
-        ..onPush();
+      final pondZoneLevel =
+          ZoneLevel(worldContext: worldContext, zone: pondZone.zone)..onPush();
       test(
         'Initialisation',
         () {
-          expect(level.coordinates, Point(0.0, 0.0));
-          expect(level.coordinatesOffset, Point(2, 2));
-          expect(level.heading, isZero);
-          expect(level.tiles.length, level.size.x + 1);
-          expect(level.tiles.first.length, level.size.y + 1);
+          expect(pondZoneLevel.coordinates, Point(0.0, 0.0));
+          expect(pondZoneLevel.coordinatesOffset, Point(2, 2));
+          expect(pondZoneLevel.heading, isZero);
+          expect(pondZoneLevel.tiles.length, pondZoneLevel.size.x + 1);
+          expect(pondZoneLevel.tiles.first.length, pondZoneLevel.size.y + 1);
         },
       );
       test(
         'getBox',
         () {
-          expect(level.getBox(), pondZone.westBank);
+          expect(pondZoneLevel.getBox(), pondZone.westBank);
           final point =
               pondZone.zone.getAbsoluteCoordinates(pondZone.pondBox.start);
           expect(
-            level.getBox(
+            pondZoneLevel.getBox(
               Point(
-                point.x + level.coordinatesOffset.x.toDouble(),
-                point.y + level.coordinatesOffset.y.toDouble(),
+                point.x + pondZoneLevel.coordinatesOffset.x.toDouble(),
+                point.y + pondZoneLevel.coordinatesOffset.y.toDouble(),
               ),
             ),
             pondZone.pondBox,
@@ -76,10 +103,10 @@ void main() {
         '.showCoordinates',
         () {
           game.strings.clear();
-          level.showCoordinates();
+          pondZoneLevel.showCoordinates();
           expect(game.strings.length, 1);
           expect(game.strings.first, '0, 0');
-          level
+          pondZoneLevel
             ..coordinates = Point(pi, 15.54321)
             ..showCoordinates();
           expect(game.strings.length, 2);
@@ -90,20 +117,20 @@ void main() {
         'showFacing',
         () {
           game.strings.clear();
-          level.showFacing();
+          pondZoneLevel.showFacing();
           expect(game.strings.length, 1);
           expect(game.strings.first, 'North (0 degrees)');
-          level
+          pondZoneLevel
             ..heading = 45
             ..showFacing();
           expect(game.strings.length, 2);
           expect(game.strings.last, 'Northeast (45 degrees)');
-          level
+          pondZoneLevel
             ..heading = 52
             ..showFacing();
           expect(game.strings.length, 3);
           expect(game.strings.last, 'Northeast (52 degrees)');
-          level
+          pondZoneLevel
             ..heading = 359
             ..showFacing();
           expect(game.strings.last, 'Northwest (359 degrees)');
@@ -116,15 +143,15 @@ void main() {
             pondZone.eastBank.end,
           );
           final expected = Point(
-            end.x + level.coordinatesOffset.x + 1,
-            end.y + level.coordinatesOffset.y + 1,
+            end.x + pondZoneLevel.coordinatesOffset.x + 1,
+            end.y + pondZoneLevel.coordinatesOffset.y + 1,
           );
           expect(
-            level.size,
+            pondZoneLevel.size,
             expected,
           );
           expect(
-            () => level.getBox(
+            () => pondZoneLevel.getBox(
               Point(
                 expected.x.toDouble() + 1,
                 expected.y.toDouble() + 1,
@@ -137,14 +164,6 @@ void main() {
       test(
         'Music',
         () {
-          final musicAsset = AssetReference.file('music.mp3');
-          final musicReference = AssetReferenceReference(
-            variableName: 'music',
-            reference: musicAsset,
-            comment: 'Level music',
-          );
-          world.musicAssets.add(musicReference);
-          final music = Sound(id: musicReference.variableName, gain: 2.0);
           final zone = Zone(
             id: 'zone',
             name: 'Test Zone',
@@ -159,6 +178,28 @@ void main() {
           expect(levelMusic.gain, music.gain);
           expect(levelMusic.position, isNull);
           expect(levelMusic.sound, musicAsset);
+        },
+      );
+      test(
+        '.ambiances',
+        () {
+          final zone = Zone(
+            id: 'zone_with_ambiances',
+            name: 'Zone With Ambiances',
+            boxes: [],
+            defaultTerrainId: defaultTerrain.id,
+            ambiances: [ambiance1, ambiance2],
+          );
+          final zoneLevel = ZoneLevel(worldContext: worldContext, zone: zone);
+          expect(zoneLevel.ambiances.length, 2);
+          final ambiance1Ambiance = zoneLevel.ambiances.first;
+          expect(ambiance1Ambiance.gain, ambiance1.gain);
+          expect(ambiance1Ambiance.position, isNull);
+          expect(ambiance1Ambiance.sound, ambiance1Asset);
+          final ambiance2Ambiance = zoneLevel.ambiances.last;
+          expect(ambiance2Ambiance.gain, ambiance2.gain);
+          expect(ambiance2Ambiance.position, isNull);
+          expect(ambiance2Ambiance.sound, ambiance2Asset);
         },
       );
     },
