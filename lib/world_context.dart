@@ -1,3 +1,5 @@
+// ignore_for_file: avoid_print
+
 import 'dart:convert';
 import 'dart:io';
 import 'dart:math';
@@ -5,6 +7,7 @@ import 'dart:math';
 import 'package:dart_sdl/dart_sdl.dart';
 import 'package:dart_synthizer/dart_synthizer.dart';
 import 'package:encrypt/encrypt.dart';
+import 'package:path/path.dart' as path;
 import 'package:ziggurat/menus.dart';
 import 'package:ziggurat/sound.dart';
 import 'package:ziggurat/ziggurat.dart';
@@ -12,49 +15,50 @@ import 'package:ziggurat_sounds/ziggurat_sounds.dart';
 
 import 'command_triggers.dart';
 import 'constants.dart';
-import 'src/json/commands/call_command.dart';
-import 'src/json/commands/world_command.dart';
-import 'src/json/messages/custom_message.dart';
-import 'src/json/messages/custom_sound.dart';
-import 'src/json/sound.dart';
-import 'src/json/world.dart';
-import 'src/json/zones/zone.dart';
-import 'src/level/credits_menu.dart';
 import 'src/level/main_menu.dart';
-import 'src/level/pause_menu.dart';
 import 'src/level/sound_options_menu.dart';
-import 'src/level/walking_mode.dart';
-import 'src/level/zone_level.dart';
 import 'util.dart';
+import 'worldsmith.dart';
 
 /// A class for running [World] instances.
 class WorldContext {
   /// Create an instance.
-  const WorldContext({
+  WorldContext({
     required this.sdl,
     required this.game,
     required this.world,
     this.customCommands = const {},
     this.errorHandler,
-  });
+  }) : preferencesDirectory = sdl.getPrefPath(
+          world.globalOptions.orgName,
+          world.globalOptions.appName,
+        );
 
   /// Return an instance with its [world] loaded from an encrypted file.
-  WorldContext.loadEncrypted({
+  factory WorldContext.loadEncrypted({
     required String encryptionKey,
     String filename = encryptedWorldFilename,
     Game? game,
-    this.customCommands = const {},
-    this.errorHandler,
-  })  : sdl = Sdl(),
-        game = game ??
-            Game(
-              'Worldsmith Game',
-              triggerMap: defaultTriggerMap,
-            ),
-        world = World.loadEncrypted(
-          encryptionKey: encryptionKey,
-          filename: filename,
-        );
+    CustomCommandsMap customCommands = const {},
+    ErrorHandler? errorHandler,
+  }) {
+    final sdl = Sdl();
+    final world = World.loadEncrypted(
+      encryptionKey: encryptionKey,
+      filename: filename,
+    );
+    return WorldContext(
+      sdl: sdl,
+      game: game ??
+          Game(
+            'Worldsmith Game',
+            triggerMap: defaultTriggerMap,
+          ),
+      world: world,
+      customCommands: customCommands,
+      errorHandler: errorHandler,
+    );
+  }
 
   /// The SDL instance to use.
   ///
@@ -71,18 +75,48 @@ class WorldContext {
   ///
   /// These commands are used when the [WorldCommand] class has a custom command
   /// string assigned.
-  final Map<String, EventCallback<WorldContext>> customCommands;
+  final CustomCommandsMap customCommands;
 
-  /// Get the directory where preferences should be stored.
-  Directory get preferencesDirectory => Directory(
-        sdl.getPrefPath(
-          world.globalOptions.orgName,
-          world.globalOptions.appName,
-        ),
-      );
+  /// The directory where preferences should be stored.
+  final String preferencesDirectory;
+
+  /// The file where the trigger map should be stored.
+  File get triggerMapFile =>
+      File(path.join(preferencesDirectory, triggerMapFilename));
+
+  /// The loaded player preferences.
+  PlayerPreferences? _playerPreferences;
+
+  /// Get the current player preferences.
+  ///
+  /// If none are loaded, then a copy of the [world]'s default preferences will
+  /// be created, saved, and returned.
+  PlayerPreferences get playerPreferences {
+    final currentPreferences = _playerPreferences;
+    if (currentPreferences != null) {
+      return currentPreferences;
+    }
+    final preferences = PlayerPreferences.fromJson(
+      world.defaultPlayerPreferences.toJson(),
+    );
+    _playerPreferences = preferences;
+    savePlayerPreferences();
+    return preferences;
+  }
+
+  /// Save the current [playerPreferences];
+  void savePlayerPreferences() {
+    final preferences = _playerPreferences!;
+    final preferencesFile = File(
+      path.join(preferencesDirectory, preferencesFilename),
+    );
+    final json = preferences.toJson();
+    final data = indentedJsonEncoder.convert(json);
+    preferencesFile.writeAsStringSync(data);
+  }
 
   /// A function that will handle errors from [WorldCommand] instances.
-  final void Function(Object e, StackTrace? s)? errorHandler;
+  final ErrorHandler? errorHandler;
 
   /// A function that will be called when hitting the edge of a [ZoneLevel].
   void onEdgeOfZoneLevel(ZoneLevel zoneLevel, Point<double> coordinates) {}
@@ -223,11 +257,24 @@ class WorldContext {
   /// Run this world.
   ///
   /// If [sdl] is not `null`, then it should call [Sdl.init] itself.
-  Future<void> run({
-    EventCallback<SoundEvent>? onSound,
-  }) async {
+  Future<void> run({EventCallback<SoundEvent>? onSound}) async {
     Synthizer? synthizer;
     Context? context;
+    if (triggerMapFile.existsSync() == true) {
+      final data = triggerMapFile.readAsStringSync();
+      final json = jsonDecode(data) as JsonType;
+      final triggerMap = TriggerMap.fromJson(json);
+      print('Working.');
+      for (final trigger in triggerMap.triggers) {
+        print(trigger.name);
+        game.triggerMap.triggers.removeWhere(
+          (element) => element.name == trigger.name,
+        );
+        print('Removed.');
+      }
+      game.triggerMap.triggers.addAll(triggerMap.triggers);
+    }
+    final preferences = playerPreferences;
     if (onSound == null) {
       final soundOptions = world.soundOptions;
       synthizer = Synthizer()
@@ -254,12 +301,21 @@ class WorldContext {
       await game.run(
         sdl,
         framesPerSecond: world.globalOptions.framesPerSecond,
-        onStart: () => game
-          ..setDefaultPannerStrategy(world.soundOptions.defaultPannerStrategy)
-          ..pushLevel(
-            getMainMenu(),
-          ),
+        onStart: () {
+          game
+            ..interfaceSounds.gain = preferences.interfaceSoundsGain
+            ..musicSounds.gain = preferences.musicGain
+            ..ambianceSounds.gain = preferences.musicGain
+            ..setDefaultPannerStrategy(preferences.pannerStrategy)
+            ..pushLevel(
+              getMainMenu(),
+            );
+        },
       );
+      savePlayerPreferences();
+      final json = game.triggerMap.toJson();
+      final data = indentedJsonEncoder.convert(json);
+      triggerMapFile.writeAsStringSync(data);
     } catch (e) {
       rethrow;
     } finally {

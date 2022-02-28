@@ -1,7 +1,6 @@
 /// Provides the [SoundOptions] class.
 import 'package:dart_synthizer/dart_synthizer.dart';
 import 'package:json_annotation/json_annotation.dart';
-import 'package:ziggurat/sound.dart';
 
 import '../sound.dart';
 
@@ -15,7 +14,6 @@ class SoundOptions {
     this.defaultGain = 0.7,
     this.menuMoveSound,
     this.menuActivateSound,
-    this.defaultPannerStrategy = DefaultPannerStrategy.stereo,
     this.synthizerLogLevel,
     this.synthizerLoggingBackend,
     this.libsndfilePath,
@@ -33,9 +31,6 @@ class SoundOptions {
 
   /// The sound to play when activating menu options.
   Sound? menuActivateSound;
-
-  /// The default panning strategy for this game.
-  DefaultPannerStrategy defaultPannerStrategy;
 
   /// The path where the libsndfile binary exists.
   String? libsndfilePath;

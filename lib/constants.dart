@@ -2,6 +2,8 @@ import 'dart:convert';
 
 import 'package:ziggurat/ziggurat.dart';
 
+import 'world_context.dart';
+
 /// The directory where assets will be stored.
 const assetsDirectory = 'assets';
 
@@ -43,3 +45,15 @@ enum WalkingDirection {
   /// Sidestep right.
   right,
 }
+
+/// The filename where preferences are stored.
+const preferencesFilename = 'preferences.json';
+
+/// The filename where the trigger map is stored.
+const triggerMapFilename = 'triggers.json';
+
+/// The type of an error handler function.
+typedef ErrorHandler = void Function(Object e, StackTrace? s);
+
+/// The type of a custom commands map.
+typedef CustomCommandsMap = Map<String, EventCallback<WorldContext>>;

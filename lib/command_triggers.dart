@@ -50,7 +50,7 @@ const turnLeftCommandTrigger = CommandTrigger(
 
 /// Turn right.
 const turnRightCommandTrigger = CommandTrigger(
-  name: 'turn_right a bit',
+  name: 'turn_right',
   description: 'Turn right',
   keyboardKey: CommandKeyboardKey(ScanCode.SCANCODE_RIGHT),
 );
@@ -80,7 +80,7 @@ const showFacingCommandTrigger = CommandTrigger(
 );
 
 /// The default trigger map.
-const defaultTriggerMap = TriggerMap(
+final defaultTriggerMap = TriggerMap(
   [
     slowWalkCommandTrigger,
     walkForwardsCommandTrigger,

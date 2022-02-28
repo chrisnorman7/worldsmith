@@ -618,7 +618,8 @@ class ZoneLevel extends Level {
     maybeWalk(timeDelta);
     final turnModifier = turnAmount;
     if (turnModifier != null) {
-      final degrees = turnModifier * 3;
+      final degrees =
+          turnModifier * worldContext.playerPreferences.turnSensitivity;
       if (degrees.abs() > 0) {
         heading += degrees;
       }

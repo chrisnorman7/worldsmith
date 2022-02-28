@@ -6,7 +6,7 @@ Future<void> main(List<String> args) async {
     'worldsmith',
     'Work with worldsmith directories.',
   )
-    ..addCommand(RunCommand())
+    ..addCommand(PlayCommand())
     ..addCommand(BuildCommand());
   try {
     await command.run(args);

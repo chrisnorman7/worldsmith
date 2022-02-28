@@ -1,7 +1,6 @@
 import 'package:test/test.dart';
 import 'package:worldsmith/constants.dart';
 import 'package:worldsmith/worldsmith.dart';
-import 'package:ziggurat/sound.dart';
 import 'package:ziggurat/ziggurat.dart';
 import 'package:ziggurat_sounds/ziggurat_sounds.dart';
 
@@ -46,8 +45,6 @@ void main() {
           expect(world.reverbs, isEmpty);
           final soundOptions = world.soundOptions;
           expect(soundOptions.defaultGain, 0.7);
-          expect(
-              soundOptions.defaultPannerStrategy, DefaultPannerStrategy.stereo);
           expect(soundOptions.menuActivateSound, isNull);
           expect(soundOptions.menuMoveSound, isNull);
           expect(world.terrainAssets, isEmpty);

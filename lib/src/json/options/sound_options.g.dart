@@ -14,9 +14,6 @@ SoundOptions _$SoundOptionsFromJson(Map<String, dynamic> json) => SoundOptions(
       menuActivateSound: json['menuActivateSound'] == null
           ? null
           : Sound.fromJson(json['menuActivateSound'] as Map<String, dynamic>),
-      defaultPannerStrategy: $enumDecodeNullable(
-              _$DefaultPannerStrategyEnumMap, json['defaultPannerStrategy']) ??
-          DefaultPannerStrategy.stereo,
       synthizerLogLevel:
           $enumDecodeNullable(_$LogLevelEnumMap, json['synthizerLogLevel']),
       synthizerLoggingBackend: $enumDecodeNullable(
@@ -29,18 +26,11 @@ Map<String, dynamic> _$SoundOptionsToJson(SoundOptions instance) =>
       'defaultGain': instance.defaultGain,
       'menuMoveSound': instance.menuMoveSound,
       'menuActivateSound': instance.menuActivateSound,
-      'defaultPannerStrategy':
-          _$DefaultPannerStrategyEnumMap[instance.defaultPannerStrategy],
       'libsndfilePath': instance.libsndfilePath,
       'synthizerLogLevel': _$LogLevelEnumMap[instance.synthizerLogLevel],
       'synthizerLoggingBackend':
           _$LoggingBackendEnumMap[instance.synthizerLoggingBackend],
     };
-
-const _$DefaultPannerStrategyEnumMap = {
-  DefaultPannerStrategy.stereo: 'stereo',
-  DefaultPannerStrategy.hrtf: 'hrtf',
-};
 
 const _$LogLevelEnumMap = {
   LogLevel.error: 'error',
