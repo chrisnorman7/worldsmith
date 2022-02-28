@@ -258,8 +258,9 @@ class ZoneLevel extends Level {
 
   /// Show the facing direction.
   void showFacing() {
-    final direction = worldContext.getDirectionName(heading.floor());
-    game.outputText('$direction ($heading degrees)');
+    final facing = heading.floor();
+    final direction = worldContext.getDirectionName(facing);
+    game.outputText('$direction ($facing degrees)');
   }
 
   /// Reset state.

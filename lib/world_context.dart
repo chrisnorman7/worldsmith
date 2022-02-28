@@ -31,6 +31,7 @@ import 'util.dart';
 class WorldContext {
   /// Create an instance.
   const WorldContext({
+    required this.sdl,
     required this.game,
     required this.world,
     this.customCommands = const {},
@@ -44,9 +45,21 @@ class WorldContext {
     Game? game,
     this.customCommands = const {},
     this.errorHandler,
-  })  : game = game ?? Game('Worldsmith Game', triggerMap: defaultTriggerMap),
+  })  : sdl = Sdl(),
+        game = game ??
+            Game(
+              'Worldsmith Game',
+              triggerMap: defaultTriggerMap,
+            ),
         world = World.loadEncrypted(
-            encryptionKey: encryptionKey, filename: filename);
+          encryptionKey: encryptionKey,
+          filename: filename,
+        );
+
+  /// The SDL instance to use.
+  ///
+  /// The [Sdl.init] method will be called by the [run] method.
+  final Sdl sdl;
 
   /// The game to use.
   final Game game;
@@ -203,7 +216,6 @@ class WorldContext {
   ///
   /// If [sdl] is not `null`, then it should call [Sdl.init] itself.
   Future<void> run({
-    Sdl? sdl,
     EventCallback<SoundEvent>? onSound,
   }) async {
     Synthizer? synthizer;
@@ -229,7 +241,7 @@ class WorldContext {
       onSound = soundManager.handleEvent;
     }
     game.sounds.listen(onSound);
-    sdl ??= Sdl()..init();
+    sdl.init();
     try {
       await game.run(
         sdl,

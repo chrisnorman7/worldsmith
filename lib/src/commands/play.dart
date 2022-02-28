@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:args/command_runner.dart';
+import 'package:dart_sdl/dart_sdl.dart';
 import 'package:path/path.dart' as path;
 import 'package:ziggurat/ziggurat.dart' show Game;
 
@@ -39,7 +40,12 @@ class RunCommand extends Command<void> {
     final filename = results['filename'] as String;
     final world = World.fromFilename(filename);
     final game = Game(world.title, triggerMap: defaultTriggerMap);
-    final worldContext = WorldContext(game: game, world: world);
+    final sdl = Sdl();
+    final worldContext = WorldContext(
+      sdl: sdl,
+      game: game,
+      world: world,
+    );
     return worldContext.run();
   }
 }

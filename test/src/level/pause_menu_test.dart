@@ -1,3 +1,4 @@
+import 'package:dart_sdl/dart_sdl.dart';
 import 'package:test/test.dart';
 import 'package:worldsmith/world_context.dart';
 import 'package:worldsmith/worldsmith.dart';
@@ -8,6 +9,7 @@ void main() {
   group(
     'PauseMenu class',
     () {
+      final sdl = Sdl();
       final zone = Zone(
         id: 'zone',
         name: 'Test Zone',
@@ -16,7 +18,11 @@ void main() {
       );
       final world = World(zones: [zone], pauseMenuOptions: PauseMenuOptions());
       final game = Game(world.title);
-      final worldContext = WorldContext(game: game, world: world);
+      final worldContext = WorldContext(
+        sdl: sdl,
+        game: game,
+        world: world,
+      );
       test(
         'Initialisation',
         () {

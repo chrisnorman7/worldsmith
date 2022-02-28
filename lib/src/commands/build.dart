@@ -2,6 +2,7 @@
 import 'dart:io';
 
 import 'package:args/command_runner.dart';
+import 'package:dart_sdl/dart_sdl.dart';
 import 'package:path/path.dart' as path;
 import 'package:ziggurat/ziggurat.dart' show Game;
 
@@ -87,7 +88,12 @@ class BuildCommand extends Command<void> {
     final game = Game('World Builder');
     final world = World.fromFilename(results['filename'] as String);
     print('World: ${world.title}');
-    final worldContext = WorldContext(game: game, world: world);
+    final sdl = Sdl();
+    final worldContext = WorldContext(
+      sdl: sdl,
+      game: game,
+      world: world,
+    );
     final directory = Directory(packageName);
     if (directory.existsSync() == false) {
       print('Creating directory $packageName.');

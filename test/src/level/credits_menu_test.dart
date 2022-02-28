@@ -1,3 +1,4 @@
+import 'package:dart_sdl/dart_sdl.dart';
 import 'package:test/test.dart';
 import 'package:worldsmith/world_context.dart';
 import 'package:worldsmith/worldsmith.dart';
@@ -9,6 +10,7 @@ void main() {
   group(
     'CreditsMenu class',
     () {
+      final sdl = Sdl();
       final zigguratSound = AssetReferenceReference(
         variableName: 'ziggurat_sound',
         reference: AssetReference.file('ziggurat.mp3'),
@@ -50,7 +52,7 @@ void main() {
             menuMoveSound: Sound(id: moveSound.variableName, gain: 4.0)),
       );
       final game = Game(world.title);
-      final worldContext = WorldContext(game: game, world: world);
+      final worldContext = WorldContext(sdl: sdl, game: game, world: world);
       final creditsMenu = worldContext.getCreditsMenu();
       test(
         'Initialisation',

@@ -1,5 +1,6 @@
 import 'dart:math';
 
+import 'package:dart_sdl/dart_sdl.dart';
 import 'package:test/test.dart';
 import 'package:worldsmith/world_context.dart';
 import 'package:worldsmith/worldsmith.dart';
@@ -13,6 +14,7 @@ void main() {
   group(
     'ZoneLevel class',
     () {
+      final sdl = Sdl();
       final ambiance1Asset = AssetReference.file('ambiance1.mp3');
       final ambiance2Asset = AssetReference.file('ambiance2.mp3');
       final ambiance1Reference = AssetReferenceReference(
@@ -68,7 +70,7 @@ void main() {
         musicAssets: [musicReference],
       );
       final game = CustomGame(world.title);
-      final worldContext = WorldContext(game: game, world: world);
+      final worldContext = WorldContext(sdl: sdl, game: game, world: world);
       pondZone.generateTerrains(world);
       final pondZoneLevel =
           ZoneLevel(worldContext: worldContext, zone: pondZone.zone)..onPush();

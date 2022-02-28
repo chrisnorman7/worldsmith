@@ -19,6 +19,7 @@ import 'options/pause_menu_options.dart';
 import 'options/sound_menu_options.dart';
 import 'options/sound_options.dart';
 import 'options/world_options.dart';
+import 'player_preferences.dart';
 import 'reverb_preset_reference.dart';
 import 'world_credit.dart';
 import 'zones/terrain.dart';
@@ -75,6 +76,7 @@ class World {
     PauseMenuOptions? pauseMenuOptions,
     ReverbsList? reverbs,
     CommandCategoryList? commandCategories,
+    PlayerPreferences? defaultPlayerPreferences,
   })  : globalOptions = globalOptions ?? WorldOptions(),
         soundOptions = soundOptions ?? SoundOptions(),
         mainMenuOptions = mainMenuOptions ?? MainMenuOptions(),
@@ -96,7 +98,9 @@ class World {
         zones = zones ?? [],
         pauseMenuOptions = pauseMenuOptions ?? PauseMenuOptions(),
         reverbs = reverbs ?? [],
-        commandCategories = commandCategories ?? [];
+        commandCategories = commandCategories ?? [],
+        defaultPlayerPreferences =
+            defaultPlayerPreferences ?? PlayerPreferences();
 
   /// Create an instance from a JSON object.
   factory World.fromJson(Map<String, dynamic> json) => _$WorldFromJson(json);
@@ -285,6 +289,9 @@ class World {
   WorldCommand getCommand(String id) => commands.firstWhere(
         (element) => element.id == id,
       );
+
+  /// The default player preferences.
+  final PlayerPreferences defaultPlayerPreferences;
 
   /// Convert an instance to JSON.
   Map<String, dynamic> toJson() => _$WorldToJson(this);

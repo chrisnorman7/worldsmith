@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:dart_sdl/dart_sdl.dart';
 import 'package:test/test.dart';
 import 'package:worldsmith/constants.dart';
 import 'package:worldsmith/src/json/options/sound_menu_options.dart';
@@ -21,6 +22,7 @@ void saveWorld(World world) {
 class _ButtonException implements Exception {}
 
 void main() {
+  final sdl = Sdl();
   group(
     'WorldContext class',
     () {
@@ -29,7 +31,7 @@ void main() {
         () {
           final world = World(title: 'Test WorldContext Class');
           final game = Game(world.title);
-          final worldContext = WorldContext(game: game, world: world);
+          final worldContext = WorldContext(sdl: sdl, game: game, world: world);
           expect(worldContext.game, game);
           expect(worldContext.world, world);
         },
@@ -75,7 +77,7 @@ void main() {
             ),
           );
           final game = Game(world.title);
-          final worldContext = WorldContext(game: game, world: world);
+          final worldContext = WorldContext(sdl: sdl, game: game, world: world);
           var ambiance = world.creditsMenuMusic!;
           expect(ambiance.sound, creditsMenuMusic.reference);
           expect(ambiance.gain, 2.0);
@@ -95,7 +97,7 @@ void main() {
         () {
           final world = World();
           final game = Game(world.title);
-          final worldContext = WorldContext(game: game, world: world);
+          final worldContext = WorldContext(sdl: sdl, game: game, world: world);
           var message = worldContext.getMenuItemMessage(text: 'Testing');
           expect(message.text, 'Testing');
           expect(message.gain, world.soundOptions.defaultGain);
@@ -129,7 +131,7 @@ void main() {
           );
           final world = World(interfaceSoundsAssets: [reference1, reference2]);
           final game = Game(world.title);
-          final worldContext = WorldContext(game: game, world: world);
+          final worldContext = WorldContext(sdl: sdl, game: game, world: world);
           var message = worldContext.getSoundMessage(
             sound: Sound(id: reference1.variableName, gain: 2.0),
             assets: world.interfaceSoundsAssets,
@@ -173,7 +175,7 @@ void main() {
             ),
           );
           final game = Game(world.title);
-          final worldContext = WorldContext(game: game, world: world);
+          final worldContext = WorldContext(sdl: sdl, game: game, world: world);
           final button = worldContext.getButton(() {
             throw _ButtonException();
           });
@@ -199,6 +201,7 @@ void main() {
             text: 'I love {action_1} {action_2}.',
           );
           final worldContext = WorldContext(
+            sdl: sdl,
             game: Game('Custom Message'),
             world: World(interfaceSoundsAssets: [assetReferenceReference]),
           );
@@ -217,6 +220,7 @@ void main() {
         () {
           final world = World();
           final worldContext = WorldContext(
+            sdl: sdl,
             game: Game('Test asset stores'),
             world: world,
           );
@@ -272,7 +276,7 @@ void main() {
         'loadEncryptedString',
         () {
           final world = World(title: 'Encrypted World');
-          final worldContext = WorldContext(game: game, world: world);
+          final worldContext = WorldContext(sdl: sdl, game: game, world: world);
           final encryptionKey = worldContext.saveEncrypted(
             filename: worldFileEncrypted.path,
           );
@@ -302,7 +306,7 @@ void main() {
         commands: [command2],
       );
       final world = World(commandCategories: [category1, category2]);
-      final worldContext = WorldContext(game: game, world: world);
+      final worldContext = WorldContext(sdl: sdl, game: game, world: world);
       test(
         'Detect command loops',
         () {

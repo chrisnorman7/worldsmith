@@ -15,6 +15,7 @@ export 'src/json/options/pause_menu_options.dart';
 export 'src/json/options/sound_options.dart';
 export 'src/json/options/walking_options.dart';
 export 'src/json/options/world_options.dart';
+export 'src/json/player_preferences.dart';
 export 'src/json/reverb_preset_reference.dart';
 export 'src/json/sound.dart';
 export 'src/json/world.dart';
