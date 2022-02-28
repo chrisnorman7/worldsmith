@@ -317,7 +317,6 @@ class WorldContext {
             );
         },
       );
-      savePlayerPreferences();
       final json = game.triggerMap.toJson();
       final data = indentedJsonEncoder.convert(json);
       triggerMapFile.writeAsStringSync(data);
