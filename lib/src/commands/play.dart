@@ -10,9 +10,9 @@ import '../../world_context.dart';
 import '../json/world.dart';
 
 /// The `run` command.
-class RunCommand extends Command<void> {
+class PlayCommand extends Command<void> {
   /// Create an instance.
-  RunCommand() {
+  PlayCommand() {
     argParser.addOption(
       'filename',
       abbr: 'f',
