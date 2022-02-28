@@ -6,6 +6,7 @@
 
 * added options for configuring synthizer.
 * Added ambiances to zones.
+* Start walking as soon as the appropriate trigger is pressed.
 
 ### Changed
 
