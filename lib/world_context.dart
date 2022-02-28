@@ -73,6 +73,14 @@ class WorldContext {
   /// string assigned.
   final Map<String, EventCallback<WorldContext>> customCommands;
 
+  /// Get the directory where preferences should be stored.
+  Directory get preferencesDirectory => Directory(
+        sdl.getPrefPath(
+          world.globalOptions.orgName,
+          world.globalOptions.appName,
+        ),
+      );
+
   /// A function that will handle errors from [WorldCommand] instances.
   final void Function(Object e, StackTrace? s)? errorHandler;
 
