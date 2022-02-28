@@ -12,7 +12,7 @@ class CreditsMenu extends Menu {
       : super(
           game: worldContext.game,
           title: Message(text: worldContext.world.creditsMenuOptions.title),
-          ambiances: worldContext.creditsMenuAmbiances,
+          music: worldContext.world.creditsMenuMusic,
           items: [
             for (final credit in worldContext.world.credits)
               MenuItem(

@@ -3,6 +3,7 @@ import 'dart:io';
 
 import 'package:test/test.dart';
 import 'package:worldsmith/constants.dart';
+import 'package:worldsmith/src/json/options/sound_menu_options.dart';
 import 'package:worldsmith/world_context.dart';
 import 'package:worldsmith/worldsmith.dart';
 import 'package:ziggurat/ziggurat.dart';
@@ -31,9 +32,6 @@ void main() {
           final worldContext = WorldContext(game: game, world: world);
           expect(worldContext.game, game);
           expect(worldContext.world, world);
-          expect(worldContext.creditsMenuAmbiances, isEmpty);
-          expect(worldContext.mainMenuAmbiances, isEmpty);
-          expect(worldContext.pauseMenuAmbiances, isEmpty);
         },
       );
       test(
@@ -51,12 +49,17 @@ void main() {
             variableName: '3',
             reference: AssetReference.file('pause_menu.mp3'),
           );
+          final soundMusic = AssetReferenceReference(
+            variableName: '4',
+            reference: AssetReference.file('sound_menu.mp3'),
+          );
           final world = World(
             title: 'Ambiances Test',
             musicAssets: [
               mainMenuMusic,
               creditsMenuMusic,
               pauseMusic,
+              soundMusic,
             ],
             mainMenuOptions: MainMenuOptions(
               music: Sound(id: mainMenuMusic.variableName, gain: 1.0),
@@ -67,21 +70,24 @@ void main() {
             pauseMenuOptions: PauseMenuOptions(
               music: Sound(id: pauseMusic.variableName, gain: 3.0),
             ),
+            soundMenuOptions: SoundMenuOptions(
+              music: Sound(id: soundMusic.variableName, gain: 4.0),
+            ),
           );
           final game = Game(world.title);
           final worldContext = WorldContext(game: game, world: world);
-          var ambiance = worldContext.creditsMenuAmbiances.single;
+          var ambiance = world.creditsMenuMusic!;
           expect(ambiance.sound, creditsMenuMusic.reference);
           expect(ambiance.gain, 2.0);
-          expect(ambiance.position, isNull);
-          ambiance = worldContext.mainMenuAmbiances.single;
+          ambiance = world.mainMenuMusic!;
           expect(ambiance.sound, mainMenuMusic.reference);
           expect(ambiance.gain, 1.0);
-          expect(ambiance.position, isNull);
-          ambiance = worldContext.pauseMenuAmbiances.single;
+          ambiance = worldContext.world.pauseMenuMusic!;
           expect(ambiance.sound, pauseMusic.reference);
           expect(ambiance.gain, 3.0);
-          expect(ambiance.position, isNull);
+          ambiance = world.soundMenuMusic!;
+          expect(ambiance.sound, soundMusic.reference);
+          expect(ambiance.gain, 4.0);
         },
       );
       test(

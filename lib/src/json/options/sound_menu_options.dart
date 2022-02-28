@@ -9,7 +9,7 @@ part 'sound_menu_options.g.dart';
 class SoundMenuOptions {
   /// Create an instance.
   SoundMenuOptions({
-    this.title = 'Configure Sound',
+    this.title = 'Sound',
     this.fadeTime,
     this.music,
     this.gainAdjust = 0.1,

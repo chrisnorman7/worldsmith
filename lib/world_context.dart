@@ -63,24 +63,6 @@ class WorldContext {
   /// A function that will handle errors from [WorldCommand] instances.
   final void Function(Object e, StackTrace? s)? errorHandler;
 
-  /// The ambiances for the main menu.
-  List<Ambiance> get mainMenuAmbiances {
-    final music = world.mainMenuMusic;
-    return [if (music != null) music];
-  }
-
-  /// Get the ambiances for the pause menu.
-  List<Ambiance> get pauseMenuAmbiances {
-    final music = world.pauseMenuMusic;
-    return [if (music != null) music];
-  }
-
-  /// The ambiances for the credits menu.
-  List<Ambiance> get creditsMenuAmbiances {
-    final music = world.creditsMenuMusic;
-    return [if (music != null) music];
-  }
-
   /// A function that will be called when hitting the edge of a [ZoneLevel].
   void onEdgeOfZoneLevel(ZoneLevel zoneLevel, Point<double> coordinates) {}
 

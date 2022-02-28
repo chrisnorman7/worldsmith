@@ -8,7 +8,7 @@ part of 'sound_menu_options.dart';
 
 SoundMenuOptions _$SoundMenuOptionsFromJson(Map<String, dynamic> json) =>
     SoundMenuOptions(
-      title: json['title'] as String? ?? 'Configure Sound',
+      title: json['title'] as String? ?? 'Sound',
       fadeTime: (json['fadeTime'] as num?)?.toDouble(),
       music: json['music'] == null
           ? null

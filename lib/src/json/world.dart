@@ -153,8 +153,10 @@ class World {
   final MainMenuOptions mainMenuOptions;
 
   /// The music for the main menu.
-  Ambiance? get mainMenuMusic =>
-      getAmbiance(assets: musicAssets, sound: mainMenuOptions.music);
+  Music? get mainMenuMusic => getMusic(
+        assets: musicAssets,
+        sound: mainMenuOptions.music,
+      );
 
   /// The credits for this world.
   final CreditsList credits;
@@ -163,11 +165,19 @@ class World {
   final CreditsMenuOptions creditsMenuOptions;
 
   /// The music for the credits menu.
-  Ambiance? get creditsMenuMusic =>
-      getAmbiance(assets: musicAssets, sound: creditsMenuOptions.music);
+  Music? get creditsMenuMusic => getMusic(
+        assets: musicAssets,
+        sound: creditsMenuOptions.music,
+      );
 
   /// The options for the sound options menu.
   final SoundMenuOptions soundMenuOptions;
+
+  /// The music for the sound options menu.
+  Music? get soundMenuMusic => getMusic(
+        assets: musicAssets,
+        sound: soundMenuOptions.music,
+      );
 
   /// Credit sounds.
   final AssetList creditsAssets;
@@ -249,8 +259,10 @@ class World {
   final PauseMenuOptions pauseMenuOptions;
 
   /// Get the music for the pause menu.
-  Ambiance? get pauseMenuMusic =>
-      getAmbiance(assets: musicAssets, sound: pauseMenuOptions.music);
+  Music? get pauseMenuMusic => getMusic(
+        assets: musicAssets,
+        sound: pauseMenuOptions.music,
+      );
 
   /// The reverb references to use.
   final ReverbsList reverbs;

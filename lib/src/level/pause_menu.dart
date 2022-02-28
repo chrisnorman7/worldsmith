@@ -12,7 +12,7 @@ class PauseMenu extends Menu {
       : super(
           game: worldContext.game,
           title: Message(text: worldContext.world.pauseMenuOptions.title),
-          ambiances: worldContext.pauseMenuAmbiances,
+          music: worldContext.world.pauseMenuMusic,
           items: [
             MenuItem(
               worldContext.getMenuItemMessage(text: zone.name),

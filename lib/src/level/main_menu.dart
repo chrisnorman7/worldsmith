@@ -15,10 +15,7 @@ class MainMenu extends Menu {
       : super(
           game: worldContext.game,
           title: Message(text: worldContext.world.mainMenuOptions.title),
-          ambiances: [
-            if (worldContext.world.mainMenuMusic != null)
-              worldContext.world.mainMenuMusic!,
-          ],
+          music: worldContext.world.mainMenuMusic,
           items: [],
         ) {
     final world = worldContext.world;
