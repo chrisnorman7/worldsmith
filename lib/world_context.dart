@@ -1,5 +1,3 @@
-// ignore_for_file: avoid_print
-
 import 'dart:convert';
 import 'dart:io';
 import 'dart:math';
@@ -80,6 +78,11 @@ class WorldContext {
   /// The directory where preferences should be stored.
   final String preferencesDirectory;
 
+  /// The file where [playerPreferences] should be saved.
+  File get playerPreferencesFile => File(
+        path.join(preferencesDirectory, preferencesFilename),
+      );
+
   /// The file where the trigger map should be stored.
   File get triggerMapFile =>
       File(path.join(preferencesDirectory, triggerMapFilename));
@@ -96,23 +99,28 @@ class WorldContext {
     if (currentPreferences != null) {
       return currentPreferences;
     }
-    final preferences = PlayerPreferences.fromJson(
-      world.defaultPlayerPreferences.toJson(),
-    );
-    _playerPreferences = preferences;
-    savePlayerPreferences();
-    return preferences;
+    if (playerPreferencesFile.existsSync()) {
+      final data = playerPreferencesFile.readAsStringSync();
+      final json = jsonDecode(data) as JsonType;
+      final preferences = PlayerPreferences.fromJson(json);
+      _playerPreferences = preferences;
+      return preferences;
+    } else {
+      final preferences = PlayerPreferences.fromJson(
+        world.defaultPlayerPreferences.toJson(),
+      );
+      _playerPreferences = preferences;
+      savePlayerPreferences();
+      return preferences;
+    }
   }
 
   /// Save the current [playerPreferences];
   void savePlayerPreferences() {
     final preferences = _playerPreferences!;
-    final preferencesFile = File(
-      path.join(preferencesDirectory, preferencesFilename),
-    );
     final json = preferences.toJson();
     final data = indentedJsonEncoder.convert(json);
-    preferencesFile.writeAsStringSync(data);
+    playerPreferencesFile.writeAsStringSync(data);
   }
 
   /// A function that will handle errors from [WorldCommand] instances.
@@ -264,13 +272,10 @@ class WorldContext {
       final data = triggerMapFile.readAsStringSync();
       final json = jsonDecode(data) as JsonType;
       final triggerMap = TriggerMap.fromJson(json);
-      print('Working.');
       for (final trigger in triggerMap.triggers) {
-        print(trigger.name);
         game.triggerMap.triggers.removeWhere(
           (element) => element.name == trigger.name,
         );
-        print('Removed.');
       }
       game.triggerMap.triggers.addAll(triggerMap.triggers);
     }
@@ -526,6 +531,16 @@ class WorldContext {
     if (sound != null) {
       soundChannel.playSound(sound);
     }
+    if (soundChannel == game.interfaceSounds) {
+      playerPreferences.interfaceSoundsGain = gain;
+    } else if (soundChannel == game.musicSounds) {
+      playerPreferences.musicGain = gain;
+    } else if (soundChannel == game.ambianceSounds) {
+      playerPreferences.ambianceGain = gain;
+    } else {
+      return;
+    }
+    savePlayerPreferences();
   }
 
   /// Get a valid parameter for the given [soundChannel] and [title].
