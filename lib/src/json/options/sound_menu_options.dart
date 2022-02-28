@@ -16,6 +16,8 @@ class SoundMenuOptions {
     this.interfaceSoundsVolumeTitle = 'Interface Sounds Volume',
     this.musicVolumeTitle = 'Music Volume',
     this.ambianceSoundsVolumeTitle = 'Ambiance Sounds Volume',
+    this.headphonesPresetTitle = 'Listening With Headphones',
+    this.speakersPresetTitle = 'Listening Through Speakers',
   });
 
   /// Create an instance from a JSON object.
@@ -42,6 +44,12 @@ class SoundMenuOptions {
 
   /// The title of the "Ambiance Sounds Volume" option.
   String ambianceSoundsVolumeTitle;
+
+  /// The title of the "Headphones" preset.
+  String headphonesPresetTitle;
+
+  /// The title of the "Speakers" option.
+  String speakersPresetTitle;
 
   /// Convert an instance to JSON.
   Map<String, dynamic> toJson() => _$SoundMenuOptionsToJson(this);

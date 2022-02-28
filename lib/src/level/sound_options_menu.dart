@@ -1,4 +1,5 @@
 import 'package:ziggurat/menus.dart';
+import 'package:ziggurat/sound.dart';
 import 'package:ziggurat/ziggurat.dart';
 
 import '../../world_context.dart';
@@ -31,7 +32,29 @@ class SoundOptionsMenu extends ParameterMenu {
             worldContext.getMainMenu(),
             ambianceFadeTime: worldContext.world.soundMenuOptions.fadeTime,
           ),
-        );
+        ) {
+    final options = worldContext.world.soundMenuOptions;
+    menuItems.addAll(
+      [
+        MenuItem(
+          worldContext.getMenuItemMessage(text: options.headphonesPresetTitle),
+          worldContext.getButton(
+            () {
+              game.setDefaultPannerStrategy(DefaultPannerStrategy.hrtf);
+            },
+          ),
+        ),
+        MenuItem(
+          worldContext.getMenuItemMessage(text: options.speakersPresetTitle),
+          worldContext.getButton(
+            () {
+              game.setDefaultPannerStrategy(DefaultPannerStrategy.stereo);
+            },
+          ),
+        )
+      ],
+    );
+  }
 
   /// The world context to use.
   final WorldContext worldContext;

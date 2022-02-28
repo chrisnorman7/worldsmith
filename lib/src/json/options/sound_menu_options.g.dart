@@ -20,6 +20,10 @@ SoundMenuOptions _$SoundMenuOptionsFromJson(Map<String, dynamic> json) =>
       musicVolumeTitle: json['musicVolumeTitle'] as String? ?? 'Music Volume',
       ambianceSoundsVolumeTitle: json['ambianceSoundsVolumeTitle'] as String? ??
           'Ambiance Sounds Volume',
+      headphonesPresetTitle: json['headphonesPresetTitle'] as String? ??
+          'Listening With Headphones',
+      speakersPresetTitle: json['speakersPresetTitle'] as String? ??
+          'Listening Through Speakers',
     );
 
 Map<String, dynamic> _$SoundMenuOptionsToJson(SoundMenuOptions instance) =>
@@ -31,4 +35,6 @@ Map<String, dynamic> _$SoundMenuOptionsToJson(SoundMenuOptions instance) =>
       'interfaceSoundsVolumeTitle': instance.interfaceSoundsVolumeTitle,
       'musicVolumeTitle': instance.musicVolumeTitle,
       'ambianceSoundsVolumeTitle': instance.ambianceSoundsVolumeTitle,
+      'headphonesPresetTitle': instance.headphonesPresetTitle,
+      'speakersPresetTitle': instance.speakersPresetTitle,
     };
