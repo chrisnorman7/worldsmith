@@ -469,6 +469,16 @@ class ZoneLevel extends Level {
     return reverb;
   }
 
+  /// Start walking if the time is right.
+  void maybeWalk(int timeDelta) {
+    final walkingOptions = currentWalkingOptions;
+    if (walkingOptions != null) {
+      if (timeSinceLastWalked >= walkingOptions.interval) {
+        walk(walkingOptions);
+      }
+    }
+  }
+
   /// Start walking.
   void startWalking() {
     if (_slowWalk) {
@@ -476,6 +486,7 @@ class ZoneLevel extends Level {
     } else {
       currentWalkingOptions = currentTerrain.fastWalk;
     }
+    maybeWalk(0);
   }
 
   /// Stop walking.
@@ -602,13 +613,8 @@ class ZoneLevel extends Level {
   @override
   Future<void> tick(Sdl sdl, int timeDelta) async {
     super.tick(sdl, timeDelta);
-    final walkingOptions = currentWalkingOptions;
-    if (walkingOptions != null) {
-      timeSinceLastWalked += timeDelta;
-      if (timeSinceLastWalked >= walkingOptions.interval) {
-        walk(walkingOptions);
-      }
-    }
+    timeSinceLastWalked += timeDelta;
+    maybeWalk(timeDelta);
     final turnModifier = turnAmount;
     if (turnModifier != null) {
       final degrees = (turnModifier * 5).floor();
