@@ -26,7 +26,7 @@ class ZoneLevel extends Level {
   ZoneLevel({
     required this.worldContext,
     required this.zone,
-    int initialHeading = 0,
+    double initialHeading = 0.0,
     Point<double> coordinates = _origin,
     this.walkingDirection = WalkingDirection.forwards,
     this.timeSinceLastWalked = 1000000,
@@ -71,15 +71,15 @@ class ZoneLevel extends Level {
   final Zone zone;
 
   /// The direction the player is facing in.
-  int _heading;
+  double _heading;
 
   /// Get the player's current heading.
-  int get heading => _heading;
+  double get heading => _heading;
 
   /// Set the player's heading.
-  set heading(int value) {
+  set heading(double value) {
     _heading = value % 360;
-    game.setListenerOrientation(value.toDouble());
+    game.setListenerOrientation(value);
   }
 
   /// The coordinates of the player.
@@ -258,7 +258,7 @@ class ZoneLevel extends Level {
 
   /// Show the facing direction.
   void showFacing() {
-    final direction = worldContext.getDirectionName(heading);
+    final direction = worldContext.getDirectionName(heading.floor());
     game.outputText('$direction ($heading degrees)');
   }
 
@@ -586,7 +586,7 @@ class ZoneLevel extends Level {
 
   /// Walk a bit.
   Box? walk(WalkingOptions options) {
-    final int bearing;
+    final double bearing;
     switch (walkingDirection) {
       case WalkingDirection.forwards:
         bearing = heading;
@@ -617,9 +617,8 @@ class ZoneLevel extends Level {
     maybeWalk(timeDelta);
     final turnModifier = turnAmount;
     if (turnModifier != null) {
-      final degrees = (turnModifier * 5).floor();
+      final degrees = turnModifier * 3;
       if (degrees.abs() > 0) {
-        game.outputText(degrees.floor().toString());
         heading += degrees;
       }
     }

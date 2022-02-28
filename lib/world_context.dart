@@ -280,7 +280,7 @@ class WorldContext {
             destination: destination.toDouble(),
             updateLastWalked: false,
           )
-          ..heading = localTeleport.heading;
+          ..heading = localTeleport.heading.toDouble();
       }
       final walkingMode = command.walkingMode;
       if (walkingMode != null) {
@@ -306,7 +306,7 @@ class WorldContext {
       );
       final level = getZoneLevel(zone)
         ..coordinates = coordinates.toDouble()
-        ..heading = zoneTeleport.heading;
+        ..heading = zoneTeleport.heading.toDouble();
       game.replaceLevel(level, ambianceFadeTime: zoneTeleport.fadeTime);
     }
     final customCommandName = command.customCommandName;
