@@ -33,29 +33,65 @@ class SoundOptionsMenu extends ParameterMenu {
             ambianceFadeTime: worldContext.world.soundMenuOptions.fadeTime,
           ),
         ) {
-    final options = worldContext.world.soundMenuOptions;
-    menuItems.addAll(
-      [
-        MenuItem(
-          worldContext.getMenuItemMessage(text: options.headphonesPresetTitle),
-          worldContext.getButton(
-            () {
-              game.setDefaultPannerStrategy(DefaultPannerStrategy.hrtf);
-            },
-          ),
-        ),
-        MenuItem(
-          worldContext.getMenuItemMessage(text: options.speakersPresetTitle),
-          worldContext.getButton(
-            () {
-              game.setDefaultPannerStrategy(DefaultPannerStrategy.stereo);
-            },
-          ),
-        )
-      ],
+    menuItems.add(
+      ParameterMenuParameter(
+        getLabel: () {
+          final world = worldContext.world;
+          final options = world.soundMenuOptions;
+          final title = options.outputTypeTitle;
+          final String value;
+          switch (worldContext.playerPreferences.pannerStrategy) {
+            case DefaultPannerStrategy.stereo:
+              value = options.speakersPresetTitle;
+              break;
+            case DefaultPannerStrategy.hrtf:
+              value = options.headphonesPresetTitle;
+              break;
+          }
+          return Message(
+            gain: world.soundOptions.defaultGain,
+            keepAlive: true,
+            sound: world.menuMoveSound,
+            text: '$title $value',
+          );
+        },
+        increaseValue: () => changePannerStrategy(1),
+        decreaseValue: () => changePannerStrategy(-1),
+      ),
     );
   }
 
   /// The world context to use.
   final WorldContext worldContext;
+
+  /// Change the panning strategy.
+  void changePannerStrategy(int direction) {
+    final world = worldContext.world;
+    var index = worldContext.playerPreferences.pannerStrategy.index + direction;
+    if (index >= DefaultPannerStrategy.values.length) {
+      index = 0;
+    } else if (index < 0) {
+      index = DefaultPannerStrategy.values.length - 1;
+    }
+    worldContext.playerPreferences.pannerStrategy =
+        DefaultPannerStrategy.values[index];
+    worldContext.savePlayerPreferences();
+    final options = world.soundMenuOptions;
+    final String name;
+    switch (worldContext.playerPreferences.pannerStrategy) {
+      case DefaultPannerStrategy.stereo:
+        name = options.speakersPresetTitle;
+        break;
+      case DefaultPannerStrategy.hrtf:
+        name = options.headphonesPresetTitle;
+        break;
+    }
+    game.outputMessage(
+      Message(
+        gain: world.soundOptions.defaultGain,
+        sound: world.menuActivateSound,
+        text: name,
+      ),
+    );
+  }
 }

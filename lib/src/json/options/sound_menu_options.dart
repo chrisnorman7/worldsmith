@@ -16,6 +16,7 @@ class SoundMenuOptions {
     this.interfaceSoundsVolumeTitle = 'Interface Sounds Volume',
     this.musicVolumeTitle = 'Music Volume',
     this.ambianceSoundsVolumeTitle = 'Ambiance Sounds Volume',
+    this.outputTypeTitle = 'Output Type',
     this.headphonesPresetTitle = 'Listening With Headphones',
     this.speakersPresetTitle = 'Listening Through Speakers',
   });
@@ -44,6 +45,9 @@ class SoundMenuOptions {
 
   /// The title of the "Ambiance Sounds Volume" option.
   String ambianceSoundsVolumeTitle;
+
+  /// Title of the "Output Type" item.
+  String outputTypeTitle;
 
   /// The title of the "Headphones" preset.
   String headphonesPresetTitle;
