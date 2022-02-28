@@ -45,12 +45,11 @@ class ZoneLevel extends Level {
         zoneObjectAmbiances = {},
         super(
           game: worldContext.game,
+          music: getMusic(
+            assets: worldContext.world.musicAssets,
+            sound: zone.music,
+          ),
           ambiances: [
-            if (zone.music != null)
-              getAmbiance(
-                assets: worldContext.world.musicAssets,
-                sound: zone.music,
-              )!,
             for (final ambiance in zone.ambiances)
               getAmbiance(
                 assets: worldContext.world.ambianceAssets,

@@ -39,6 +39,21 @@ Ambiance? getAmbiance({
   );
 }
 
+/// Get an ambiance from the given [sound].
+Music? getMusic({
+  required AssetList assets,
+  required Sound? sound,
+}) {
+  if (sound == null) {
+    return null;
+  }
+  final reference = getAssetReferenceReference(assets: assets, id: sound.id);
+  return Music(
+    sound: reference!.reference,
+    gain: sound.gain,
+  );
+}
+
 /// Play the given [sound] through the given [channel].
 PlaySound playSound({
   required SoundChannel channel,

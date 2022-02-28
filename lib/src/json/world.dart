@@ -16,6 +16,7 @@ import 'equipment_position.dart';
 import 'options/credits_menu_options.dart';
 import 'options/main_menu_options.dart';
 import 'options/pause_menu_options.dart';
+import 'options/sound_menu_options.dart';
 import 'options/sound_options.dart';
 import 'options/world_options.dart';
 import 'reverb_preset_reference.dart';
@@ -60,6 +61,7 @@ class World {
     MainMenuOptions? mainMenuOptions,
     CreditsList? credits,
     CreditsMenuOptions? creditsMenuOptions,
+    SoundMenuOptions? soundMenuOptions,
     AssetList? creditsAssets,
     AssetList? musicAssets,
     AssetList? interfaceSoundsAssets,
@@ -78,6 +80,7 @@ class World {
         mainMenuOptions = mainMenuOptions ?? MainMenuOptions(),
         credits = credits ?? [],
         creditsMenuOptions = creditsMenuOptions ?? CreditsMenuOptions(),
+        soundMenuOptions = soundMenuOptions ?? SoundMenuOptions(),
         creditsAssets = creditsAssets ?? [],
         musicAssets = musicAssets ?? [],
         interfaceSoundsAssets = interfaceSoundsAssets ?? [],
@@ -162,6 +165,9 @@ class World {
   /// The music for the credits menu.
   Ambiance? get creditsMenuMusic =>
       getAmbiance(assets: musicAssets, sound: creditsMenuOptions.music);
+
+  /// The options for the sound options menu.
+  final SoundMenuOptions soundMenuOptions;
 
   /// Credit sounds.
   final AssetList creditsAssets;

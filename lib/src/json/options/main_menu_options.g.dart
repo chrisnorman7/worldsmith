@@ -25,6 +25,10 @@ MainMenuOptions _$MainMenuOptionsFromJson(Map<String, dynamic> json) =>
           ? null
           : CustomMessage.fromJson(
               json['creditsMessage'] as Map<String, dynamic>),
+      soundOptionsMessage: json['soundOptionsMessage'] == null
+          ? null
+          : CustomMessage.fromJson(
+              json['soundOptionsMessage'] as Map<String, dynamic>),
       exitMessage: json['exitMessage'] == null
           ? null
           : CustomMessage.fromJson(json['exitMessage'] as Map<String, dynamic>),
@@ -43,6 +47,7 @@ Map<String, dynamic> _$MainMenuOptionsToJson(MainMenuOptions instance) =>
       'newGameMessage': instance.newGameMessage,
       'savedGameMessage': instance.savedGameMessage,
       'creditsMessage': instance.creditsMessage,
+      'soundOptionsMessage': instance.soundOptionsMessage,
       'exitMessage': instance.exitMessage,
       'onExitMessage': instance.onExitMessage,
       'startGameCommandId': instance.startGameCommandId,

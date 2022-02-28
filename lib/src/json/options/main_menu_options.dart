@@ -17,6 +17,7 @@ class MainMenuOptions {
     CustomMessage? newGameMessage,
     CustomMessage? savedGameMessage,
     CustomMessage? creditsMessage,
+    CustomMessage? soundOptionsMessage,
     CustomMessage? exitMessage,
     CustomMessage? onExitMessage,
     this.startGameCommandId,
@@ -25,6 +26,8 @@ class MainMenuOptions {
         savedGameMessage =
             savedGameMessage ?? CustomMessage(text: 'Play Saved Game'),
         creditsMessage = creditsMessage ?? CustomMessage(text: 'Show Credits'),
+        soundOptionsMessage =
+            soundOptionsMessage ?? CustomMessage(text: 'Sound Options'),
         exitMessage = exitMessage ?? CustomMessage(text: 'Exit'),
         onExitMessage =
             onExitMessage ?? CustomMessage(text: 'The game will now close.');
@@ -50,6 +53,9 @@ class MainMenuOptions {
 
   /// The message for the "Credits" option.
   final CustomMessage creditsMessage;
+
+  /// The message for the "Sound Options" option.
+  final CustomMessage soundOptionsMessage;
 
   /// The message for the "Exit" option.
   final CustomMessage exitMessage;

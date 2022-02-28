@@ -26,6 +26,10 @@ World _$WorldFromJson(Map<String, dynamic> json) => World(
           ? null
           : CreditsMenuOptions.fromJson(
               json['creditsMenuOptions'] as Map<String, dynamic>),
+      soundMenuOptions: json['soundMenuOptions'] == null
+          ? null
+          : SoundMenuOptions.fromJson(
+              json['soundMenuOptions'] as Map<String, dynamic>),
       creditsAssets: (json['creditsAssets'] as List<dynamic>?)
           ?.map((e) =>
               AssetReferenceReference.fromJson(e as Map<String, dynamic>))
@@ -82,6 +86,7 @@ Map<String, dynamic> _$WorldToJson(World instance) => <String, dynamic>{
       'mainMenuOptions': instance.mainMenuOptions,
       'credits': instance.credits,
       'creditsMenuOptions': instance.creditsMenuOptions,
+      'soundMenuOptions': instance.soundMenuOptions,
       'creditsAssets': instance.creditsAssets,
       'musicAssets': instance.musicAssets,
       'interfaceSoundsAssets': instance.interfaceSoundsAssets,

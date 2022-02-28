@@ -7,6 +7,11 @@
 * added options for configuring synthizer.
 * Added ambiances to zones.
 
+### Changed
+
+* Downgraded path.
+* Updated ziggurat and ziggurat_sounds.
+
 ## [0.15.0]
 
 ### Added

@@ -173,11 +173,11 @@ void main() {
           );
           world.zones.add(zone);
           final zoneLevel = ZoneLevel(worldContext: worldContext, zone: zone);
-          expect(zoneLevel.ambiances.length, 1);
-          final levelMusic = zoneLevel.ambiances.first;
-          expect(levelMusic.gain, music.gain);
-          expect(levelMusic.position, isNull);
-          expect(levelMusic.sound, musicAsset);
+          expect(zoneLevel.ambiances.length, isZero);
+          expect(zoneLevel.music, isNotNull);
+          final levelMusic = zoneLevel.music;
+          expect(levelMusic?.gain, music.gain);
+          expect(levelMusic?.sound, musicAsset);
         },
       );
       test(

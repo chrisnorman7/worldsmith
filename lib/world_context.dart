@@ -22,6 +22,7 @@ import 'src/json/zones/zone.dart';
 import 'src/level/credits_menu.dart';
 import 'src/level/main_menu.dart';
 import 'src/level/pause_menu.dart';
+import 'src/level/sound_options_menu.dart';
 import 'src/level/walking_mode.dart';
 import 'src/level/zone_level.dart';
 import 'util.dart';
@@ -177,6 +178,9 @@ class WorldContext {
 
   /// Returns a menu that will show credits.
   CreditsMenu getCreditsMenu() => CreditsMenu(this);
+
+  /// Returns a menu that will allow the configuration of sound options.
+  SoundOptionsMenu getSoundOptionsMenu() => SoundOptionsMenu(this);
 
   /// Return a zone level.
   ZoneLevel getZoneLevel(Zone zone) =>
@@ -446,4 +450,46 @@ class WorldContext {
       );
     }
   }
+
+  /// Increase the gain on the given [soundChannel] by [value].
+  void changeSoundChannelGain({
+    required SoundChannel soundChannel,
+    required double value,
+  }) {
+    var gain = soundChannel.gain + value;
+    if (gain < 0) {
+      gain = 0.0;
+    }
+    if (gain > 1) {
+      gain = 1;
+    }
+    soundChannel.gain = gain;
+    final sound = world.menuActivateSound;
+    if (sound != null) {
+      soundChannel.playSound(sound);
+    }
+  }
+
+  /// Get a valid parameter for the given [soundChannel] and [title].
+  ParameterMenuParameter getGainParameter(
+          {required String title, required SoundChannel soundChannel}) =>
+      ParameterMenuParameter(
+        getLabel: () {
+          final gain = soundChannel.gain.toStringAsFixed(1);
+          return Message(
+            gain: world.soundOptions.defaultGain,
+            keepAlive: true,
+            sound: world.menuMoveSound,
+            text: '$title $gain',
+          );
+        },
+        increaseValue: () => changeSoundChannelGain(
+          soundChannel: soundChannel,
+          value: world.soundMenuOptions.gainAdjust,
+        ),
+        decreaseValue: () => changeSoundChannelGain(
+          soundChannel: soundChannel,
+          value: -world.soundMenuOptions.gainAdjust,
+        ),
+      );
 }

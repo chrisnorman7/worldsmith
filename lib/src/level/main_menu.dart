@@ -72,6 +72,19 @@ class MainMenu extends Menu {
           ),
         MenuItem(
           worldContext.getCustomMessage(
+            options.soundOptionsMessage,
+            keepAlive: true,
+            nullSound: menuMoveAsset,
+          ),
+          worldContext.getButton(
+            () => game.replaceLevel(
+              worldContext.getSoundOptionsMenu(),
+              ambianceFadeTime: fadeTime,
+            ),
+          ),
+        ),
+        MenuItem(
+          worldContext.getCustomMessage(
             options.exitMessage,
             keepAlive: true,
             nullSound: menuMoveAsset,
