@@ -24,13 +24,16 @@ SoundOptions _$SoundOptionsFromJson(Map<String, dynamic> json) => SoundOptions(
           json['libsndfilePathWindows'] as String? ?? 'libsndfile-1.dll',
       libsndfilePathMac:
           json['libsndfilePathMac'] as String? ?? 'libsndfile.dylib',
-    );
+    )..menuCancelSound = json['menuCancelSound'] == null
+        ? null
+        : Sound.fromJson(json['menuCancelSound'] as Map<String, dynamic>);
 
 Map<String, dynamic> _$SoundOptionsToJson(SoundOptions instance) =>
     <String, dynamic>{
       'defaultGain': instance.defaultGain,
       'menuMoveSound': instance.menuMoveSound,
       'menuActivateSound': instance.menuActivateSound,
+      'menuCancelSound': instance.menuCancelSound,
       'synthizerLogLevel': _$LogLevelEnumMap[instance.synthizerLogLevel],
       'synthizerLoggingBackend':
           _$LoggingBackendEnumMap[instance.synthizerLoggingBackend],

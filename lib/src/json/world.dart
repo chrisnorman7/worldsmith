@@ -153,6 +153,11 @@ class World {
           assets: interfaceSoundsAssets, id: soundOptions.menuActivateSound?.id)
       ?.reference;
 
+  /// Get the menu cancel sound.
+  AssetReference? get menuCancelSound => getAssetReferenceReference(
+          assets: interfaceSoundsAssets, id: soundOptions.menuCancelSound?.id)
+      ?.reference;
+
   /// The options for the main menu.
   final MainMenuOptions mainMenuOptions;
 

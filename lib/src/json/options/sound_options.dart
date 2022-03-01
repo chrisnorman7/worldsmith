@@ -33,6 +33,9 @@ class SoundOptions {
   /// The sound to play when activating menu options.
   Sound? menuActivateSound;
 
+  /// A sound to play when cancelling a menu.
+  Sound? menuCancelSound;
+
   /// The logging level for synthizer.
   LogLevel? synthizerLogLevel;
 
