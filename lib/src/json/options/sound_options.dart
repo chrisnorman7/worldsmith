@@ -10,13 +10,15 @@ part 'sound_options.g.dart';
 @JsonSerializable()
 class SoundOptions {
   /// Create an instance.
-  SoundOptions({
-    this.defaultGain = 0.7,
-    this.menuMoveSound,
-    this.menuActivateSound,
-    this.synthizerLogLevel,
-    this.synthizerLoggingBackend,
-  });
+  SoundOptions(
+      {this.defaultGain = 0.7,
+      this.menuMoveSound,
+      this.menuActivateSound,
+      this.synthizerLogLevel,
+      this.synthizerLoggingBackend,
+      this.libsndfilePathLinux = 'libsndfile.so',
+      this.libsndfilePathWindows = 'libsndfile-1.dll',
+      this.libsndfilePathMac = 'libsndfile.dylib'});
 
   /// Create an instance from a JSON object.
   factory SoundOptions.fromJson(Map<String, dynamic> json) =>
@@ -36,6 +38,15 @@ class SoundOptions {
 
   /// The synthizer logging backend to use.
   LoggingBackend? synthizerLoggingBackend;
+
+  /// The filename for libsndfile on Windows.
+  String libsndfilePathWindows;
+
+  /// The filename for libsndfile on Linux.
+  String libsndfilePathLinux;
+
+  /// The filename for libsndfile on Mac OS.
+  String libsndfilePathMac;
 
   /// Convert an instance to JSON.
   Map<String, dynamic> toJson() => _$SoundOptionsToJson(this);

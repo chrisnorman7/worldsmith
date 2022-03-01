@@ -18,6 +18,12 @@ SoundOptions _$SoundOptionsFromJson(Map<String, dynamic> json) => SoundOptions(
           $enumDecodeNullable(_$LogLevelEnumMap, json['synthizerLogLevel']),
       synthizerLoggingBackend: $enumDecodeNullable(
           _$LoggingBackendEnumMap, json['synthizerLoggingBackend']),
+      libsndfilePathLinux:
+          json['libsndfilePathLinux'] as String? ?? 'libsndfile.so',
+      libsndfilePathWindows:
+          json['libsndfilePathWindows'] as String? ?? 'libsndfile-1.dll',
+      libsndfilePathMac:
+          json['libsndfilePathMac'] as String? ?? 'libsndfile.dylib',
     );
 
 Map<String, dynamic> _$SoundOptionsToJson(SoundOptions instance) =>
@@ -28,6 +34,9 @@ Map<String, dynamic> _$SoundOptionsToJson(SoundOptions instance) =>
       'synthizerLogLevel': _$LogLevelEnumMap[instance.synthizerLogLevel],
       'synthizerLoggingBackend':
           _$LoggingBackendEnumMap[instance.synthizerLoggingBackend],
+      'libsndfilePathWindows': instance.libsndfilePathWindows,
+      'libsndfilePathLinux': instance.libsndfilePathLinux,
+      'libsndfilePathMac': instance.libsndfilePathMac,
     };
 
 const _$LogLevelEnumMap = {

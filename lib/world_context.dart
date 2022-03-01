@@ -282,11 +282,23 @@ class WorldContext {
     final preferences = playerPreferences;
     if (onSound == null) {
       final soundOptions = world.soundOptions;
+      String? libsndfilePath;
+      if (Platform.isLinux) {
+        libsndfilePath = soundOptions.libsndfilePathLinux;
+      } else if (Platform.isWindows) {
+        libsndfilePath = soundOptions.libsndfilePathWindows;
+      } else if (Platform.isMacOS) {
+        libsndfilePath = soundOptions.libsndfilePathMac;
+      }
+      if (libsndfilePath == null ||
+          File(libsndfilePath).existsSync() == false) {
+        libsndfilePath = null;
+      }
       synthizer = Synthizer()
         ..initialize(
-          libsndfilePath: soundOptions.libsndfilePath,
           logLevel: soundOptions.synthizerLogLevel,
           loggingBackend: soundOptions.synthizerLoggingBackend,
+          libsndfilePath: libsndfilePath,
         );
       context = synthizer.createContext();
       final soundManager = SoundManager(

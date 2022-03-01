@@ -3,6 +3,7 @@
     "abbr",
     "analyzer",
     "dpad",
+    "dylib",
     "editbin",
     "encrypter",
     "formals",
