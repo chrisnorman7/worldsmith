@@ -49,13 +49,14 @@ class ZoneLevel extends Level {
             assets: worldContext.world.musicAssets,
             sound: zone.music,
           ),
-          ambiances: [
-            for (final ambiance in zone.ambiances)
-              getAmbiance(
-                assets: worldContext.world.ambianceAssets,
-                sound: ambiance,
-              )!
-          ],
+          ambiances: zone.ambiances
+              .map(
+                (sound) => getAmbiance(
+                  assets: worldContext.world.ambianceAssets,
+                  sound: sound,
+                )!,
+              )
+              .toList(),
         );
 
   /// Set to `true` after the first step has been taken.
