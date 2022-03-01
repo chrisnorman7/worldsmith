@@ -16,7 +16,6 @@ class SoundOptions {
     this.menuActivateSound,
     this.synthizerLogLevel,
     this.synthizerLoggingBackend,
-    this.libsndfilePath,
   });
 
   /// Create an instance from a JSON object.
@@ -31,9 +30,6 @@ class SoundOptions {
 
   /// The sound to play when activating menu options.
   Sound? menuActivateSound;
-
-  /// The path where the libsndfile binary exists.
-  String? libsndfilePath;
 
   /// The logging level for synthizer.
   LogLevel? synthizerLogLevel;

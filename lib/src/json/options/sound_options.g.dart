@@ -18,7 +18,6 @@ SoundOptions _$SoundOptionsFromJson(Map<String, dynamic> json) => SoundOptions(
           $enumDecodeNullable(_$LogLevelEnumMap, json['synthizerLogLevel']),
       synthizerLoggingBackend: $enumDecodeNullable(
           _$LoggingBackendEnumMap, json['synthizerLoggingBackend']),
-      libsndfilePath: json['libsndfilePath'] as String?,
     );
 
 Map<String, dynamic> _$SoundOptionsToJson(SoundOptions instance) =>
@@ -26,7 +25,6 @@ Map<String, dynamic> _$SoundOptionsToJson(SoundOptions instance) =>
       'defaultGain': instance.defaultGain,
       'menuMoveSound': instance.menuMoveSound,
       'menuActivateSound': instance.menuActivateSound,
-      'libsndfilePath': instance.libsndfilePath,
       'synthizerLogLevel': _$LogLevelEnumMap[instance.synthizerLogLevel],
       'synthizerLoggingBackend':
           _$LoggingBackendEnumMap[instance.synthizerLoggingBackend],
