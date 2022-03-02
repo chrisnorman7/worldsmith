@@ -8,6 +8,7 @@
 * Added ambiances to zones.
 * Start walking as soon as the appropriate trigger is pressed.
 * Added a menu cancel sound.
+* Optionally include libsndfile library file with the release.
 
 ### Changed
 
