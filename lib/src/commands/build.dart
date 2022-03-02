@@ -58,6 +58,10 @@ class BuildCommand extends Command<void> {
       ..addOption(
         'synthizer-lib',
         help: 'The path to the synthizer dynamic library',
+      )
+      ..addOption(
+        'libsndfile-lib',
+        help: 'The path to the libsndfile dynamic library.',
       );
   }
 
@@ -85,6 +89,7 @@ class BuildCommand extends Command<void> {
     final packageName = results['package'] as String;
     final sdlLib = results['sdl-lib'] as String?;
     final synthizerLib = results['synthizer-lib'] as String?;
+    final libsndfileLib = results['libsndfile-lib'] as String?;
     final game = Game('World Builder');
     final world = World.fromFilename(results['filename'] as String);
     print('World: ${world.title}');
@@ -176,7 +181,9 @@ class BuildCommand extends Command<void> {
     }
     print('Assets: $i.');
     final exeName = path.join(
-        packageName, '$packageName${Platform.isWindows ? ".exe" : ""}');
+      packageName,
+      '$packageName${Platform.isWindows ? ".exe" : ""}',
+    );
     runProcess(dart, [
       'compile',
       'exe',
@@ -186,17 +193,31 @@ class BuildCommand extends Command<void> {
     ]);
     String? sdlDestination;
     if (sdlLib != null) {
-      sdlDestination = path.join(packageName, 'SDL2.dll');
+      sdlDestination = path.join(packageName, path.basename(sdlLib));
       print('$sdlLib -> $sdlDestination.');
       File(sdlDestination).writeAsBytesSync(File(sdlLib).readAsBytesSync());
     }
     String? synthizerDestination;
     if (synthizerLib != null) {
-      synthizerDestination = path.join(packageName, 'synthizer.dll');
+      synthizerDestination = path.join(
+        packageName,
+        path.basename(synthizerLib),
+      );
       print('$synthizerLib -> $synthizerDestination.');
       File(
         synthizerDestination,
       ).writeAsBytesSync(File(synthizerLib).readAsBytesSync());
+    }
+    String? libsndfileDestination;
+    if (libsndfileLib != null) {
+      libsndfileDestination = path.join(
+        packageName,
+        path.basename(libsndfileLib),
+      );
+      print('$libsndfileLib -> $libsndfileDestination.');
+      File(
+        libsndfileDestination,
+      ).writeAsBytesSync(File(libsndfileLib).readAsBytesSync());
     }
     if (Platform.isWindows) {
       try {
@@ -217,11 +238,22 @@ class BuildCommand extends Command<void> {
     }
     print('Build complete.');
     if (sdlDestination == null) {
-      print('Place the SDL2.dll file inside the `$packageName` directory.');
+      print(
+        'Place the sdl dynamic library file inside the `$packageName` '
+        'directory.',
+      );
     }
     if (synthizerDestination == null) {
       print(
-          'Place the synthizer.dll file inside the `$packageName` directory.');
+        'Place the synthizer dynamic library file inside the `$packageName` '
+        'directory.',
+      );
+    }
+    if (libsndfileDestination == null) {
+      print(
+        'If desired, place the libsndfile dynamic library file inside the '
+        '`$packageName` directory.',
+      );
     }
     print('When making a release, the following files must be included:');
     for (final filename in [
@@ -229,7 +261,8 @@ class BuildCommand extends Command<void> {
       exeName,
       worldFilename,
       if (synthizerDestination != null) synthizerDestination,
-      if (sdlDestination != null) sdlDestination
+      if (sdlDestination != null) sdlDestination,
+      if (libsndfileDestination != null) libsndfileDestination
     ]) {
       print('  $filename');
     }
