@@ -22,6 +22,7 @@ export 'src/json/world.dart';
 export 'src/json/world_credit.dart';
 export 'src/json/zones/box.dart';
 export 'src/json/zones/coordinates.dart';
+export 'src/json/zones/location_marker.dart';
 export 'src/json/zones/terrain.dart';
 export 'src/json/zones/zone.dart';
 export 'src/json/zones/zone_object.dart';
