@@ -460,16 +460,32 @@ class ZoneLevel extends Level {
         );
       }
     }
-    final fadeTime = zone.ambianceFadeTime;
+    final ambianceFadeTime = zone.ambianceFadeTime;
     for (final ambiance in ambiances) {
       final sound = ambiancePlaybacks[ambiance]!.sound;
-      if (fadeTime == null) {
+      if (ambianceFadeTime == null) {
         sound.gain = ambiance.gain;
       } else {
         sound.fade(
-          length: fadeTime,
+          length: ambianceFadeTime,
           endGain: ambiance.gain,
           startGain: 0.0,
+        );
+      }
+    }
+    for (final object in zone.objects) {
+      final ambiance = object.ambiance;
+      if (ambiance == null) {
+        continue;
+      }
+      final sound = zoneObjectAmbiances[object.id]!.sound;
+      if (ambianceFadeTime == null) {
+        sound.gain = ambiance.gain;
+      } else {
+        sound.fade(
+          length: ambianceFadeTime,
+          endGain: ambiance.gain,
+          startGain: 0,
         );
       }
     }
@@ -492,13 +508,28 @@ class ZoneLevel extends Level {
         );
       }
     }
-    final fadeTime = zone.ambianceFadeTime;
+    final ambianceFadeTime = zone.ambianceFadeTime;
     for (final ambiance in ambiances) {
       final sound = ambiancePlaybacks[ambiance]!.sound;
-      if (fadeTime == null) {
+      if (ambianceFadeTime == null) {
         sound.gain = 0;
       } else {
-        sound.fade(length: fadeTime, startGain: ambiance.gain);
+        sound.fade(length: ambianceFadeTime, startGain: ambiance.gain);
+      }
+    }
+    for (final object in zone.objects) {
+      final ambiance = object.ambiance;
+      if (ambiance == null) {
+        continue;
+      }
+      final sound = zoneObjectAmbiances[object.id]!.sound;
+      if (ambianceFadeTime == null) {
+        sound.gain = 0;
+      } else {
+        sound.fade(
+          length: ambianceFadeTime,
+          startGain: ambiance.gain,
+        );
       }
     }
   }
