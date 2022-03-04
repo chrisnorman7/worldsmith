@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.17.0]
+
+### Added
+
+* Added conversations.
+* Ambiances and music will now fade when the game is paused.
+* You can set a minimum gain for music and ambiances, so that they do not fade to silence.
+
 ## [0.16.0]
 
 ### Added
