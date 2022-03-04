@@ -9,6 +9,7 @@ export 'src/json/commands/zone_teleport.dart';
 export 'src/json/conversation/conversation.dart';
 export 'src/json/conversation/conversation_branch.dart';
 export 'src/json/conversation/conversation_category.dart';
+export 'src/json/conversation/conversation_next_branch.dart';
 export 'src/json/conversation/conversation_response.dart';
 export 'src/json/equipment_position.dart';
 export 'src/json/messages/custom_message.dart';

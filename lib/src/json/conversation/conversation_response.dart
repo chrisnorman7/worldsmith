@@ -4,6 +4,7 @@ import '../commands/call_command.dart';
 import '../messages/custom_message.dart';
 import 'conversation.dart';
 import 'conversation_branch.dart';
+import 'conversation_next_branch.dart';
 
 part 'conversation_response.g.dart';
 
@@ -17,7 +18,7 @@ class ConversationResponse {
   ConversationResponse({
     required this.id,
     required this.message,
-    this.branchId,
+    this.nextBranch,
     this.command,
   });
 
@@ -35,7 +36,7 @@ class ConversationResponse {
   ///
   /// If this value is `null`, then the conversation ends, and the player is
   /// returned to their level.
-  String? branchId;
+  ConversationNextBranch? nextBranch;
 
   /// A command to call when this response has been given.
   CallCommand? command;

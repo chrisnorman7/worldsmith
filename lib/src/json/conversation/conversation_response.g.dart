@@ -11,7 +11,10 @@ ConversationResponse _$ConversationResponseFromJson(
     ConversationResponse(
       id: json['id'] as String,
       message: CustomMessage.fromJson(json['message'] as Map<String, dynamic>),
-      branchId: json['branchId'] as String?,
+      nextBranch: json['nextBranch'] == null
+          ? null
+          : ConversationNextBranch.fromJson(
+              json['nextBranch'] as Map<String, dynamic>),
       command: json['command'] == null
           ? null
           : CallCommand.fromJson(json['command'] as Map<String, dynamic>),
@@ -22,6 +25,6 @@ Map<String, dynamic> _$ConversationResponseToJson(
     <String, dynamic>{
       'id': instance.id,
       'message': instance.message,
-      'branchId': instance.branchId,
+      'nextBranch': instance.nextBranch,
       'command': instance.command,
     };
