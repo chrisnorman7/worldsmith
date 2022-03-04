@@ -12,6 +12,8 @@ import '../../constants.dart';
 import '../../util.dart';
 import 'commands/command_category.dart';
 import 'commands/world_command.dart';
+import 'conversation/conversation.dart';
+import 'conversation/conversation_category.dart';
 import 'equipment_position.dart';
 import 'options/credits_menu_options.dart';
 import 'options/main_menu_options.dart';
@@ -51,6 +53,9 @@ typedef ReverbsList = List<ReverbPresetReference>;
 /// A list of command categories.
 typedef CommandCategoryList = List<CommandCategory>;
 
+/// A list of conversation categories.
+typedef ConversationCategoryList = List<ConversationCategory>;
+
 /// The top-level world object.
 @JsonSerializable()
 class World {
@@ -77,6 +82,7 @@ class World {
     ReverbsList? reverbs,
     CommandCategoryList? commandCategories,
     PlayerPreferences? defaultPlayerPreferences,
+    ConversationCategoryList? conversationCategories,
   })  : globalOptions = globalOptions ?? WorldOptions(),
         soundOptions = soundOptions ?? SoundOptions(),
         mainMenuOptions = mainMenuOptions ?? MainMenuOptions(),
@@ -100,7 +106,8 @@ class World {
         reverbs = reverbs ?? [],
         commandCategories = commandCategories ?? [],
         defaultPlayerPreferences =
-            defaultPlayerPreferences ?? PlayerPreferences();
+            defaultPlayerPreferences ?? PlayerPreferences(),
+        conversationCategories = conversationCategories ?? [];
 
   /// Create an instance from a JSON object.
   factory World.fromJson(Map<String, dynamic> json) => _$WorldFromJson(json);
@@ -297,6 +304,19 @@ class World {
 
   /// The default player preferences.
   final PlayerPreferences defaultPlayerPreferences;
+
+  /// The [Conversation] categories to use.
+  final ConversationCategoryList conversationCategories;
+
+  /// Every conversation from every category.
+  List<Conversation> get conversations => [
+        for (final category in conversationCategories) ...category.conversations
+      ];
+
+  /// Get the conversation with the given [id].
+  Conversation getConversation(String id) => conversations.firstWhere(
+        (element) => element.id == id,
+      );
 
   /// Convert an instance to JSON.
   Map<String, dynamic> toJson() => _$WorldToJson(this);

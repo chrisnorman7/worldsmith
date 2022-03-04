@@ -81,6 +81,9 @@ World _$WorldFromJson(Map<String, dynamic> json) => World(
           ? null
           : PlayerPreferences.fromJson(
               json['defaultPlayerPreferences'] as Map<String, dynamic>),
+      conversationCategories: (json['conversationCategories'] as List<dynamic>?)
+          ?.map((e) => ConversationCategory.fromJson(e as Map<String, dynamic>))
+          .toList(),
     );
 
 Map<String, dynamic> _$WorldToJson(World instance) => <String, dynamic>{
@@ -105,4 +108,5 @@ Map<String, dynamic> _$WorldToJson(World instance) => <String, dynamic>{
       'reverbs': instance.reverbs,
       'commandCategories': instance.commandCategories,
       'defaultPlayerPreferences': instance.defaultPlayerPreferences,
+      'conversationCategories': instance.conversationCategories,
     };

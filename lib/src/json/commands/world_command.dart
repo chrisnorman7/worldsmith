@@ -2,6 +2,7 @@ import 'package:json_annotation/json_annotation.dart';
 
 import '../../../world_context.dart';
 import '../../level/walking_mode.dart';
+import '../conversation/conversation.dart';
 import '../messages/custom_message.dart';
 import 'call_command.dart';
 import 'local_teleport.dart';
@@ -22,6 +23,7 @@ class WorldCommand {
     this.walkingMode,
     this.customCommandName,
     this.callCommand,
+    this.conversationId,
   }) : message = message ?? CustomMessage();
 
   /// Create an instance from a JSON object.
@@ -53,6 +55,9 @@ class WorldCommand {
 
   /// Call another command.
   CallCommand? callCommand;
+
+  /// The ID of a [Conversation] to begin having with the player.
+  String? conversationId;
 
   /// Convert an instance to JSON.
   Map<String, dynamic> toJson() => _$WorldCommandToJson(this);
