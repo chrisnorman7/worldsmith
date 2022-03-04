@@ -25,6 +25,7 @@ class Zone {
     required this.boxes,
     required this.defaultTerrainId,
     this.music,
+    this.ambianceFadeTime,
     this.musicFadeTime,
     List<Sound>? ambiances,
     this.topDownMap = true,
@@ -56,6 +57,9 @@ class Zone {
 
   /// The fade time for music when a [PauseMenu] is pushed.
   double? musicFadeTime;
+
+  /// The fade time for object and level ambiances.
+  double? ambianceFadeTime;
 
   /// The ambiances for this zone.
   final List<Sound> ambiances;

@@ -460,6 +460,19 @@ class ZoneLevel extends Level {
         );
       }
     }
+    final fadeTime = zone.ambianceFadeTime;
+    for (final ambiance in ambiances) {
+      final sound = ambiancePlaybacks[ambiance]!.sound;
+      if (fadeTime == null) {
+        sound.gain = ambiance.gain;
+      } else {
+        sound.fade(
+          length: fadeTime,
+          endGain: ambiance.gain,
+          startGain: 0.0,
+        );
+      }
+    }
   }
 
   /// This zone has been covered, probably by a [PauseMenu] instance.
@@ -477,6 +490,15 @@ class ZoneLevel extends Level {
           startGain:
               zone.music?.gain ?? worldContext.world.soundOptions.defaultGain,
         );
+      }
+    }
+    final fadeTime = zone.ambianceFadeTime;
+    for (final ambiance in ambiances) {
+      final sound = ambiancePlaybacks[ambiance]!.sound;
+      if (fadeTime == null) {
+        sound.gain = 0;
+      } else {
+        sound.fade(length: fadeTime, startGain: ambiance.gain);
       }
     }
   }
