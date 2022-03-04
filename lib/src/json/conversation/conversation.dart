@@ -1,5 +1,6 @@
 import 'package:json_annotation/json_annotation.dart';
 
+import '../sound.dart';
 import 'conversation_branch.dart';
 import 'conversation_response.dart';
 
@@ -15,6 +16,7 @@ class Conversation {
     required this.branches,
     required this.initialBranchId,
     required this.responses,
+    this.music,
   });
 
   /// Create an instance from a JSON object.
@@ -45,6 +47,9 @@ class Conversation {
   ConversationResponse getResponse(String id) => responses.firstWhere(
         (element) => element.id == id,
       );
+
+  /// The music for this conversation.
+  Sound? music;
 
   /// Convert an instance to JSON.
   Map<String, dynamic> toJson() => _$ConversationToJson(this);

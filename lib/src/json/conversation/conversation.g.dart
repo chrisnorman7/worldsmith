@@ -16,6 +16,9 @@ Conversation _$ConversationFromJson(Map<String, dynamic> json) => Conversation(
       responses: (json['responses'] as List<dynamic>)
           .map((e) => ConversationResponse.fromJson(e as Map<String, dynamic>))
           .toList(),
+      music: json['music'] == null
+          ? null
+          : Sound.fromJson(json['music'] as Map<String, dynamic>),
     );
 
 Map<String, dynamic> _$ConversationToJson(Conversation instance) =>
@@ -25,4 +28,5 @@ Map<String, dynamic> _$ConversationToJson(Conversation instance) =>
       'branches': instance.branches,
       'initialBranchId': instance.initialBranchId,
       'responses': instance.responses,
+      'music': instance.music,
     };
