@@ -445,18 +445,17 @@ class ZoneLevel extends Level {
   void onReveal(Level old) {
     super.onReveal(old);
     resetState();
+    final music = zone.music;
     final sound = musicSound;
-    if (sound != null) {
+    if (sound != null && music != null) {
       final fadeTime = zone.musicFadeTime;
-      final endGain =
-          zone.music?.gain ?? worldContext.world.soundOptions.defaultGain;
       if (fadeTime == null) {
-        sound.gain = endGain;
+        sound.gain = music.gain;
       } else {
         sound.fade(
           length: fadeTime,
-          endGain: endGain,
-          startGain: 0.0,
+          endGain: music.gain,
+          startGain: zone.musicFadeGain,
         );
       }
     }
@@ -469,7 +468,7 @@ class ZoneLevel extends Level {
         sound.fade(
           length: ambianceFadeTime,
           endGain: ambiance.gain,
-          startGain: 0.0,
+          startGain: zone.ambianceFadeGain,
         );
       }
     }
@@ -485,7 +484,7 @@ class ZoneLevel extends Level {
         sound.fade(
           length: ambianceFadeTime,
           endGain: ambiance.gain,
-          startGain: 0,
+          startGain: zone.ambianceFadeGain,
         );
       }
     }
@@ -495,16 +494,17 @@ class ZoneLevel extends Level {
   @override
   void onCover(Level other) {
     super.onCover(other);
+    final music = zone.music;
     final sound = musicSound;
-    if (sound != null) {
+    if (sound != null && music != null) {
       final fadeTime = zone.musicFadeTime;
       if (fadeTime == null) {
-        sound.gain = 0;
+        sound.gain = zone.musicFadeGain;
       } else {
         sound.fade(
           length: fadeTime,
-          startGain:
-              zone.music?.gain ?? worldContext.world.soundOptions.defaultGain,
+          startGain: music.gain,
+          endGain: zone.musicFadeGain,
         );
       }
     }
@@ -512,9 +512,13 @@ class ZoneLevel extends Level {
     for (final ambiance in ambiances) {
       final sound = ambiancePlaybacks[ambiance]!.sound;
       if (ambianceFadeTime == null) {
-        sound.gain = 0;
+        sound.gain = zone.ambianceFadeGain;
       } else {
-        sound.fade(length: ambianceFadeTime, startGain: ambiance.gain);
+        sound.fade(
+          length: ambianceFadeTime,
+          startGain: ambiance.gain,
+          endGain: zone.ambianceFadeGain,
+        );
       }
     }
     for (final object in zone.objects) {
@@ -524,11 +528,12 @@ class ZoneLevel extends Level {
       }
       final sound = zoneObjectAmbiances[object.id]!.sound;
       if (ambianceFadeTime == null) {
-        sound.gain = 0;
+        sound.gain = zone.ambianceFadeGain;
       } else {
         sound.fade(
           length: ambianceFadeTime,
           startGain: ambiance.gain,
+          endGain: zone.ambianceFadeGain,
         );
       }
     }
