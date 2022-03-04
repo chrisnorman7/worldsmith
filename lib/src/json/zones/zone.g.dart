@@ -16,6 +16,7 @@ Zone _$ZoneFromJson(Map<String, dynamic> json) => Zone(
       music: json['music'] == null
           ? null
           : Sound.fromJson(json['music'] as Map<String, dynamic>),
+      musicFadeTime: (json['musicFadeTime'] as num?)?.toDouble(),
       ambiances: (json['ambiances'] as List<dynamic>?)
           ?.map((e) => Sound.fromJson(e as Map<String, dynamic>))
           .toList(),
@@ -38,6 +39,7 @@ Map<String, dynamic> _$ZoneToJson(Zone instance) => <String, dynamic>{
       'boxes': instance.boxes,
       'defaultTerrainId': instance.defaultTerrainId,
       'music': instance.music,
+      'musicFadeTime': instance.musicFadeTime,
       'ambiances': instance.ambiances,
       'topDownMap': instance.topDownMap,
       'edgeCommand': instance.edgeCommand,

@@ -3,6 +3,7 @@ import 'dart:math';
 
 import 'package:json_annotation/json_annotation.dart';
 
+import '../../level/pause_menu.dart';
 import '../commands/call_command.dart';
 import '../sound.dart';
 import '../world.dart';
@@ -24,6 +25,7 @@ class Zone {
     required this.boxes,
     required this.defaultTerrainId,
     this.music,
+    this.musicFadeTime,
     List<Sound>? ambiances,
     this.topDownMap = true,
     this.edgeCommand,
@@ -51,6 +53,9 @@ class Zone {
 
   /// The music for this zone.
   Sound? music;
+
+  /// The fade time for music when a [PauseMenu] is pushed.
+  double? musicFadeTime;
 
   /// The ambiances for this zone.
   final List<Sound> ambiances;

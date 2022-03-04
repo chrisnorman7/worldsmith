@@ -16,6 +16,7 @@ import '../json/zones/box.dart';
 import '../json/zones/terrain.dart';
 import '../json/zones/zone.dart';
 import '../json/zones/zone_object.dart';
+import 'pause_menu.dart';
 import 'walking_mode.dart';
 
 const _origin = Point(0.0, 0.0);
@@ -444,6 +445,40 @@ class ZoneLevel extends Level {
   void onReveal(Level old) {
     super.onReveal(old);
     resetState();
+    final sound = musicSound;
+    if (sound != null) {
+      final fadeTime = zone.musicFadeTime;
+      final endGain =
+          zone.music?.gain ?? worldContext.world.soundOptions.defaultGain;
+      if (fadeTime == null) {
+        sound.gain = endGain;
+      } else {
+        sound.fade(
+          length: fadeTime,
+          endGain: endGain,
+          startGain: 0.0,
+        );
+      }
+    }
+  }
+
+  /// This zone has been covered, probably by a [PauseMenu] instance.
+  @override
+  void onCover(Level other) {
+    super.onCover(other);
+    final sound = musicSound;
+    if (sound != null) {
+      final fadeTime = zone.musicFadeTime;
+      if (fadeTime == null) {
+        sound.gain = 0;
+      } else {
+        sound.fade(
+          length: fadeTime,
+          startGain:
+              zone.music?.gain ?? worldContext.world.soundOptions.defaultGain,
+        );
+      }
+    }
   }
 
   /// Destroy all the created reverbs, and the sound channel.
