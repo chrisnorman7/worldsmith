@@ -74,6 +74,7 @@ class World {
     AssetList? equipmentAssets,
     AssetList? terrainAssets,
     AssetList? ambianceAssets,
+    AssetList? conversationAssets,
     DirectionsMap? directions,
     EquipmentPositions? equipmentPositions,
     TerrainsList? terrains,
@@ -95,6 +96,7 @@ class World {
         equipmentAssets = equipmentAssets ?? [],
         terrainAssets = terrainAssets ?? [],
         ambianceAssets = ambianceAssets ?? [],
+        conversationAssets = conversationAssets ?? [],
         directions = directions ??
             defaultDirections.map(
               MapEntry.new,
@@ -238,6 +240,10 @@ class World {
   /// Terrain sounds.
   final AssetList terrainAssets;
 
+  /// The asset store for terrain sounds.
+  AssetStore get terrainAssetStore => getAssetStore(
+      name: 'terrain', assets: terrainAssets, comment: 'Terrain sounds');
+
   /// The list of assets to be used for ambiances.
   final AssetList ambianceAssets;
 
@@ -248,9 +254,15 @@ class World {
         comment: 'Ambiance assets',
       );
 
-  /// The asset store for terrain sounds.
-  AssetStore get terrainAssetStore => getAssetStore(
-      name: 'terrain', assets: terrainAssets, comment: 'Terrain sounds');
+  /// The assets for use with [Conversation] instances.
+  final AssetList conversationAssets;
+
+  /// The conversations asset store.
+  AssetStore get conversationAssetStore => getAssetStore(
+        name: 'conversations',
+        assets: conversationAssets,
+        comment: 'Conversation assets',
+      );
 
   /// The directions that are recognised by this world.
   final DirectionsMap directions;
