@@ -2,6 +2,7 @@ import 'package:json_annotation/json_annotation.dart';
 
 import '../commands/call_command.dart';
 import '../messages/custom_message.dart';
+import '../sound.dart';
 import 'conversation.dart';
 import 'conversation_branch.dart';
 import 'conversation_next_branch.dart';
@@ -17,7 +18,8 @@ class ConversationResponse {
   /// Create an instance.
   ConversationResponse({
     required this.id,
-    required this.message,
+    this.text,
+    this.sound,
     this.nextBranch,
     this.command,
   });
@@ -29,8 +31,11 @@ class ConversationResponse {
   /// The ID of this response.
   final String id;
 
-  /// The message that will represent this response in the responses list.
-  final CustomMessage message;
+  /// The string that will represent this response in the responses list.
+  String? text;
+
+  /// The sound that will represent this response in the responses list.
+  Sound? sound;
 
   /// The ID of a further [ConversationBranch] to show.
   ///
