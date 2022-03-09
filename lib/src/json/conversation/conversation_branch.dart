@@ -1,6 +1,7 @@
 import 'package:json_annotation/json_annotation.dart';
 
 import '../messages/custom_message.dart';
+import '../sound.dart';
 import 'conversation.dart';
 import 'conversation_response.dart';
 
@@ -10,10 +11,11 @@ part 'conversation_branch.g.dart';
 @JsonSerializable()
 class ConversationBranch {
   /// Create an instance.
-  const ConversationBranch({
+  ConversationBranch({
     required this.id,
-    required this.message,
     required this.responseIds,
+    this.text,
+    this.sound,
   });
 
   /// Create an instance from a JSON object.
@@ -23,8 +25,11 @@ class ConversationBranch {
   /// The ID of this branch.
   final String id;
 
-  /// The message to show when this branch is reached.
-  final CustomMessage message;
+  /// The text to show when this branch is reached.
+  String? text;
+
+  /// The sound to play when this branch is reached.
+  Sound? sound;
 
   /// A list of [ConversationResponse] IDs to show.
   final List<String> responseIds;
