@@ -203,8 +203,7 @@ class ZoneLevel extends Level {
           getAssetReferenceReference(
             assets: worldContext.world.ambianceAssets,
             id: ambiance.id,
-          )!
-              .reference,
+          ).reference,
           gain: ambiance.gain,
           keepAlive: true,
           looping: true,

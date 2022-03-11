@@ -151,7 +151,7 @@ class WorldContext {
         sound: getAssetReferenceReference(
           assets: assets,
           id: sound.id,
-        )?.reference,
+        ).reference,
         text: text,
       );
 
@@ -176,8 +176,7 @@ class WorldContext {
       getAssetReferenceReference(
         assets: getAssetStore(sound.assetStore).assets,
         id: sound.id,
-      )!
-          .reference;
+      ).reference;
 
   /// Convert the given [message].
   Message getCustomMessage(

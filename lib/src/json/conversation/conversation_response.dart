@@ -1,7 +1,6 @@
 import 'package:json_annotation/json_annotation.dart';
 
 import '../commands/call_command.dart';
-import '../messages/custom_message.dart';
 import '../sound.dart';
 import 'conversation.dart';
 import 'conversation_branch.dart';

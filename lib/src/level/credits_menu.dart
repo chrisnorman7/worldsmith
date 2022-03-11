@@ -21,11 +21,12 @@ class CreditsMenu extends Menu {
                       worldContext.world.soundOptions.menuMoveSound?.gain ??
                       worldContext.world.soundOptions.defaultGain,
                   keepAlive: true,
-                  sound: getAssetReferenceReference(
-                              assets: worldContext.world.creditsAssets,
-                              id: credit.sound?.id)
-                          ?.reference ??
-                      worldContext.world.menuMoveSound,
+                  sound: credit.sound == null
+                      ? worldContext.world.menuMoveSound
+                      : getAssetReferenceReference(
+                          assets: worldContext.world.creditsAssets,
+                          id: credit.sound!.id,
+                        ).reference,
                   text: credit.title,
                 ),
                 credit.url == null

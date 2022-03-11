@@ -153,19 +153,37 @@ class World {
   final SoundOptions soundOptions;
 
   /// Get the menu move sound.
-  AssetReference? get menuMoveSound => getAssetReferenceReference(
-          assets: interfaceSoundsAssets, id: soundOptions.menuMoveSound?.id)
-      ?.reference;
+  AssetReference? get menuMoveSound {
+    final sound = soundOptions.menuMoveSound;
+    if (sound == null) {
+      return null;
+    }
+    return getAssetReferenceReference(
+            assets: interfaceSoundsAssets, id: sound.id)
+        .reference;
+  }
 
   /// The menu activate sound.
-  AssetReference? get menuActivateSound => getAssetReferenceReference(
-          assets: interfaceSoundsAssets, id: soundOptions.menuActivateSound?.id)
-      ?.reference;
+  AssetReference? get menuActivateSound {
+    final sound = soundOptions.menuActivateSound;
+    if (sound == null) {
+      return null;
+    }
+    return getAssetReferenceReference(
+            assets: interfaceSoundsAssets, id: sound.id)
+        .reference;
+  }
 
   /// Get the menu cancel sound.
-  AssetReference? get menuCancelSound => getAssetReferenceReference(
-          assets: interfaceSoundsAssets, id: soundOptions.menuCancelSound?.id)
-      ?.reference;
+  AssetReference? get menuCancelSound {
+    final sound = soundOptions.menuCancelSound;
+    if (sound == null) {
+      return null;
+    }
+    return getAssetReferenceReference(
+            assets: interfaceSoundsAssets, id: sound.id)
+        .reference;
+  }
 
   /// The options for the main menu.
   final MainMenuOptions mainMenuOptions;

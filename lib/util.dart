@@ -10,17 +10,13 @@ import 'src/json/sound.dart';
 import 'src/json/world.dart';
 
 /// Return the asset reference with the given [id].
-AssetReferenceReference? getAssetReferenceReference({
+AssetReferenceReference getAssetReferenceReference({
   required AssetList assets,
-  required String? id,
-}) {
-  if (id == null) {
-    return null;
-  }
-  return assets.firstWhere(
-    (element) => element.variableName == id,
-  );
-}
+  required String id,
+}) =>
+    assets.firstWhere(
+      (element) => element.variableName == id,
+    );
 
 /// Get an ambiance from the given [sound].
 Ambiance? getAmbiance({
@@ -33,7 +29,7 @@ Ambiance? getAmbiance({
   }
   final reference = getAssetReferenceReference(assets: assets, id: sound.id);
   return Ambiance(
-    sound: reference!.reference,
+    sound: reference.reference,
     gain: sound.gain,
     position: position,
   );
@@ -49,7 +45,7 @@ Music? getMusic({
   }
   final reference = getAssetReferenceReference(assets: assets, id: sound.id);
   return Music(
-    sound: reference!.reference,
+    sound: reference.reference,
     gain: sound.gain,
   );
 }
@@ -63,7 +59,7 @@ PlaySound playSound({
   bool looping = false,
 }) =>
     channel.playSound(
-      getAssetReferenceReference(assets: assets, id: sound.id)!.reference,
+      getAssetReferenceReference(assets: assets, id: sound.id).reference,
       gain: sound.gain,
       keepAlive: keepAlive,
       looping: looping,
