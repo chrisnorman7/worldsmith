@@ -19,6 +19,7 @@ Conversation _$ConversationFromJson(Map<String, dynamic> json) => Conversation(
       music: json['music'] == null
           ? null
           : Sound.fromJson(json['music'] as Map<String, dynamic>),
+      reverbId: json['reverbId'] as String?,
     );
 
 Map<String, dynamic> _$ConversationToJson(Conversation instance) =>
@@ -29,4 +30,5 @@ Map<String, dynamic> _$ConversationToJson(Conversation instance) =>
       'initialBranchId': instance.initialBranchId,
       'responses': instance.responses,
       'music': instance.music,
+      'reverbId': instance.reverbId,
     };

@@ -17,6 +17,7 @@ class Conversation {
     required this.initialBranchId,
     required this.responses,
     this.music,
+    this.reverbId,
   });
 
   /// Create an instance from a JSON object.
@@ -50,6 +51,9 @@ class Conversation {
 
   /// The music for this conversation.
   Sound? music;
+
+  /// The ID of the reverb to pass all sounds through.
+  String? reverbId;
 
   /// Convert an instance to JSON.
   Map<String, dynamic> toJson() => _$ConversationToJson(this);
