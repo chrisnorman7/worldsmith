@@ -8,8 +8,6 @@ import '../../util.dart';
 import '../../world_context.dart';
 import '../json/conversation/conversation.dart';
 import '../json/conversation/conversation_branch.dart';
-import '../json/sound.dart';
-import '../json/world.dart';
 
 /// A level for rendering its [conversation].
 class ConversationLevel extends Level {
@@ -38,40 +36,23 @@ class ConversationLevel extends Level {
   /// The reverb to use.
   CreateReverb? reverb;
 
-  /// The last sound to play.
-  PlaySound? lastPlayedSound;
-
-  /// Play a sound.
-  void playSound({
-    required Sound sound,
-    required AssetList assets,
-  }) {
-    final world = worldContext.world;
-    final reverbId = conversation.reverbId;
-    if (reverb == null && reverbId != null) {
-      final preset = world.getReverb(reverbId);
-      reverb = game.createReverb(preset);
-    }
-    var channel = soundChannel;
-    if (channel == null) {
-      channel = game.createSoundChannel(
-        gain: worldContext.playerPreferences.interfaceSoundsGain,
-        reverb: reverb,
-      );
-      soundChannel = channel;
-    }
-    lastPlayedSound?.destroy();
-    lastPlayedSound = channel.playSound(
-      getAssetReferenceReference(assets: assets, id: sound.id).reference,
-      gain: sound.gain,
-    );
-  }
-
   /// The level has been pushed.
   @override
   void onPush() {
     super.onPush();
-    showBranch(branch ?? conversation.initialBranch);
+    final reverbId = conversation.reverbId;
+    if (reverbId != null && reverb == null) {
+      final reverbPreset = worldContext.world.getReverb(reverbId);
+      reverb = game.createReverb(reverbPreset);
+    }
+    soundChannel ??= game.createSoundChannel(
+      reverb: reverb,
+      gain: worldContext.playerPreferences.interfaceSoundsGain,
+    );
+    game.callAfter(
+      func: () => showBranch(branch ?? conversation.initialBranch),
+      runAfter: 5,
+    );
   }
 
   /// Show the given [branch].
@@ -123,8 +104,7 @@ class ConversationLevel extends Level {
                         showBranch(conversation.getBranch(nextBranch.branchId)),
                     runAfter: (nextBranch.fadeTime * 1000).floor(),
                   );
-                }
-                if (callCommand == null && nextBranch == null) {
+                } else {
                   // The conversation is over.
                   game.popLevel();
                 }

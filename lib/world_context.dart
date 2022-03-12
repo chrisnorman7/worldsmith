@@ -439,7 +439,6 @@ class WorldContext {
       );
     }
     final conversationId = command.conversationId;
-    print(conversationId);
     if (conversationId != null) {
       final conversation = world.getConversation(conversationId);
       final level = getConversationLevel(conversation);

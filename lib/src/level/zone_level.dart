@@ -493,6 +493,7 @@ class ZoneLevel extends Level {
   @override
   void onCover(Level other) {
     super.onCover(other);
+    stopWalking();
     final music = zone.music;
     final sound = musicSound;
     if (sound != null && music != null) {
