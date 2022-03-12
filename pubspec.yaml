@@ -13,8 +13,8 @@ dependencies:
   json_annotation: ^4.4.0
   open_url: ^2.0.0
   path: ^1.8.0
-  ziggurat: ^0.40.2
-  ziggurat_sounds: ^0.20.0
+  ziggurat: ^0.41.0
+  ziggurat_sounds: ^0.21.0
 
 dev_dependencies:
   build_runner: ^2.1.7
