@@ -41,6 +41,9 @@ class Conversation {
   /// The ID of the first branch to be reached.
   String initialBranchId;
 
+  /// The initial branch.
+  ConversationBranch get initialBranch => getBranch(initialBranchId);
+
   /// The responses that belong to this conversation.
   final List<ConversationResponse> responses;
 
