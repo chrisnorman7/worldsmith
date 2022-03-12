@@ -27,7 +27,7 @@ class WalkingOptions {
   double distance;
 
   /// The sound that will play when taking a footstep.
-  final Sound? sound;
+  Sound? sound;
 
   /// The minimum value of a joystick for this walking mode to be used.
   double joystickValue;
