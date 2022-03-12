@@ -438,11 +438,12 @@ class WorldContext {
         zoneLevel: zoneLevel,
       );
     }
-    final conversationId = command.conversationId;
-    if (conversationId != null) {
+    final startConversation = command.startConversation;
+    if (startConversation != null) {
+      final conversationId = startConversation.conversationId;
       final conversation = world.getConversation(conversationId);
       final level = getConversationLevel(conversation);
-      game.pushLevel(level);
+      game.pushLevel(level, after: startConversation.fadeTime);
     }
   }
 
