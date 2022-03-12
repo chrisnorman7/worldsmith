@@ -665,7 +665,7 @@ class ZoneLevel extends Level {
         sound = terrain.slowWalk.sound;
         currentWalkingOptions = terrain.slowWalk;
       } else {
-        sound = terrain.slowWalk.sound;
+        sound = terrain.fastWalk.sound;
         currentWalkingOptions = terrain.fastWalk;
       }
     }
