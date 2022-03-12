@@ -31,6 +31,7 @@ export 'src/json/zones/location_marker.dart';
 export 'src/json/zones/terrain.dart';
 export 'src/json/zones/zone.dart';
 export 'src/json/zones/zone_object.dart';
+export 'src/level/conversation_level.dart';
 export 'src/level/credits_menu.dart';
 export 'src/level/pause_menu.dart';
 export 'src/level/walking_mode.dart';

@@ -142,7 +142,6 @@ class PondZone {
           name: terrainId,
           slowWalk: WalkingOptions(
             interval: 500,
-            distance: 0.5,
             sound: Sound(id: '${terrainId}_slow.mp3'),
           ),
           fastWalk: WalkingOptions(
@@ -159,7 +158,6 @@ class PondZone {
         name: 'Zone Terrain',
         slowWalk: WalkingOptions(
           interval: 500,
-          distance: 0.5,
           sound: Sound(id: 'zone_terrain.mp3'),
         ),
         fastWalk: WalkingOptions(

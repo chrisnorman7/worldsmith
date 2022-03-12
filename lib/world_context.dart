@@ -237,6 +237,10 @@ class WorldContext {
   /// Returns the pause menu.
   PauseMenu getPauseMenu(Zone zone) => PauseMenu(this, zone);
 
+  /// Get a suitable level for the given [conversation].
+  ConversationLevel getConversationLevel(Conversation conversation) =>
+      ConversationLevel(worldContext: this, conversation: conversation);
+
   /// Returns the given [world] as a JSON string.
   String getWorldJsonString({bool compact = true}) {
     final json = world.toJson();
@@ -424,69 +428,76 @@ class WorldContext {
       }
     }
     final callCommand = command.callCommand;
-    runCallCommand(
-      callCommand: callCommand,
-      calledCommands: calledCommands,
-      replacements: replacements,
-      nullSound: nullSound,
-      soundChannel: soundChannel,
-      zoneLevel: zoneLevel,
-    );
+    if (callCommand != null) {
+      runCallCommand(
+        callCommand: callCommand,
+        calledCommands: calledCommands,
+        replacements: replacements,
+        nullSound: nullSound,
+        soundChannel: soundChannel,
+        zoneLevel: zoneLevel,
+      );
+    }
+    final conversationId = command.conversationId;
+    print(conversationId);
+    if (conversationId != null) {
+      final conversation = world.getConversation(conversationId);
+      final level = getConversationLevel(conversation);
+      game.pushLevel(level);
+    }
   }
 
   /// Call the specified [callCommand].
   ///
   /// If [callCommand] is `null`, nothing happens.
   void runCallCommand({
-    required CallCommand? callCommand,
+    required CallCommand callCommand,
     List<CallCommand> calledCommands = const [],
     Map<String, String> replacements = const {},
     AssetReference? nullSound,
     SoundChannel? soundChannel,
     ZoneLevel? zoneLevel,
   }) {
-    if (callCommand != null) {
-      if (calledCommands.contains(callCommand)) {
-        final category = world.commandCategories.firstWhere(
-          (element) => element.commands
-              .where(
-                (element) => element.id == callCommand.commandId,
-              )
-              .isNotEmpty,
+    if (calledCommands.contains(callCommand)) {
+      final category = world.commandCategories.firstWhere(
+        (element) => element.commands
+            .where(
+              (element) => element.id == callCommand.commandId,
+            )
+            .isNotEmpty,
+      );
+      final commandName = category.commands.firstWhere(
+        (element) => element.id == callCommand.commandId,
+      );
+      throw UnsupportedError(
+        'The $commandName command from the ${category.name} is attempting '
+        'to call itself.',
+      );
+    }
+    if (callCommand.chance == 1 ||
+        game.random.nextInt(callCommand.chance) == 0) {
+      final callAfter = callCommand.callAfter;
+      final command = world.getCommand(callCommand.commandId);
+      if (callAfter == null) {
+        runCommand(
+          command: command,
+          replacements: replacements,
+          calledCommands: [...calledCommands, callCommand],
+          nullSound: nullSound,
+          soundChannel: soundChannel,
+          zoneLevel: zoneLevel,
         );
-        final commandName = category.commands.firstWhere(
-          (element) => element.id == callCommand.commandId,
-        );
-        throw UnsupportedError(
-          'The $commandName command from the ${category.name} is attempting '
-          'to call itself.',
-        );
-      }
-      if (callCommand.chance == 1 ||
-          game.random.nextInt(callCommand.chance) == 0) {
-        final callAfter = callCommand.callAfter;
-        final command = world.getCommand(callCommand.commandId);
-        if (callAfter == null) {
-          runCommand(
+      } else {
+        game.callAfter(
+          runAfter: callAfter,
+          func: () => runCommand(
             command: command,
             replacements: replacements,
-            calledCommands: [...calledCommands, callCommand],
             nullSound: nullSound,
             soundChannel: soundChannel,
             zoneLevel: zoneLevel,
-          );
-        } else {
-          game.callAfter(
-            runAfter: callAfter,
-            func: () => runCommand(
-              command: command,
-              replacements: replacements,
-              nullSound: nullSound,
-              soundChannel: soundChannel,
-              zoneLevel: zoneLevel,
-            ),
-          );
-        }
+          ),
+        );
       }
     }
   }

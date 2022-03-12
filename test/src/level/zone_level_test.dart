@@ -46,12 +46,10 @@ void main() {
         name: 'Default Terrain',
         slowWalk: WalkingOptions(
           interval: 500,
-          distance: 0.5,
           sound: Sound(id: slowWalkReference.variableName),
         ),
         fastWalk: WalkingOptions(
           interval: 400,
-          distance: 0.5,
           sound: Sound(id: fastWalkReference.variableName),
         ),
       );
