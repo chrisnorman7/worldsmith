@@ -8,12 +8,16 @@ import '../../util.dart';
 import '../../world_context.dart';
 import '../json/conversation/conversation.dart';
 import '../json/conversation/conversation_branch.dart';
+import '../json/conversation/start_conversation.dart';
 
 /// A level for rendering its [conversation].
 class ConversationLevel extends Level {
   /// Create an instance.
-  ConversationLevel({required this.worldContext, required this.conversation})
-      : super(
+  ConversationLevel({
+    required this.worldContext,
+    required this.conversation,
+    required this.fadeTime,
+  }) : super(
           game: worldContext.game,
           music: getMusic(
             assets: worldContext.world.musicAssets,
@@ -26,6 +30,11 @@ class ConversationLevel extends Level {
 
   /// The conversation to render.
   final Conversation conversation;
+
+  /// The fade time to use.
+  ///
+  /// This value will be taken from a [StartConversation] instance.
+  final int? fadeTime;
 
   /// The current branch.
   ConversationBranch? branch;
@@ -105,8 +114,13 @@ class ConversationLevel extends Level {
                     runAfter: (nextBranch.fadeTime * 1000).floor(),
                   );
                 } else {
+                  final ambianceFadeTime = fadeTime;
                   // The conversation is over.
-                  game.popLevel();
+                  game.popLevel(
+                    ambianceFadeTime: ambianceFadeTime == null
+                        ? null
+                        : (ambianceFadeTime / 1000),
+                  );
                 }
               },
             ),

@@ -237,9 +237,17 @@ class WorldContext {
   /// Returns the pause menu.
   PauseMenu getPauseMenu(Zone zone) => PauseMenu(this, zone);
 
-  /// Get a suitable level for the given [conversation].
-  ConversationLevel getConversationLevel(Conversation conversation) =>
-      ConversationLevel(worldContext: this, conversation: conversation);
+  /// Get a suitable level for the given [startConversation].
+  ConversationLevel getConversationLevel(StartConversation startConversation) {
+    final conversation = world.getConversation(
+      startConversation.conversationId,
+    );
+    return ConversationLevel(
+      worldContext: this,
+      conversation: conversation,
+      fadeTime: startConversation.fadeTime,
+    );
+  }
 
   /// Returns the given [world] as a JSON string.
   String getWorldJsonString({bool compact = true}) {
@@ -440,10 +448,8 @@ class WorldContext {
     }
     final startConversation = command.startConversation;
     if (startConversation != null) {
-      final conversationId = startConversation.conversationId;
-      final conversation = world.getConversation(conversationId);
-      final level = getConversationLevel(conversation);
-      game.pushLevel(level, after: startConversation.fadeTime);
+      final level = getConversationLevel(startConversation);
+      game.pushLevel(level);
     }
   }
 
