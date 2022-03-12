@@ -9,7 +9,7 @@ part of 'start_conversation.dart';
 StartConversation _$StartConversationFromJson(Map<String, dynamic> json) =>
     StartConversation(
       conversationId: json['conversationId'] as String,
-      fadeTime: json['fadeTime'] as int? ?? 100,
+      fadeTime: json['fadeTime'] as int? ?? 500,
     );
 
 Map<String, dynamic> _$StartConversationToJson(StartConversation instance) =>
