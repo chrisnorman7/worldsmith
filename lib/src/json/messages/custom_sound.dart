@@ -7,6 +7,12 @@ part 'custom_sound.g.dart';
 
 /// The [AssetStore] where a [CustomSound] should get its sound from.
 enum CustomSoundAssetStore {
+  /// Ambiances asset store.
+  ambiances,
+
+  /// Conversations asset store.
+  conversations,
+
   /// Credits asset store.
   credits,
 

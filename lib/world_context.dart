@@ -158,6 +158,10 @@ class WorldContext {
   /// Get the asset store for the given [customSoundAssetStore].
   AssetStore getAssetStore(CustomSoundAssetStore customSoundAssetStore) {
     switch (customSoundAssetStore) {
+      case CustomSoundAssetStore.ambiances:
+        return world.ambianceAssetStore;
+      case CustomSoundAssetStore.conversations:
+        return world.conversationAssetStore;
       case CustomSoundAssetStore.credits:
         return world.creditsAssetStore;
       case CustomSoundAssetStore.equipment:

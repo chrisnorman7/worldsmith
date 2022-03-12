@@ -21,6 +21,8 @@ Map<String, dynamic> _$CustomSoundToJson(CustomSound instance) =>
     };
 
 const _$CustomSoundAssetStoreEnumMap = {
+  CustomSoundAssetStore.ambiances: 'ambiances',
+  CustomSoundAssetStore.conversations: 'conversations',
   CustomSoundAssetStore.credits: 'credits',
   CustomSoundAssetStore.equipment: 'equipment',
   CustomSoundAssetStore.interface: 'interface',
