@@ -6,6 +6,7 @@ import '../conversations/start_conversation.dart';
 import '../messages/custom_message.dart';
 import 'call_command.dart';
 import 'local_teleport.dart';
+import 'set_quest_stage.dart';
 import 'zone_teleport.dart';
 
 part 'world_command.g.dart';
@@ -24,6 +25,7 @@ class WorldCommand {
     this.customCommandName,
     this.callCommand,
     this.startConversation,
+    this.setQuestStage,
   }) : message = message ?? CustomMessage();
 
   /// Create an instance from a JSON object.
@@ -58,6 +60,9 @@ class WorldCommand {
 
   /// Start a conversation.
   StartConversation? startConversation;
+
+  /// Set a stage in a quest.
+  SetQuestStage? setQuestStage;
 
   /// Convert an instance to JSON.
   Map<String, dynamic> toJson() => _$WorldCommandToJson(this);
