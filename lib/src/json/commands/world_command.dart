@@ -2,7 +2,7 @@ import 'package:json_annotation/json_annotation.dart';
 
 import '../../../world_context.dart';
 import '../../level/walking_mode.dart';
-import '../conversation/start_conversation.dart';
+import '../conversations/start_conversation.dart';
 import '../messages/custom_message.dart';
 import 'call_command.dart';
 import 'local_teleport.dart';

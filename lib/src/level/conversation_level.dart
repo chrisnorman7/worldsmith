@@ -6,9 +6,9 @@ import 'package:ziggurat/ziggurat.dart';
 
 import '../../util.dart';
 import '../../world_context.dart';
-import '../json/conversation/conversation.dart';
-import '../json/conversation/conversation_branch.dart';
-import '../json/conversation/start_conversation.dart';
+import '../json/conversations/conversation.dart';
+import '../json/conversations/conversation_branch.dart';
+import '../json/conversations/start_conversation.dart';
 
 /// A level for rendering its [conversation].
 class ConversationLevel extends Level {
