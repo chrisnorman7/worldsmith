@@ -15,6 +15,7 @@ import 'commands/world_command.dart';
 import 'conversations/conversation.dart';
 import 'conversations/conversation_category.dart';
 import 'equipment_position.dart';
+import 'messages/custom_sound.dart';
 import 'options/credits_menu_options.dart';
 import 'options/main_menu_options.dart';
 import 'options/pause_menu_options.dart';
@@ -22,6 +23,7 @@ import 'options/sound_menu_options.dart';
 import 'options/sound_options.dart';
 import 'options/world_options.dart';
 import 'player_preferences.dart';
+import 'quests/quest.dart';
 import 'reverb_preset_reference.dart';
 import 'world_credit.dart';
 import 'zones/terrain.dart';
@@ -56,7 +58,23 @@ typedef CommandCategoryList = List<CommandCategory>;
 /// A list of conversation categories.
 typedef ConversationCategoryList = List<ConversationCategory>;
 
+/// A list of quests.
+typedef QuestList = List<Quest>;
+
 /// The top-level world object.
+///
+/// Instances of this class contain all metadata about a particular world.
+///
+/// ## Asset Stores
+///
+/// If you want to add more asset stores, this needs to be done in a few places.
+///
+/// * Add a property of type [AssetList] on the [World] class.
+/// * Initialise the value of this property from a nullable [AssetList] to
+/// ensure the list is growable.
+/// Add a new member in alphabetical order to the [CustomSoundAssetStore]
+/// enumeration.
+/// *Update the UI of Worldsmith Studio as necessary.
 @JsonSerializable()
 class World {
   /// Create an instance.
@@ -75,6 +93,7 @@ class World {
     AssetList? terrainAssets,
     AssetList? ambianceAssets,
     AssetList? conversationAssets,
+    AssetList? questAssets,
     DirectionsMap? directions,
     EquipmentPositions? equipmentPositions,
     TerrainsList? terrains,
@@ -84,6 +103,7 @@ class World {
     CommandCategoryList? commandCategories,
     PlayerPreferences? defaultPlayerPreferences,
     ConversationCategoryList? conversationCategories,
+    QuestList? quests,
   })  : globalOptions = globalOptions ?? WorldOptions(),
         soundOptions = soundOptions ?? SoundOptions(),
         mainMenuOptions = mainMenuOptions ?? MainMenuOptions(),
@@ -97,6 +117,7 @@ class World {
         terrainAssets = terrainAssets ?? [],
         ambianceAssets = ambianceAssets ?? [],
         conversationAssets = conversationAssets ?? [],
+        questAssets = questAssets ?? [],
         directions = directions ??
             defaultDirections.map(
               MapEntry.new,
@@ -109,7 +130,8 @@ class World {
         commandCategories = commandCategories ?? [],
         defaultPlayerPreferences =
             defaultPlayerPreferences ?? PlayerPreferences(),
-        conversationCategories = conversationCategories ?? [];
+        conversationCategories = conversationCategories ?? [],
+        quests = quests ?? [];
 
   /// Create an instance from a JSON object.
   factory World.fromJson(Map<String, dynamic> json) => _$WorldFromJson(json);
@@ -282,6 +304,16 @@ class World {
         comment: 'Conversation assets',
       );
 
+  /// The quest assets.
+  final AssetList questAssets;
+
+  /// The quests asset store.
+  AssetStore get questsAssetStore => getAssetStore(
+        name: 'quest',
+        assets: questAssets,
+        comment: 'Quest assets',
+      );
+
   /// The directions that are recognised by this world.
   final DirectionsMap directions;
 
@@ -314,11 +346,8 @@ class World {
   final ReverbsList reverbs;
 
   /// Return the reverb with the given [id].
-  ReverbPreset getReverb(String id) => reverbs
-      .firstWhere(
-        (element) => element.id == id,
-      )
-      .reverbPreset;
+  ReverbPreset getReverb(String id) =>
+      reverbs.firstWhere((element) => element.id == id).reverbPreset;
 
   /// A list of command categories.
   final CommandCategoryList commandCategories;
@@ -328,9 +357,8 @@ class World {
       [for (final category in commandCategories) ...category.commands];
 
   /// Get the command with the given [id].
-  WorldCommand getCommand(String id) => commands.firstWhere(
-        (element) => element.id == id,
-      );
+  WorldCommand getCommand(String id) =>
+      commands.firstWhere((element) => element.id == id);
 
   /// The default player preferences.
   final PlayerPreferences defaultPlayerPreferences;
@@ -344,9 +372,14 @@ class World {
       ];
 
   /// Get the conversation with the given [id].
-  Conversation getConversation(String id) => conversations.firstWhere(
-        (element) => element.id == id,
-      );
+  Conversation getConversation(String id) =>
+      conversations.firstWhere((element) => element.id == id);
+
+  /// All the quests in the world.
+  final QuestList quests;
+
+  /// Get the quest with the given [id].
+  Quest getQuest(String id) => quests.firstWhere((element) => element.id == id);
 
   /// Convert an instance to JSON.
   Map<String, dynamic> toJson() => _$WorldToJson(this);

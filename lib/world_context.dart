@@ -170,6 +170,8 @@ class WorldContext {
         return world.interfaceSoundsAssetStore;
       case CustomSoundAssetStore.music:
         return world.musicAssetStore;
+      case CustomSoundAssetStore.quest:
+        return world.questsAssetStore;
       case CustomSoundAssetStore.terrain:
         return world.terrainAssetStore;
     }

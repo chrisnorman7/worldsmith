@@ -27,5 +27,6 @@ const _$CustomSoundAssetStoreEnumMap = {
   CustomSoundAssetStore.equipment: 'equipment',
   CustomSoundAssetStore.interface: 'interface',
   CustomSoundAssetStore.music: 'music',
+  CustomSoundAssetStore.quest: 'quest',
   CustomSoundAssetStore.terrain: 'terrain',
 };

@@ -25,6 +25,9 @@ enum CustomSoundAssetStore {
   /// The music asset store.
   music,
 
+  /// The quests asset store.
+  quest,
+
   /// The terrains asset store.
   terrain,
 }

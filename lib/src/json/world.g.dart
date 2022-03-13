@@ -58,6 +58,10 @@ World _$WorldFromJson(Map<String, dynamic> json) => World(
           ?.map((e) =>
               AssetReferenceReference.fromJson(e as Map<String, dynamic>))
           .toList(),
+      questAssets: (json['questAssets'] as List<dynamic>?)
+          ?.map((e) =>
+              AssetReferenceReference.fromJson(e as Map<String, dynamic>))
+          .toList(),
       directions: (json['directions'] as Map<String, dynamic>?)?.map(
         (k, e) => MapEntry(k, (e as num).toDouble()),
       ),
@@ -88,6 +92,9 @@ World _$WorldFromJson(Map<String, dynamic> json) => World(
       conversationCategories: (json['conversationCategories'] as List<dynamic>?)
           ?.map((e) => ConversationCategory.fromJson(e as Map<String, dynamic>))
           .toList(),
+      quests: (json['quests'] as List<dynamic>?)
+          ?.map((e) => Quest.fromJson(e as Map<String, dynamic>))
+          .toList(),
     );
 
 Map<String, dynamic> _$WorldToJson(World instance) => <String, dynamic>{
@@ -105,6 +112,7 @@ Map<String, dynamic> _$WorldToJson(World instance) => <String, dynamic>{
       'terrainAssets': instance.terrainAssets,
       'ambianceAssets': instance.ambianceAssets,
       'conversationAssets': instance.conversationAssets,
+      'questAssets': instance.questAssets,
       'directions': instance.directions,
       'equipmentPositions': instance.equipmentPositions,
       'terrains': instance.terrains,
@@ -114,4 +122,5 @@ Map<String, dynamic> _$WorldToJson(World instance) => <String, dynamic>{
       'commandCategories': instance.commandCategories,
       'defaultPlayerPreferences': instance.defaultPlayerPreferences,
       'conversationCategories': instance.conversationCategories,
+      'quests': instance.quests,
     };
