@@ -27,6 +27,10 @@ class Quest {
   /// The stages of this quest.
   final List<QuestStage> stages;
 
+  /// Get the stage with the given [id].
+  QuestStage getStage(String id) =>
+      stages.firstWhere((element) => element.id == id);
+
   /// Convert an instance to JSON.
   Map<String, dynamic> toJson() => _$QuestToJson(this);
 }
