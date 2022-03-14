@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:ziggurat/ziggurat.dart';
 
+import 'src/json/conditionals/conditional.dart';
 import 'world_context.dart';
 
 /// The directory where assets will be stored.
@@ -57,3 +58,10 @@ typedef ErrorHandler = void Function(Object e, StackTrace? s);
 
 /// The type of a custom commands map.
 typedef CustomCommandsMap = Map<String, EventCallback<WorldContext>>;
+
+/// The type of a conditional functions map.
+typedef ConditionalFunctionsMap
+    = Map<String, bool Function(WorldContext worldContext)>;
+
+/// The type of a list of conditionals.
+typedef ConditionalList = List<Conditional>;

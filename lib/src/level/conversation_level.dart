@@ -82,7 +82,10 @@ class ConversationLevel extends Level {
         text: branch.text,
       ),
       soundChannel: soundChannel,
-      items: branch.responseIds.map<MenuItem>(
+      items: branch.responseIds.where((element) {
+        final response = conversation.getResponse(element);
+        return worldContext.handleConditionals(response.conditions);
+      }).map<MenuItem>(
         (id) {
           final response = conversation.getResponse(id);
           final sound = response.sound;

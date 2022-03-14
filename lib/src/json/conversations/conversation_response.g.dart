@@ -10,6 +10,9 @@ ConversationResponse _$ConversationResponseFromJson(
         Map<String, dynamic> json) =>
     ConversationResponse(
       id: json['id'] as String,
+      conditions: (json['conditions'] as List<dynamic>?)
+          ?.map((e) => Conditional.fromJson(e as Map<String, dynamic>))
+          .toList(),
       text: json['text'] as String?,
       sound: json['sound'] == null
           ? null
@@ -27,6 +30,7 @@ Map<String, dynamic> _$ConversationResponseToJson(
         ConversationResponse instance) =>
     <String, dynamic>{
       'id': instance.id,
+      'conditions': instance.conditions,
       'text': instance.text,
       'sound': instance.sound,
       'nextBranch': instance.nextBranch,

@@ -1,5 +1,6 @@
 import 'package:json_annotation/json_annotation.dart';
 
+import '../../../constants.dart';
 import '../commands/call_command.dart';
 import '../sound.dart';
 import 'conversation.dart';
@@ -12,16 +13,19 @@ part 'conversation_response.g.dart';
 ///
 /// Instances of this class represent player responses in a
 /// [Conversation].
+///
+/// A response will only show up if [conditions] are all satisfied.
 @JsonSerializable()
 class ConversationResponse {
   /// Create an instance.
   ConversationResponse({
     required this.id,
+    ConditionalList? conditions,
     this.text,
     this.sound,
     this.nextBranch,
     this.command,
-  });
+  }) : conditions = conditions ?? [];
 
   /// Create an instance from a JSON object.
   factory ConversationResponse.fromJson(Map<String, dynamic> json) =>
@@ -29,6 +33,10 @@ class ConversationResponse {
 
   /// The ID of this response.
   final String id;
+
+  /// The conditions which must be satisfied in order for this response to show
+  /// up.
+  final ConditionalList conditions;
 
   /// The string that will represent this response in the responses list.
   String? text;

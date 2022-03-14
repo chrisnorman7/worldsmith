@@ -9,6 +9,7 @@
 * You can set a minimum gain for music and ambiances, so that they do not fade to silence.
 * Added quests.
 * Made the `WorldContext` class more configurable.
+* Made it possible to add conditions to commands and conversation responses.
 
 ### Changed
 

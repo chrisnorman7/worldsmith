@@ -14,6 +14,8 @@ import 'package:ziggurat_sounds/ziggurat_sounds.dart';
 import 'command_triggers.dart';
 import 'constants.dart';
 import 'src/json/commands/set_quest_stage.dart';
+import 'src/json/conditionals/conditional.dart';
+import 'src/json/conditionals/quest_condition.dart';
 import 'src/level/main_menu.dart';
 import 'src/level/sound_options_menu.dart';
 import 'util.dart';
@@ -27,6 +29,7 @@ class WorldContext {
     required this.game,
     required this.world,
     this.customCommands = const {},
+    this.conditionalFunctions = const {},
     this.errorHandler,
   }) : preferencesDirectory = sdl.getPrefPath(
           world.globalOptions.orgName,
@@ -75,6 +78,9 @@ class WorldContext {
   /// These commands are used when the [WorldCommand] class has a custom command
   /// string assigned.
   final CustomCommandsMap customCommands;
+
+  /// The map of custom conditional functions.
+  final ConditionalFunctionsMap conditionalFunctions;
 
   /// The directory where preferences should be stored.
   final String preferencesDirectory;
@@ -464,6 +470,60 @@ class WorldContext {
     savePlayerPreferences();
   }
 
+  /// Handle the given [questCondition].
+  bool handleQuestCondition(QuestCondition questCondition) =>
+      playerPreferences.questStages[questCondition.questId] ==
+      questCondition.stageId;
+
+  /// Handle a conditional function with the given [name].
+  ///
+  /// The default implementation returns `false` if the function fails, and
+  /// [errorHandler] is not `null`.
+  bool handleConditionalFunction(String name) {
+    final f = conditionalFunctions[name];
+    if (f == null) {
+      throw UnimplementedError('There is no conditional function named $name.');
+    }
+    try {
+      return f(this);
+    } catch (e, s) {
+      final f = errorHandler;
+      if (f != null) {
+        f(e, s);
+        return false;
+      }
+      rethrow;
+    }
+  }
+
+  /// Handle the given [conditional].
+  bool handleConditional(Conditional conditional) {
+    final questCondition = conditional.questCondition;
+    if (questCondition != null) {
+      if (handleQuestCondition(questCondition) == false) {
+        return false;
+      }
+    }
+    final conditionFunctionName = conditional.conditionFunctionName;
+    if (conditionFunctionName != null) {
+      if (handleConditionalFunction(conditionFunctionName) == false) {
+        return false;
+      }
+    }
+    return conditional.chance == 1 ||
+        game.random.nextInt(conditional.chance) == 0;
+  }
+
+  /// Handle a list of [conditionals].
+  bool handleConditionals(Iterable<Conditional> conditionals) {
+    for (final conditional in conditionals) {
+      if (handleConditional(conditional) == false) {
+        return false;
+      }
+    }
+    return true;
+  }
+
   /// Run the given [command].
   void runCommand({
     required WorldCommand command,
@@ -551,31 +611,31 @@ class WorldContext {
         'to call itself.',
       );
     }
-    if (callCommand.chance == 1 ||
-        game.random.nextInt(callCommand.chance) == 0) {
-      final callAfter = callCommand.callAfter;
-      final command = world.getCommand(callCommand.commandId);
-      if (callAfter == null) {
-        runCommand(
+    if (handleConditionals(callCommand.conditions) == false) {
+      return;
+    }
+    final command = world.getCommand(callCommand.commandId);
+    final callAfter = callCommand.callAfter;
+    if (callAfter == null) {
+      runCommand(
+        command: command,
+        replacements: replacements,
+        calledCommands: [...calledCommands, callCommand],
+        nullSound: nullSound,
+        soundChannel: soundChannel,
+        zoneLevel: zoneLevel,
+      );
+    } else {
+      game.callAfter(
+        runAfter: callAfter,
+        func: () => runCommand(
           command: command,
           replacements: replacements,
-          calledCommands: [...calledCommands, callCommand],
           nullSound: nullSound,
           soundChannel: soundChannel,
           zoneLevel: zoneLevel,
-        );
-      } else {
-        game.callAfter(
-          runAfter: callAfter,
-          func: () => runCommand(
-            command: command,
-            replacements: replacements,
-            nullSound: nullSound,
-            soundChannel: soundChannel,
-            zoneLevel: zoneLevel,
-          ),
-        );
-      }
+        ),
+      );
     }
   }
 
