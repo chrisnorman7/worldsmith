@@ -13,6 +13,7 @@ import 'package:ziggurat_sounds/ziggurat_sounds.dart';
 
 import 'command_triggers.dart';
 import 'constants.dart';
+import 'src/json/commands/set_quest_stage.dart';
 import 'src/level/main_menu.dart';
 import 'src/level/sound_options_menu.dart';
 import 'util.dart';
@@ -358,16 +359,13 @@ class WorldContext {
     }
   }
 
-  /// Run the given [command].
-  void runCommand({
-    required WorldCommand command,
-    Map<String, String> replacements = const {},
-    ZoneLevel? zoneLevel,
-    SoundChannel? soundChannel,
+  /// Output a custom [message].
+  void outputCustomMessage(
+    CustomMessage message, {
     AssetReference? nullSound,
-    List<CallCommand> calledCommands = const [],
+    Map<String, String> replacements = const {},
+    SoundChannel? soundChannel,
   }) {
-    final message = command.message;
     if (message.sound != null || message.text != null) {
       game.outputMessage(
         getCustomMessage(
@@ -378,68 +376,136 @@ class WorldContext {
         soundChannel: soundChannel,
       );
     }
+  }
+
+  /// Handle a [localTeleport] command.
+  void handleLocalTeleport({
+    required LocalTeleport localTeleport,
+    required ZoneLevel zoneLevel,
+  }) {
+    final zone = zoneLevel.zone;
+    final marker = zone.getLocationMarker(localTeleport.locationMarkerId);
+    final destination = zone.getAbsoluteCoordinates(marker.coordinates);
+    zoneLevel
+      ..moveTo(
+        destination: destination.toDouble(),
+        updateLastWalked: false,
+      )
+      ..heading = localTeleport.heading.toDouble();
+  }
+
+  /// Handle a [walkingMode] command.
+  void handleWalkingMode({
+    required WalkingMode walkingMode,
+    required ZoneLevel zoneLevel,
+  }) {
+    switch (walkingMode) {
+      case WalkingMode.stationary:
+        zoneLevel.currentWalkingOptions = null;
+        break;
+      case WalkingMode.slow:
+        zoneLevel.currentWalkingOptions = zoneLevel.currentTerrain.slowWalk;
+        break;
+      case WalkingMode.fast:
+        zoneLevel.currentWalkingOptions = zoneLevel.currentTerrain.fastWalk;
+        break;
+    }
+  }
+
+  /// Handle a [zoneTeleport] command.
+  void handleZoneTeleport({
+    required ZoneTeleport zoneTeleport,
+  }) {
+    final zone = world.getZone(zoneTeleport.zoneId);
+    final coordinates = zoneTeleport.getCoordinates(
+      zone: zone,
+      random: game.random,
+    );
+    final level = getZoneLevel(zone)
+      ..coordinates = coordinates.toDouble()
+      ..heading = zoneTeleport.heading.toDouble();
+    game.replaceLevel(level, ambianceFadeTime: zoneTeleport.fadeTime);
+  }
+
+  /// Handle the custom command with the given [name].
+  void handleCustomCommandName(String name) {
+    try {
+      final f = customCommands[name];
+      if (f == null) {
+        throw UnimplementedError(
+          'There is no command named $name.',
+        );
+      }
+      f(this);
+    } catch (e, s) {
+      final f = errorHandler;
+      if (f != null) {
+        f(e, s);
+      } else {
+        rethrow;
+      }
+    }
+  }
+
+  /// Handle a [startConversation] command.
+  void handleStartConversation(StartConversation startConversation) {
+    final level = getConversationLevel(startConversation);
+    game.pushLevel(level);
+  }
+
+  /// Handle a [setQuestStage] instance.
+  void handleSetQuestStage(SetQuestStage setQuestStage) {
+    final stageId = setQuestStage.stageId;
+    if (stageId == null) {
+      playerPreferences.questStages.remove(setQuestStage.questId);
+    } else {
+      playerPreferences.questStages[setQuestStage.questId] = stageId;
+    }
+    savePlayerPreferences();
+  }
+
+  /// Run the given [command].
+  void runCommand({
+    required WorldCommand command,
+    Map<String, String> replacements = const {},
+    ZoneLevel? zoneLevel,
+    SoundChannel? soundChannel,
+    AssetReference? nullSound,
+    List<CallCommand> calledCommands = const [],
+  }) {
+    outputCustomMessage(
+      command.message,
+      nullSound: nullSound,
+      replacements: replacements,
+      soundChannel: soundChannel,
+    );
     if (zoneLevel != null) {
-      final zone = zoneLevel.zone;
       final localTeleport = command.localTeleport;
       if (localTeleport != null) {
-        final marker = zone.getLocationMarker(localTeleport.locationMarkerId);
-        final destination = zone.getAbsoluteCoordinates(marker.coordinates);
-        zoneLevel
-          ..moveTo(
-            destination: destination.toDouble(),
-            updateLastWalked: false,
-          )
-          ..heading = localTeleport.heading.toDouble();
+        handleLocalTeleport(
+          localTeleport: localTeleport,
+          zoneLevel: zoneLevel,
+        );
       }
       final walkingMode = command.walkingMode;
       if (walkingMode != null) {
-        switch (walkingMode) {
-          case WalkingMode.stationary:
-            zoneLevel.currentWalkingOptions = null;
-            break;
-          case WalkingMode.slow:
-            zoneLevel.currentWalkingOptions = zoneLevel.currentTerrain.slowWalk;
-            break;
-          case WalkingMode.fast:
-            zoneLevel.currentWalkingOptions = zoneLevel.currentTerrain.fastWalk;
-            break;
-        }
+        handleWalkingMode(
+          walkingMode: walkingMode,
+          zoneLevel: zoneLevel,
+        );
       }
     }
     final zoneTeleport = command.zoneTeleport;
     if (zoneTeleport != null) {
-      final zone = world.getZone(zoneTeleport.zoneId);
-      final coordinates = zoneTeleport.getCoordinates(
-        zone: zone,
-        random: game.random,
-      );
-      final level = getZoneLevel(zone)
-        ..coordinates = coordinates.toDouble()
-        ..heading = zoneTeleport.heading.toDouble();
-      game.replaceLevel(level, ambianceFadeTime: zoneTeleport.fadeTime);
+      handleZoneTeleport(zoneTeleport: zoneTeleport);
     }
     final customCommandName = command.customCommandName;
     if (customCommandName != null) {
-      try {
-        final f = customCommands[customCommandName];
-        if (f == null) {
-          throw UnimplementedError(
-            'There is no command named $customCommandName.',
-          );
-        }
-        f(this);
-      } catch (e, s) {
-        final f = errorHandler;
-        if (f != null) {
-          f(e, s);
-        } else {
-          rethrow;
-        }
-      }
+      handleCustomCommandName(customCommandName);
     }
     final callCommand = command.callCommand;
     if (callCommand != null) {
-      runCallCommand(
+      handleCallCommand(
         callCommand: callCommand,
         calledCommands: calledCommands,
         replacements: replacements,
@@ -450,15 +516,18 @@ class WorldContext {
     }
     final startConversation = command.startConversation;
     if (startConversation != null) {
-      final level = getConversationLevel(startConversation);
-      game.pushLevel(level);
+      handleStartConversation(startConversation);
+    }
+    final setQuestStage = command.setQuestStage;
+    if (setQuestStage != null) {
+      handleSetQuestStage(setQuestStage);
     }
   }
 
   /// Call the specified [callCommand].
   ///
   /// If [callCommand] is `null`, nothing happens.
-  void runCallCommand({
+  void handleCallCommand({
     required CallCommand callCommand,
     List<CallCommand> calledCommands = const [],
     Map<String, String> replacements = const {},

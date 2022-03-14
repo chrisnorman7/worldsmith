@@ -104,7 +104,7 @@ class ConversationLevel extends Level {
                 game.popLevel();
                 final callCommand = response.command;
                 if (callCommand != null) {
-                  worldContext.runCallCommand(callCommand: callCommand);
+                  worldContext.handleCallCommand(callCommand: callCommand);
                 }
                 final nextBranch = response.nextBranch;
                 if (nextBranch != null) {

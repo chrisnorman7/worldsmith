@@ -605,7 +605,7 @@ class ZoneLevel extends Level {
       worldContext.onEdgeOfZoneLevel(this, destination);
       final edgeCommand = zone.edgeCommand;
       if (edgeCommand != null) {
-        worldContext.runCallCommand(
+        worldContext.handleCallCommand(
           callCommand: edgeCommand,
           replacements: {
             'zone_name': zone.name,
@@ -628,7 +628,7 @@ class ZoneLevel extends Level {
         if (oldBox != null) {
           final leaveCommand = oldBox.leaveCommand;
           if (leaveCommand != null) {
-            worldContext.runCallCommand(
+            worldContext.handleCallCommand(
               callCommand: leaveCommand,
               replacements: {'box_name': oldBox.name},
             );
@@ -637,7 +637,7 @@ class ZoneLevel extends Level {
       } else {
         final enterCommand = newBox.enterCommand;
         if (enterCommand != null) {
-          worldContext.runCallCommand(
+          worldContext.handleCallCommand(
             callCommand: enterCommand,
             replacements: {'box_name': newBox.name},
           );
@@ -654,7 +654,7 @@ class ZoneLevel extends Level {
       terrain = worldContext.world.getTerrain(newBox.terrainId);
       final walkCommand = newBox.walkCommand;
       if (runWalkCommand == true && walkCommand != null) {
-        worldContext.runCallCommand(callCommand: walkCommand);
+        worldContext.handleCallCommand(callCommand: walkCommand);
       }
     }
     currentTerrain = terrain;
@@ -682,7 +682,7 @@ class ZoneLevel extends Level {
     if (object != null) {
       final collideCommand = object.collideCommand;
       if (collideCommand != null) {
-        worldContext.runCallCommand(callCommand: collideCommand);
+        worldContext.handleCallCommand(callCommand: collideCommand);
       }
     }
     if (updateLastWalked) {
