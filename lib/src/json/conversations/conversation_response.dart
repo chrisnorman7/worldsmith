@@ -1,7 +1,7 @@
 import 'package:json_annotation/json_annotation.dart';
 
-import '../../../constants.dart';
 import '../commands/call_command.dart';
+import '../conditionals/conditional.dart';
 import '../sound.dart';
 import 'conversation.dart';
 import 'conversation_branch.dart';
@@ -20,7 +20,7 @@ class ConversationResponse {
   /// Create an instance.
   ConversationResponse({
     required this.id,
-    ConditionalList? conditions,
+    List<Conditional>? conditions,
     this.text,
     this.sound,
     this.nextBranch,
@@ -36,7 +36,7 @@ class ConversationResponse {
 
   /// The conditions which must be satisfied in order for this response to show
   /// up.
-  final ConditionalList conditions;
+  final List<Conditional> conditions;
 
   /// The string that will represent this response in the responses list.
   String? text;

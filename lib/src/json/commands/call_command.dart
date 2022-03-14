@@ -1,6 +1,6 @@
 import 'package:json_annotation/json_annotation.dart';
 
-import '../../../constants.dart';
+import '../conditionals/conditional.dart';
 
 part 'call_command.g.dart';
 
@@ -10,7 +10,7 @@ class CallCommand {
   /// Create an instance.
   CallCommand({
     required this.commandId,
-    ConditionalList? conditions,
+    List<Conditional>? conditions,
     this.callAfter,
   }) : conditions = conditions ?? [];
 
@@ -19,7 +19,7 @@ class CallCommand {
       _$CallCommandFromJson(json);
 
   /// The conditions which must be satisfied in order for the command to run.
-  final ConditionalList conditions;
+  final List<Conditional> conditions;
 
   /// The ID of the command to call.
   String commandId;
