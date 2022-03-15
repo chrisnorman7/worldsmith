@@ -16,7 +16,7 @@ class SoundOptions {
     this.menuActivateSound,
     this.synthizerLogLevel,
     this.synthizerLoggingBackend,
-    this.libsndfilePathLinux = 'libsndfile.so',
+    this.libsndfilePathLinux = './libsndfile.so',
     this.libsndfilePathWindows = 'libsndfile-1.dll',
     this.libsndfilePathMac = 'libsndfile.dylib',
   });
