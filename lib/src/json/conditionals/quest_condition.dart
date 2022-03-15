@@ -10,7 +10,7 @@ part 'quest_condition.g.dart';
 @JsonSerializable()
 class QuestCondition {
   /// Create an instance.
-  QuestCondition({
+  const QuestCondition({
     required this.questId,
     required this.stageId,
   });
@@ -20,12 +20,12 @@ class QuestCondition {
       _$QuestConditionFromJson(json);
 
   /// The ID of the [Quest].
-  String questId;
+  final String questId;
 
   /// The ID of the [QuestStage].
   ///
   /// If this value is `null`, then the quest must have not been started.
-  String? stageId;
+  final String? stageId;
 
   /// Convert an instance to JSON.
   Map<String, dynamic> toJson() => _$QuestConditionToJson(this);
