@@ -7,7 +7,7 @@ part 'set_quest_stage.g.dart';
 @JsonSerializable()
 class SetQuestStage {
   /// Create an instance.
-  SetQuestStage({
+  const SetQuestStage({
     required this.questId,
     required this.stageId,
   });
@@ -17,13 +17,13 @@ class SetQuestStage {
       _$SetQuestStageFromJson(json);
 
   /// The ID of the quest.
-  String questId;
+  final String questId;
 
   /// The ID of the stage within the quest.
   ///
   /// If this value is `null`, then any stage that has already been attained
   /// will be cleared.
-  String? stageId;
+  final String? stageId;
 
   /// Convert an instance to JSON.
   Map<String, dynamic> toJson() => _$SetQuestStageToJson(this);
