@@ -62,15 +62,19 @@ class PauseMenu extends Menu {
     registerCommand(
       switchMenuForwardCommandTrigger.name,
       Command(
-        onStart: () => game.pushLevel(
-          worldContext.getQuestMenu(),
-        ),
+        onStart: () {
+          worldContext.playMenuSwitchSound();
+          game.pushLevel(worldContext.getQuestMenu());
+        },
       ),
     );
     registerCommand(
       switchMenuBackwardsCommandTrigger.name,
       Command(
-        onStart: () => game.pushLevel(worldContext.getQuestMenu()),
+        onStart: () {
+          worldContext.playMenuSwitchSound();
+          game.pushLevel(worldContext.getQuestMenu());
+        },
       ),
     );
   }

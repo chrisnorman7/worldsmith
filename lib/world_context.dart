@@ -730,13 +730,24 @@ class WorldContext {
   /// Play the menu cancel sound, if it is set.
   void playMenuCancelSound() {
     final sound = world.soundOptions.menuCancelSound;
-    if (sound == null) {
-      return;
+    if (sound != null) {
+      playSound(
+        channel: game.interfaceSounds,
+        sound: sound,
+        assets: world.interfaceSoundsAssets,
+      );
     }
-    playSound(
-      channel: game.interfaceSounds,
-      sound: sound,
-      assets: world.interfaceSoundsAssets,
-    );
+  }
+
+  /// Play the menu switch sound.
+  void playMenuSwitchSound() {
+    final sound = world.soundOptions.menuSwitchSound;
+    if (sound != null) {
+      playSound(
+        channel: game.interfaceSounds,
+        sound: sound,
+        assets: world.interfaceSoundsAssets,
+      );
+    }
   }
 }

@@ -52,13 +52,19 @@ class QuestMenu extends Menu {
     registerCommand(
       switchMenuBackwardsCommandTrigger.name,
       Command(
-        onStart: game.popLevel,
+        onStart: () {
+          worldContext.playMenuSwitchSound();
+          game.popLevel();
+        },
       ),
     );
     registerCommand(
       switchMenuForwardCommandTrigger.name,
       Command(
-        onStart: game.popLevel,
+        onStart: () {
+          worldContext.playMenuSwitchSound();
+          game.popLevel();
+        },
       ),
     );
   }
