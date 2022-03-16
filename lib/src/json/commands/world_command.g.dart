@@ -33,6 +33,10 @@ WorldCommand _$WorldCommandFromJson(Map<String, dynamic> json) => WorldCommand(
           ? null
           : SetQuestStage.fromJson(
               json['setQuestStage'] as Map<String, dynamic>),
+      returnToMainMenu: json['returnToMainMenu'] == null
+          ? null
+          : ReturnToMainMenu.fromJson(
+              json['returnToMainMenu'] as Map<String, dynamic>),
     );
 
 Map<String, dynamic> _$WorldCommandToJson(WorldCommand instance) =>
@@ -47,6 +51,7 @@ Map<String, dynamic> _$WorldCommandToJson(WorldCommand instance) =>
       'callCommand': instance.callCommand,
       'startConversation': instance.startConversation,
       'setQuestStage': instance.setQuestStage,
+      'returnToMainMenu': instance.returnToMainMenu,
     };
 
 const _$WalkingModeEnumMap = {

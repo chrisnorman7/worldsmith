@@ -4,6 +4,7 @@ library worldsmith;
 export 'src/json/commands/call_command.dart';
 export 'src/json/commands/command_category.dart';
 export 'src/json/commands/local_teleport.dart';
+export 'src/json/commands/return_to_main_menu.dart';
 export 'src/json/commands/set_quest_stage.dart';
 export 'src/json/commands/world_command.dart';
 export 'src/json/commands/zone_teleport.dart';

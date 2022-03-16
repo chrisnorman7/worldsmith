@@ -517,6 +517,16 @@ class WorldContext {
     return true;
   }
 
+  /// Return to the main menu.
+  void returnToMainMenu(ReturnToMainMenu returnToMainMenu) {
+    final fadeTime = returnToMainMenu.fadeTime;
+    while (game.currentLevel != null) {
+      game.popLevel(ambianceFadeTime: fadeTime);
+    }
+    savePlayerPreferences();
+    game.pushLevel(getMainMenu());
+  }
+
   /// Run the given [command].
   void runCommand({
     required WorldCommand command,
