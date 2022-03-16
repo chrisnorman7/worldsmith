@@ -20,7 +20,7 @@ class ShowScene {
   String sceneId;
 
   /// The command to call after this scene has finished.
-  final String commandId;
+  String? commandId;
 
   /// Convert an instance to JSON.
   Map<String, dynamic> toJson() => _$ShowSceneToJson(this);
