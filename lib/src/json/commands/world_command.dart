@@ -4,6 +4,7 @@ import '../../../world_context.dart';
 import '../../level/walking_mode.dart';
 import '../conversations/start_conversation.dart';
 import '../messages/custom_message.dart';
+import '../scenes/show_scene.dart';
 import 'call_command.dart';
 import 'local_teleport.dart';
 import 'return_to_main_menu.dart';
@@ -28,6 +29,7 @@ class WorldCommand {
     this.startConversation,
     this.setQuestStage,
     this.returnToMainMenu,
+    this.showScene,
   }) : message = message ?? CustomMessage();
 
   /// Create an instance from a JSON object.
@@ -68,6 +70,9 @@ class WorldCommand {
 
   /// Return to the main menu.
   ReturnToMainMenu? returnToMainMenu;
+
+  /// Show a scene.
+  ShowScene? showScene;
 
   /// Convert an instance to JSON.
   Map<String, dynamic> toJson() => _$WorldCommandToJson(this);

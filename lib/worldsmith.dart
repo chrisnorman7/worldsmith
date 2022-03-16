@@ -29,6 +29,8 @@ export 'src/json/player_preferences.dart';
 export 'src/json/quests/quest.dart';
 export 'src/json/quests/quest_stage.dart';
 export 'src/json/reverb_preset_reference.dart';
+export 'src/json/scenes/scene.dart';
+export 'src/json/scenes/scene_section.dart';
 export 'src/json/sound.dart';
 export 'src/json/world.dart';
 export 'src/json/world_credit.dart';
