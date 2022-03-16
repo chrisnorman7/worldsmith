@@ -16,6 +16,7 @@ class Scene {
     required this.id,
     required this.name,
     required this.sections,
+    this.reverbId,
   });
 
   /// Create an instance from a JSON object.
@@ -29,6 +30,9 @@ class Scene {
 
   /// The sections that will be shown as part of this scene.
   final List<SceneSection> sections;
+
+  /// The ID of the reverb to use.
+  String? reverbId;
 
   /// Convert an instance to JSON.
   Map<String, dynamic> toJson() => _$SceneToJson(this);

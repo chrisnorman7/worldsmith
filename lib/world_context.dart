@@ -13,7 +13,9 @@ import 'package:ziggurat_sounds/ziggurat_sounds.dart';
 
 import 'command_triggers.dart';
 import 'constants.dart';
+import 'src/json/scenes/show_scene.dart';
 import 'src/level/quest_menu.dart';
+import 'src/level/scene_level.dart';
 import 'util.dart';
 import 'worldsmith.dart';
 
@@ -239,6 +241,17 @@ class WorldContext {
   /// Get the quests menu.
   QuestMenu getQuestMenu() => QuestMenu(worldContext: this);
 
+  /// Get a level for the given [scene].
+  SceneLevel getSceneLevel({
+    required Scene scene,
+    required WorldCommand command,
+  }) =>
+      SceneLevel(
+        worldContext: this,
+        scene: scene,
+        command: command,
+      );
+
   /// Get a suitable level for the given [startConversation].
   ConversationLevel getConversationLevel(StartConversation startConversation) {
     final conversation = world.getConversation(
@@ -449,7 +462,14 @@ class WorldContext {
   /// Handle a [startConversation] command.
   void handleStartConversation(StartConversation startConversation) {
     final level = getConversationLevel(startConversation);
-    game.pushLevel(level);
+    if (game.currentLevel is MainMenu) {
+      game.replaceLevel(
+        level,
+        ambianceFadeTime: world.mainMenuOptions.fadeTime,
+      );
+    } else {
+      game.pushLevel(level);
+    }
   }
 
   /// Handle a [setQuestStage] instance.
@@ -529,6 +549,24 @@ class WorldContext {
     game.pushLevel(getMainMenu());
   }
 
+  /// Handle a show scene event.
+  void handleShowScene(ShowScene showScene) {
+    final scene = world.getScene(showScene.sceneId);
+    final command = world.getCommand(showScene.commandId);
+    final level = getSceneLevel(
+      scene: scene,
+      command: command,
+    );
+    if (game.currentLevel is MainMenu) {
+      game.replaceLevel(
+        level,
+        ambianceFadeTime: world.mainMenuOptions.fadeTime,
+      );
+    } else {
+      game.pushLevel(level);
+    }
+  }
+
   /// Run the given [command].
   void runCommand({
     required WorldCommand command,
@@ -586,6 +624,14 @@ class WorldContext {
     final setQuestStage = command.setQuestStage;
     if (setQuestStage != null) {
       handleSetQuestStage(setQuestStage);
+    }
+    final returnToMainMenu = command.returnToMainMenu;
+    if (returnToMainMenu != null) {
+      handleReturnToMainMenu(returnToMainMenu);
+    }
+    final showScene = command.showScene;
+    if (showScene != null) {
+      handleShowScene(showScene);
     }
   }
 

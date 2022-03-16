@@ -12,10 +12,12 @@ Scene _$SceneFromJson(Map<String, dynamic> json) => Scene(
       sections: (json['sections'] as List<dynamic>)
           .map((e) => SceneSection.fromJson(e as Map<String, dynamic>))
           .toList(),
+      reverbId: json['reverbId'] as String?,
     );
 
 Map<String, dynamic> _$SceneToJson(Scene instance) => <String, dynamic>{
       'id': instance.id,
       'name': instance.name,
       'sections': instance.sections,
+      'reverbId': instance.reverbId,
     };
