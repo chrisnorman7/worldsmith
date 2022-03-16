@@ -518,7 +518,7 @@ class WorldContext {
   }
 
   /// Return to the main menu.
-  void returnToMainMenu(ReturnToMainMenu returnToMainMenu) {
+  void handleReturnToMainMenu(ReturnToMainMenu returnToMainMenu) {
     final fadeTime = returnToMainMenu.fadeTime;
     while (game.currentLevel != null) {
       game.popLevel(ambianceFadeTime: fadeTime);
