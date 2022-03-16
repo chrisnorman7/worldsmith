@@ -2,7 +2,6 @@ import 'package:ziggurat/menus.dart';
 import 'package:ziggurat/sound.dart';
 import 'package:ziggurat/ziggurat.dart';
 
-import '../../util.dart';
 import '../../world_context.dart';
 
 /// A menu for configuring sound options.
@@ -30,18 +29,12 @@ class SoundOptionsMenu extends ParameterMenu {
           ],
           music: worldContext.world.soundMenuMusic,
           onCancel: () {
-            final sound = worldContext.world.soundOptions.menuCancelSound;
-            if (sound != null) {
-              playSound(
-                channel: worldContext.game.interfaceSounds,
-                sound: sound,
-                assets: worldContext.world.interfaceSoundsAssets,
+            worldContext
+              ..playMenuCancelSound()
+              ..game.replaceLevel(
+                worldContext.getMainMenu(),
+                ambianceFadeTime: worldContext.world.soundMenuOptions.fadeTime,
               );
-            }
-            worldContext.game.replaceLevel(
-              worldContext.getMainMenu(),
-              ambianceFadeTime: worldContext.world.soundMenuOptions.fadeTime,
-            );
           },
         ) {
     menuItems.add(

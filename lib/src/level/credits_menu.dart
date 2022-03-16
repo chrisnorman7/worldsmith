@@ -41,18 +41,13 @@ class CreditsMenu extends Menu {
               )
           ],
           onCancel: () {
-            final sound = worldContext.world.soundOptions.menuCancelSound;
-            if (sound != null) {
-              playSound(
-                channel: worldContext.game.interfaceSounds,
-                sound: sound,
-                assets: worldContext.world.interfaceSoundsAssets,
+            worldContext
+              ..playMenuCancelSound()
+              ..game.replaceLevel(
+                worldContext.getMainMenu(),
+                ambianceFadeTime:
+                    worldContext.world.creditsMenuOptions.fadeTime,
               );
-            }
-            worldContext.game.replaceLevel(
-              worldContext.getMainMenu(),
-              ambianceFadeTime: worldContext.world.creditsMenuOptions.fadeTime,
-            );
           },
         );
 }

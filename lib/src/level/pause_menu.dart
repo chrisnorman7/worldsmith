@@ -3,7 +3,6 @@ import 'package:ziggurat/menus.dart';
 import 'package:ziggurat/ziggurat.dart';
 
 import '../../command_triggers.dart';
-import '../../util.dart';
 import '../../world_context.dart';
 import '../json/zones/zone.dart';
 
@@ -46,17 +45,11 @@ class PauseMenu extends Menu {
             ),
           ],
           onCancel: () {
-            final sound = worldContext.world.soundOptions.menuCancelSound;
-            if (sound != null) {
-              playSound(
-                channel: worldContext.game.interfaceSounds,
-                sound: sound,
-                assets: worldContext.world.interfaceSoundsAssets,
+            worldContext
+              ..playMenuCancelSound()
+              ..game.popLevel(
+                ambianceFadeTime: worldContext.world.pauseMenuOptions.fadeTime,
               );
-            }
-            worldContext.game.popLevel(
-              ambianceFadeTime: worldContext.world.pauseMenuOptions.fadeTime,
-            );
           },
         ) {
     registerCommand(
