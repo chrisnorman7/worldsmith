@@ -14,6 +14,9 @@ SoundOptions _$SoundOptionsFromJson(Map<String, dynamic> json) => SoundOptions(
       menuActivateSound: json['menuActivateSound'] == null
           ? null
           : Sound.fromJson(json['menuActivateSound'] as Map<String, dynamic>),
+      menuCancelSound: json['menuCancelSound'] == null
+          ? null
+          : Sound.fromJson(json['menuCancelSound'] as Map<String, dynamic>),
       synthizerLogLevel:
           $enumDecodeNullable(_$LogLevelEnumMap, json['synthizerLogLevel']),
       synthizerLoggingBackend: $enumDecodeNullable(
@@ -24,9 +27,7 @@ SoundOptions _$SoundOptionsFromJson(Map<String, dynamic> json) => SoundOptions(
           json['libsndfilePathWindows'] as String? ?? 'libsndfile-1.dll',
       libsndfilePathMac:
           json['libsndfilePathMac'] as String? ?? 'libsndfile.dylib',
-    )..menuCancelSound = json['menuCancelSound'] == null
-        ? null
-        : Sound.fromJson(json['menuCancelSound'] as Map<String, dynamic>);
+    );
 
 Map<String, dynamic> _$SoundOptionsToJson(SoundOptions instance) =>
     <String, dynamic>{

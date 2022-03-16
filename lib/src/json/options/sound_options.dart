@@ -14,6 +14,7 @@ class SoundOptions {
     this.defaultGain = 0.7,
     this.menuMoveSound,
     this.menuActivateSound,
+    this.menuCancelSound,
     this.synthizerLogLevel,
     this.synthizerLoggingBackend,
     this.libsndfilePathLinux = './libsndfile.so',
