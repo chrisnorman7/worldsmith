@@ -17,6 +17,9 @@ SoundOptions _$SoundOptionsFromJson(Map<String, dynamic> json) => SoundOptions(
       menuCancelSound: json['menuCancelSound'] == null
           ? null
           : Sound.fromJson(json['menuCancelSound'] as Map<String, dynamic>),
+      menuSwitchSound: json['menuSwitchSound'] == null
+          ? null
+          : Sound.fromJson(json['menuSwitchSound'] as Map<String, dynamic>),
       synthizerLogLevel:
           $enumDecodeNullable(_$LogLevelEnumMap, json['synthizerLogLevel']),
       synthizerLoggingBackend: $enumDecodeNullable(
@@ -35,6 +38,7 @@ Map<String, dynamic> _$SoundOptionsToJson(SoundOptions instance) =>
       'menuMoveSound': instance.menuMoveSound,
       'menuActivateSound': instance.menuActivateSound,
       'menuCancelSound': instance.menuCancelSound,
+      'menuSwitchSound': instance.menuSwitchSound,
       'synthizerLogLevel': _$LogLevelEnumMap[instance.synthizerLogLevel],
       'synthizerLoggingBackend':
           _$LoggingBackendEnumMap[instance.synthizerLoggingBackend],

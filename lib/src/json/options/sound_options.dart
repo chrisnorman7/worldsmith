@@ -15,6 +15,7 @@ class SoundOptions {
     this.menuMoveSound,
     this.menuActivateSound,
     this.menuCancelSound,
+    this.menuSwitchSound,
     this.synthizerLogLevel,
     this.synthizerLoggingBackend,
     this.libsndfilePathLinux = './libsndfile.so',
@@ -37,6 +38,9 @@ class SoundOptions {
 
   /// A sound to play when cancelling a menu.
   Sound? menuCancelSound;
+
+  /// The sound to play when switching through menus.
+  Sound? menuSwitchSound;
 
   /// The logging level for synthizer.
   LogLevel? synthizerLogLevel;
