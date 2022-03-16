@@ -13,6 +13,7 @@ import 'package:ziggurat_sounds/ziggurat_sounds.dart';
 
 import 'command_triggers.dart';
 import 'constants.dart';
+import 'src/level/quest_menu.dart';
 import 'util.dart';
 import 'worldsmith.dart';
 
@@ -240,6 +241,9 @@ class WorldContext {
 
   /// Returns the pause menu.
   PauseMenu getPauseMenu(Zone zone) => PauseMenu(this, zone);
+
+  /// Get the quests menu.
+  QuestMenu getQuestMenu() => QuestMenu(worldContext: this);
 
   /// Get a suitable level for the given [startConversation].
   ConversationLevel getConversationLevel(StartConversation startConversation) {
@@ -722,4 +726,17 @@ class WorldContext {
           value: -world.soundMenuOptions.gainAdjust,
         ),
       );
+
+  /// Play the menu cancel sound, if it is set.
+  void playMenuCancelSound() {
+    final sound = world.soundOptions.menuCancelSound;
+    if (sound == null) {
+      return;
+    }
+    playSound(
+      channel: game.interfaceSounds,
+      sound: sound,
+      assets: world.interfaceSoundsAssets,
+    );
+  }
 }

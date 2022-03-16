@@ -19,6 +19,7 @@ import 'messages/custom_sound.dart';
 import 'options/credits_menu_options.dart';
 import 'options/main_menu_options.dart';
 import 'options/pause_menu_options.dart';
+import 'options/quest_menu_options.dart';
 import 'options/sound_menu_options.dart';
 import 'options/sound_options.dart';
 import 'options/world_options.dart';
@@ -104,6 +105,7 @@ class World {
     PlayerPreferences? defaultPlayerPreferences,
     ConversationCategoryList? conversationCategories,
     QuestList? quests,
+    QuestMenuOptions? questMenuOptions,
   })  : globalOptions = globalOptions ?? WorldOptions(),
         soundOptions = soundOptions ?? SoundOptions(),
         mainMenuOptions = mainMenuOptions ?? MainMenuOptions(),
@@ -131,7 +133,8 @@ class World {
         defaultPlayerPreferences =
             defaultPlayerPreferences ?? PlayerPreferences(),
         conversationCategories = conversationCategories ?? [],
-        quests = quests ?? [];
+        quests = quests ?? [],
+        questMenuOptions = questMenuOptions ?? QuestMenuOptions();
 
   /// Create an instance from a JSON object.
   factory World.fromJson(Map<String, dynamic> json) => _$WorldFromJson(json);
@@ -380,6 +383,9 @@ class World {
 
   /// Get the quest with the given [id].
   Quest getQuest(String id) => quests.firstWhere((element) => element.id == id);
+
+  /// The options for the quest menu.
+  final QuestMenuOptions questMenuOptions;
 
   /// Convert an instance to JSON.
   Map<String, dynamic> toJson() => _$WorldToJson(this);

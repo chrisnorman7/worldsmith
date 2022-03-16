@@ -19,7 +19,7 @@ SoundOptions _$SoundOptionsFromJson(Map<String, dynamic> json) => SoundOptions(
       synthizerLoggingBackend: $enumDecodeNullable(
           _$LoggingBackendEnumMap, json['synthizerLoggingBackend']),
       libsndfilePathLinux:
-          json['libsndfilePathLinux'] as String? ?? 'libsndfile.so',
+          json['libsndfilePathLinux'] as String? ?? './libsndfile.so',
       libsndfilePathWindows:
           json['libsndfilePathWindows'] as String? ?? 'libsndfile-1.dll',
       libsndfilePathMac:

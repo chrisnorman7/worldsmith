@@ -79,6 +79,25 @@ const showFacingCommandTrigger = CommandTrigger(
   keyboardKey: CommandKeyboardKey(ScanCode.SCANCODE_F),
 );
 
+/// Switch to the next menu.
+const switchMenuForwardCommandTrigger = CommandTrigger(
+  name: 'switch_menu_forward',
+  description: 'Move to the next menu',
+  button: GameControllerButton.b,
+  keyboardKey: CommandKeyboardKey(ScanCode.SCANCODE_TAB),
+);
+
+/// Switch to the previous menu.
+const switchMenuBackwardsCommandTrigger = CommandTrigger(
+  name: 'switch_menu_backwards',
+  description: 'Go to the previous menu',
+  button: GameControllerButton.x,
+  keyboardKey: CommandKeyboardKey(
+    ScanCode.SCANCODE_TAB,
+    shiftKey: true,
+  ),
+);
+
 /// The default trigger map.
 final defaultTriggerMap = TriggerMap(
   [
@@ -92,5 +111,7 @@ final defaultTriggerMap = TriggerMap(
     pauseMenuCommandTrigger,
     showCoordinatesCommandTrigger,
     showFacingCommandTrigger,
+    switchMenuForwardCommandTrigger,
+    switchMenuBackwardsCommandTrigger,
   ],
 );

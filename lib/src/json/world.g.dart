@@ -95,6 +95,10 @@ World _$WorldFromJson(Map<String, dynamic> json) => World(
       quests: (json['quests'] as List<dynamic>?)
           ?.map((e) => Quest.fromJson(e as Map<String, dynamic>))
           .toList(),
+      questMenuOptions: json['questMenuOptions'] == null
+          ? null
+          : QuestMenuOptions.fromJson(
+              json['questMenuOptions'] as Map<String, dynamic>),
     );
 
 Map<String, dynamic> _$WorldToJson(World instance) => <String, dynamic>{
@@ -123,4 +127,5 @@ Map<String, dynamic> _$WorldToJson(World instance) => <String, dynamic>{
       'defaultPlayerPreferences': instance.defaultPlayerPreferences,
       'conversationCategories': instance.conversationCategories,
       'quests': instance.quests,
+      'questMenuOptions': instance.questMenuOptions,
     };

@@ -2,6 +2,7 @@
 import 'package:ziggurat/menus.dart';
 import 'package:ziggurat/ziggurat.dart';
 
+import '../../command_triggers.dart';
 import '../../util.dart';
 import '../../world_context.dart';
 import '../json/zones/zone.dart';
@@ -57,7 +58,22 @@ class PauseMenu extends Menu {
               ambianceFadeTime: worldContext.world.pauseMenuOptions.fadeTime,
             );
           },
-        );
+        ) {
+    registerCommand(
+      switchMenuForwardCommandTrigger.name,
+      Command(
+        onStart: () => game.pushLevel(
+          worldContext.getQuestMenu(),
+        ),
+      ),
+    );
+    registerCommand(
+      switchMenuBackwardsCommandTrigger.name,
+      Command(
+        onStart: () => game.pushLevel(worldContext.getQuestMenu()),
+      ),
+    );
+  }
 
   /// The world context to use.
   final WorldContext worldContext;
