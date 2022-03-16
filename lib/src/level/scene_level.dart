@@ -1,7 +1,8 @@
-/// Provides the [SceneLevel] class.
 import 'package:ziggurat/levels.dart';
 import 'package:ziggurat/sound.dart';
+import 'package:ziggurat/ziggurat.dart';
 
+import '../../command_triggers.dart';
 import '../../world_context.dart';
 import '../json/commands/world_command.dart';
 import '../json/scenes/scene.dart';
@@ -17,7 +18,14 @@ class SceneLevel extends Level {
     this.index = 0,
   }) : super(
           game: worldContext.game,
-        );
+        ) {
+    registerCommand(
+      nextSceneSectionCommandTrigger.name,
+      Command(
+        onStart: showNextSection,
+      ),
+    );
+  }
 
   /// The world context to use.
   final WorldContext worldContext;

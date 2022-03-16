@@ -98,6 +98,14 @@ const switchMenuBackwardsCommandTrigger = CommandTrigger(
   ),
 );
 
+/// Next scene section.
+const nextSceneSectionCommandTrigger = CommandTrigger(
+  name: 'next_scene_section',
+  description: 'Go to the next section in a scene',
+  button: GameControllerButton.start,
+  keyboardKey: CommandKeyboardKey(ScanCode.SCANCODE_SPACE),
+);
+
 /// The default trigger map.
 final defaultTriggerMap = TriggerMap(
   [
@@ -113,5 +121,6 @@ final defaultTriggerMap = TriggerMap(
     showFacingCommandTrigger,
     switchMenuForwardCommandTrigger,
     switchMenuBackwardsCommandTrigger,
+    nextSceneSectionCommandTrigger,
   ],
 );

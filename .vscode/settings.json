@@ -10,6 +10,7 @@
     "hrtf",
     "LALT",
     "libsndfile",
+    "num",
     "rightx",
     "SCANCODE",
     "sdl",
