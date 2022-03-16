@@ -220,12 +220,6 @@ class WorldContext {
   Button getButton(TaskFunction func) =>
       Button(func, activateSound: world.menuActivateSound);
 
-  /// Get a button which will call the given [command].
-  Button getWorldCommandButton(WorldCommand command) => Button(
-        () => runCommand(command: command),
-        activateSound: world.menuActivateSound,
-      );
-
   /// Get the main menu for the given [WorldContext].
   MainMenu getMainMenu() => MainMenu(this);
 

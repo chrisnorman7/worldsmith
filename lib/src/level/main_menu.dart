@@ -43,7 +43,10 @@ class MainMenu extends Menu {
             keepAlive: true,
             nullSound: menuMoveAsset,
           ),
-          worldContext.getWorldCommandButton(command),
+          Button(() {
+            worldContext.playerPreferences.questStages.clear();
+            worldContext.runCommand(command: command);
+          }),
         ),
         MenuItem(
           worldContext.getCustomMessage(
