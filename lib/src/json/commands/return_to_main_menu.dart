@@ -9,6 +9,7 @@ class ReturnToMainMenu {
   /// Create an instance.
   ReturnToMainMenu({
     this.fadeTime,
+    this.savePlayerPreferences = true,
   });
 
   /// Create an instance from a JSON object.
@@ -17,6 +18,9 @@ class ReturnToMainMenu {
 
   /// The fade time to use.
   double? fadeTime;
+
+  /// Whether or not player preferences should be saved first.
+  bool savePlayerPreferences;
 
   /// Convert an instance to JSON.
   Map<String, dynamic> toJson() => _$ReturnToMainMenuToJson(this);

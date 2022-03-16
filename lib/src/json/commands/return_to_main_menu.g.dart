@@ -9,9 +9,11 @@ part of 'return_to_main_menu.dart';
 ReturnToMainMenu _$ReturnToMainMenuFromJson(Map<String, dynamic> json) =>
     ReturnToMainMenu(
       fadeTime: (json['fadeTime'] as num?)?.toDouble(),
+      savePlayerPreferences: json['savePlayerPreferences'] as bool? ?? true,
     );
 
 Map<String, dynamic> _$ReturnToMainMenuToJson(ReturnToMainMenu instance) =>
     <String, dynamic>{
       'fadeTime': instance.fadeTime,
+      'savePlayerPreferences': instance.savePlayerPreferences,
     };

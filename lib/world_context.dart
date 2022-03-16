@@ -523,7 +523,9 @@ class WorldContext {
     while (game.currentLevel != null) {
       game.popLevel(ambianceFadeTime: fadeTime);
     }
-    savePlayerPreferences();
+    if (returnToMainMenu.savePlayerPreferences) {
+      savePlayerPreferences();
+    }
     game.pushLevel(getMainMenu());
   }
 
