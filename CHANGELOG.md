@@ -10,6 +10,7 @@
 * Added quests.
 * Made the `WorldContext` class more configurable.
 * Made it possible to add conditions to commands and conversation responses.
+* Added scenes.
 
 ### Changed
 
