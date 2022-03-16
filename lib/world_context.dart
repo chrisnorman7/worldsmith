@@ -241,7 +241,7 @@ class WorldContext {
   /// Get a level for the given [scene].
   SceneLevel getSceneLevel({
     required Scene scene,
-    required WorldCommand command,
+    WorldCommand? command,
   }) =>
       SceneLevel(
         worldContext: this,
@@ -549,7 +549,8 @@ class WorldContext {
   /// Handle a show scene event.
   void handleShowScene(ShowScene showScene) {
     final scene = world.getScene(showScene.sceneId);
-    final command = world.getCommand(showScene.commandId);
+    final commandId = showScene.commandId;
+    final command = commandId == null ? null : world.getCommand(commandId);
     final level = getSceneLevel(
       scene: scene,
       command: command,

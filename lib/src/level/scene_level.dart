@@ -14,7 +14,7 @@ class SceneLevel extends Level {
   SceneLevel({
     required this.worldContext,
     required this.scene,
-    required this.command,
+    this.command,
     this.index = 0,
   }) : super(
           game: worldContext.game,
@@ -34,7 +34,7 @@ class SceneLevel extends Level {
   final Scene scene;
 
   /// The command to run when all the [SceneSection]s have been shown.
-  final WorldCommand command;
+  final WorldCommand? command;
 
   /// The current index in the [scene] sections.
   int index;
@@ -53,7 +53,10 @@ class SceneLevel extends Level {
     if (index >= scene.sections.length) {
       // The scene is over.
       game.popLevel();
-      worldContext.runCommand(command: command);
+      final worldCommand = command;
+      if (worldCommand != null) {
+        worldContext.runCommand(command: worldCommand);
+      }
     } else {
       final section = scene.sections[index];
       index++;
