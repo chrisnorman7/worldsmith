@@ -8,10 +8,12 @@ part of 'show_scene.dart';
 
 ShowScene _$ShowSceneFromJson(Map<String, dynamic> json) => ShowScene(
       sceneId: json['sceneId'] as String,
-      commandId: json['commandId'] as String?,
+      callCommand: json['callCommand'] == null
+          ? null
+          : CallCommand.fromJson(json['callCommand'] as Map<String, dynamic>),
     );
 
 Map<String, dynamic> _$ShowSceneToJson(ShowScene instance) => <String, dynamic>{
       'sceneId': instance.sceneId,
-      'commandId': instance.commandId,
+      'callCommand': instance.callCommand,
     };

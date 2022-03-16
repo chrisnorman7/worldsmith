@@ -241,12 +241,12 @@ class WorldContext {
   /// Get a level for the given [scene].
   SceneLevel getSceneLevel({
     required Scene scene,
-    WorldCommand? command,
+    CallCommand? callCommand,
   }) =>
       SceneLevel(
         worldContext: this,
         scene: scene,
-        command: command,
+        callCommand: callCommand,
       );
 
   /// Get a suitable level for the given [startConversation].
@@ -549,11 +549,9 @@ class WorldContext {
   /// Handle a show scene event.
   void handleShowScene(ShowScene showScene) {
     final scene = world.getScene(showScene.sceneId);
-    final commandId = showScene.commandId;
-    final command = commandId == null ? null : world.getCommand(commandId);
     final level = getSceneLevel(
       scene: scene,
-      command: command,
+      callCommand: showScene.callCommand,
     );
     if (game.currentLevel is MainMenu) {
       game.replaceLevel(

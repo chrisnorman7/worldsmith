@@ -1,6 +1,8 @@
 /// Provides the [ShowScene] class.
 import 'package:json_annotation/json_annotation.dart';
 
+import '../commands/call_command.dart';
+
 part 'show_scene.g.dart';
 
 /// A command to show a scene.
@@ -9,7 +11,7 @@ class ShowScene {
   /// Create an instance.
   ShowScene({
     required this.sceneId,
-    required this.commandId,
+    this.callCommand,
   });
 
   /// Create an instance from a JSON object.
@@ -20,7 +22,7 @@ class ShowScene {
   String sceneId;
 
   /// The command to call after this scene has finished.
-  String? commandId;
+  CallCommand? callCommand;
 
   /// Convert an instance to JSON.
   Map<String, dynamic> toJson() => _$ShowSceneToJson(this);

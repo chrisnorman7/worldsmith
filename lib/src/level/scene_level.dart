@@ -4,7 +4,7 @@ import 'package:ziggurat/ziggurat.dart';
 
 import '../../command_triggers.dart';
 import '../../world_context.dart';
-import '../json/commands/world_command.dart';
+import '../json/commands/call_command.dart';
 import '../json/scenes/scene.dart';
 import '../json/scenes/scene_section.dart';
 
@@ -14,7 +14,7 @@ class SceneLevel extends Level {
   SceneLevel({
     required this.worldContext,
     required this.scene,
-    this.command,
+    this.callCommand,
     this.index = 0,
   }) : super(
           game: worldContext.game,
@@ -34,7 +34,7 @@ class SceneLevel extends Level {
   final Scene scene;
 
   /// The command to run when all the [SceneSection]s have been shown.
-  final WorldCommand? command;
+  final CallCommand? callCommand;
 
   /// The current index in the [scene] sections.
   int index;
@@ -53,9 +53,9 @@ class SceneLevel extends Level {
     if (index >= scene.sections.length) {
       // The scene is over.
       game.popLevel();
-      final worldCommand = command;
-      if (worldCommand != null) {
-        worldContext.runCommand(command: worldCommand);
+      final command = callCommand;
+      if (command != null) {
+        worldContext.handleCallCommand(callCommand: command);
       }
     } else {
       final section = scene.sections[index];
