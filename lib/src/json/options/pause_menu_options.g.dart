@@ -21,6 +21,12 @@ PauseMenuOptions _$PauseMenuOptionsFromJson(Map<String, dynamic> json) =>
           ? null
           : CustomMessage.fromJson(
               json['returnToGameMessage'] as Map<String, dynamic>),
+      returnToMainMenuMessage: json['returnToMainMenuMessage'] == null
+          ? null
+          : CustomMessage.fromJson(
+              json['returnToMainMenuMessage'] as Map<String, dynamic>),
+      returnToMainMenuFadeTime:
+          (json['returnToMainMenuFadeTime'] as num?)?.toDouble() ?? 3.0,
     );
 
 Map<String, dynamic> _$PauseMenuOptionsToJson(PauseMenuOptions instance) =>
@@ -30,4 +36,6 @@ Map<String, dynamic> _$PauseMenuOptionsToJson(PauseMenuOptions instance) =>
       'fadeTime': instance.fadeTime,
       'zoneOverviewMessage': instance.zoneOverviewMessage,
       'returnToGameMessage': instance.returnToGameMessage,
+      'returnToMainMenuMessage': instance.returnToMainMenuMessage,
+      'returnToMainMenuFadeTime': instance.returnToMainMenuFadeTime,
     };

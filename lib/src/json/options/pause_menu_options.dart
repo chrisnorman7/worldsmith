@@ -16,10 +16,14 @@ class PauseMenuOptions {
     this.fadeTime,
     CustomMessage? zoneOverviewMessage,
     CustomMessage? returnToGameMessage,
+    CustomMessage? returnToMainMenuMessage,
+    this.returnToMainMenuFadeTime = 3.0,
   })  : zoneOverviewMessage =
             zoneOverviewMessage ?? CustomMessage(text: 'Map Overview'),
         returnToGameMessage =
-            returnToGameMessage ?? CustomMessage(text: 'Return To Game');
+            returnToGameMessage ?? CustomMessage(text: 'Return To Game'),
+        returnToMainMenuMessage = returnToMainMenuMessage ??
+            CustomMessage(text: 'Return To Main Menu');
 
   /// Create an instance from a JSON object.
   factory PauseMenuOptions.fromJson(Map<String, dynamic> json) =>
@@ -39,6 +43,12 @@ class PauseMenuOptions {
 
   /// The message for the "Return to game" menu item.
   final CustomMessage returnToGameMessage;
+
+  /// The message to be used when returning to the main menu.
+  final CustomMessage returnToMainMenuMessage;
+
+  /// The fade time when returning to the main menu.
+  double? returnToMainMenuFadeTime;
 
   /// Convert an instance to JSON.
   Map<String, dynamic> toJson() => _$PauseMenuOptionsToJson(this);

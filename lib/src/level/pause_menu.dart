@@ -43,6 +43,27 @@ class PauseMenu extends Menu {
                 ),
               ),
             ),
+            MenuItem(
+              worldContext.getCustomMessage(
+                worldContext.world.pauseMenuOptions.returnToMainMenuMessage,
+                keepAlive: true,
+                nullSound: worldContext.world.menuMoveSound,
+              ),
+              worldContext.getButton(
+                () {
+                  worldContext.savePlayerPreferences();
+                  final world = worldContext.world;
+                  final options = world.pauseMenuOptions;
+                  final fadeTime = options.returnToMainMenuFadeTime;
+                  worldContext.game
+                    ..popLevel()
+                    ..replaceLevel(
+                      worldContext.getMainMenu(),
+                      ambianceFadeTime: fadeTime,
+                    );
+                },
+              ),
+            )
           ],
           onCancel: () {
             worldContext
