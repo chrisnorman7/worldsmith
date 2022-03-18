@@ -602,17 +602,15 @@ class WorldContext {
     if (customCommandName != null) {
       handleCustomCommandName(customCommandName);
     }
-    final callCommand = command.callCommand;
-    if (callCommand != null) {
-      handleCallCommand(
-        callCommand: callCommand,
-        calledCommands: calledCommands,
-        replacements: replacements,
-        nullSound: nullSound,
-        soundChannel: soundChannel,
-        zoneLevel: zoneLevel,
-      );
-    }
+    final callCommands = command.callCommands;
+    handleCallCommands(
+      callCommands: callCommands,
+      calledCommands: calledCommands,
+      nullSound: nullSound,
+      replacements: replacements,
+      soundChannel: soundChannel,
+      zoneLevel: zoneLevel,
+    );
     final startConversation = command.startConversation;
     if (startConversation != null) {
       handleStartConversation(startConversation);
@@ -631,9 +629,28 @@ class WorldContext {
     }
   }
 
+  /// Handle a list of [callCommands].
+  void handleCallCommands({
+    required List<CallCommand> callCommands,
+    List<CallCommand> calledCommands = const [],
+    Map<String, String> replacements = const {},
+    AssetReference? nullSound,
+    SoundChannel? soundChannel,
+    ZoneLevel? zoneLevel,
+  }) {
+    for (final callCommand in callCommands) {
+      handleCallCommand(
+        callCommand: callCommand,
+        calledCommands: calledCommands,
+        nullSound: nullSound,
+        replacements: replacements,
+        soundChannel: soundChannel,
+        zoneLevel: zoneLevel,
+      );
+    }
+  }
+
   /// Call the specified [callCommand].
-  ///
-  /// If [callCommand] is `null`, nothing happens.
   void handleCallCommand({
     required CallCommand callCommand,
     List<CallCommand> calledCommands = const [],

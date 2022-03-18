@@ -22,9 +22,9 @@ WorldCommand _$WorldCommandFromJson(Map<String, dynamic> json) => WorldCommand(
       walkingMode:
           $enumDecodeNullable(_$WalkingModeEnumMap, json['walkingMode']),
       customCommandName: json['customCommandName'] as String?,
-      callCommand: json['callCommand'] == null
-          ? null
-          : CallCommand.fromJson(json['callCommand'] as Map<String, dynamic>),
+      callCommands: (json['callCommands'] as List<dynamic>?)
+          ?.map((e) => CallCommand.fromJson(e as Map<String, dynamic>))
+          .toList(),
       startConversation: json['startConversation'] == null
           ? null
           : StartConversation.fromJson(
@@ -51,7 +51,7 @@ Map<String, dynamic> _$WorldCommandToJson(WorldCommand instance) =>
       'zoneTeleport': instance.zoneTeleport,
       'walkingMode': _$WalkingModeEnumMap[instance.walkingMode],
       'customCommandName': instance.customCommandName,
-      'callCommand': instance.callCommand,
+      'callCommands': instance.callCommands,
       'startConversation': instance.startConversation,
       'setQuestStage': instance.setQuestStage,
       'returnToMainMenu': instance.returnToMainMenu,

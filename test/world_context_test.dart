@@ -310,8 +310,8 @@ void main() {
       test(
         'Detect command loops',
         () {
-          command2.callCommand = CallCommand(commandId: command1.id);
-          command1.callCommand = CallCommand(commandId: command2.id);
+          command2.callCommands.add(CallCommand(commandId: command1.id));
+          command1.callCommands.add(CallCommand(commandId: command2.id));
           expect(
             () => worldContext.runCommand(command: command1),
             throwsA(isA<UnsupportedError>()),

@@ -27,7 +27,7 @@ void main() {
         'Initialisation',
         () {
           final menu = PauseMenu(worldContext, zone);
-          expect(menu.menuItems.length, 3);
+          expect(menu.menuItems.length, 4);
           final zoneNameMenuItem = menu.menuItems.first;
           expect(zoneNameMenuItem.label.gain, world.soundOptions.defaultGain);
           expect(zoneNameMenuItem.label.keepAlive, isTrue);
@@ -42,7 +42,7 @@ void main() {
             world.pauseMenuOptions.zoneOverviewMessage.text,
           );
           expect(overviewMenuItem.widget, isA<Button>());
-          final returnToGameMenuItem = menu.menuItems.last;
+          final returnToGameMenuItem = menu.menuItems[2];
           expect(
             returnToGameMenuItem.label.gain,
             world.soundOptions.defaultGain,
