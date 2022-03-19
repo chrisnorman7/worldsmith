@@ -18,6 +18,8 @@ const appName = 'test_game';
 final worldFile = File('world.json');
 final worldFileEncrypted = File(encryptedWorldFilename + '.test');
 
+class _WorksException implements Exception {}
+
 /// Save the given [world].
 void saveWorld(World world) {
   final data = jsonEncode(world.toJson());
@@ -582,7 +584,13 @@ void main() {
         zones: [zone],
       );
       pondZone.generateTerrains(world);
-      final worldContext = WorldContext(sdl: sdl, game: game, world: world);
+      const commandName = 'testing';
+      final worldContext = WorldContext(
+        sdl: sdl,
+        game: game,
+        world: world,
+        customCommands: {commandName: (context) => throw _WorksException()},
+      );
       test(
         'Detect command loops',
         () {
@@ -703,6 +711,19 @@ void main() {
             ),
           );
           expect(level.heading, zoneTeleport.heading);
+        },
+      );
+      test(
+        '.handleCustomCommandName',
+        () {
+          expect(
+            () => worldContext.handleCustomCommandName('hello world'),
+            throwsA(isA<UnimplementedError>()),
+          );
+          expect(
+            () => worldContext.handleCustomCommandName(commandName),
+            throwsA(isA<_WorksException>()),
+          );
         },
       );
     },
