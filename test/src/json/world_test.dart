@@ -164,6 +164,60 @@ void main() {
       );
       final world = World(commandCategories: [category1, category2]);
       test(
+        'Ambiances',
+        () {
+          final mainMenuMusic = AssetReferenceReference(
+            variableName: '1',
+            reference: AssetReference.file('main_menu.mp3'),
+          );
+          final creditsMenuMusic = AssetReferenceReference(
+            variableName: '2',
+            reference: AssetReference.file('credits.mp3'),
+          );
+          final pauseMusic = AssetReferenceReference(
+            variableName: '3',
+            reference: AssetReference.file('pause_menu.mp3'),
+          );
+          final soundMusic = AssetReferenceReference(
+            variableName: '4',
+            reference: AssetReference.file('sound_menu.mp3'),
+          );
+          final world = World(
+            title: 'Ambiances Test',
+            musicAssets: [
+              mainMenuMusic,
+              creditsMenuMusic,
+              pauseMusic,
+              soundMusic,
+            ],
+            mainMenuOptions: MainMenuOptions(
+              music: Sound(id: mainMenuMusic.variableName, gain: 1.0),
+            ),
+            creditsMenuOptions: CreditsMenuOptions(
+              music: Sound(id: creditsMenuMusic.variableName, gain: 2.0),
+            ),
+            pauseMenuOptions: PauseMenuOptions(
+              music: Sound(id: pauseMusic.variableName, gain: 3.0),
+            ),
+            soundMenuOptions: SoundMenuOptions(
+              music: Sound(id: soundMusic.variableName, gain: 4.0),
+            ),
+          );
+          var ambiance = world.creditsMenuMusic!;
+          expect(ambiance.sound, creditsMenuMusic.reference);
+          expect(ambiance.gain, 2.0);
+          ambiance = world.mainMenuMusic!;
+          expect(ambiance.sound, mainMenuMusic.reference);
+          expect(ambiance.gain, 1.0);
+          ambiance = world.pauseMenuMusic!;
+          expect(ambiance.sound, pauseMusic.reference);
+          expect(ambiance.gain, 3.0);
+          ambiance = world.soundMenuMusic!;
+          expect(ambiance.sound, soundMusic.reference);
+          expect(ambiance.gain, 4.0);
+        },
+      );
+      test(
         'World.commands',
         () {
           expect(world.commands, [command1, command2, command3]);

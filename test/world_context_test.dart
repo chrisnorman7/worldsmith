@@ -2,13 +2,18 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:dart_sdl/dart_sdl.dart';
+import 'package:path/path.dart' as path;
 import 'package:test/test.dart';
 import 'package:worldsmith/constants.dart';
-import 'package:worldsmith/src/json/options/sound_menu_options.dart';
 import 'package:worldsmith/world_context.dart';
 import 'package:worldsmith/worldsmith.dart';
 import 'package:ziggurat/ziggurat.dart';
 import 'package:ziggurat_sounds/ziggurat_sounds.dart';
+
+import 'pond_zone.dart';
+
+const orgName = 'com.test';
+const appName = 'test_game';
 
 final worldFile = File('world.json');
 final worldFileEncrypted = File(encryptedWorldFilename + '.test');
@@ -23,73 +28,111 @@ class _ButtonException implements Exception {}
 
 void main() {
   final sdl = Sdl();
+  final game = Game('Test Game');
   group(
     'WorldContext class',
     () {
-      test(
-        'Initialisation',
+      final world = World(
+        globalOptions: WorldOptions(
+          appName: appName,
+          orgName: orgName,
+        ),
+      );
+      final worldContext = WorldContext(
+        sdl: sdl,
+        game: game,
+        world: world,
+      );
+      final directory = Directory(
+        sdl.getPrefPath(orgName, appName),
+      );
+      tearDownAll(
         () {
-          final world = World(title: 'Test WorldContext Class');
-          final game = Game(world.title);
-          final worldContext = WorldContext(sdl: sdl, game: game, world: world);
-          expect(worldContext.game, game);
-          expect(worldContext.world, world);
+          if (directory.existsSync() == true) {
+            directory.deleteSync(recursive: true);
+          }
         },
       );
       test(
-        'Ambiances',
+        'Initialisation',
         () {
-          final mainMenuMusic = AssetReferenceReference(
-            variableName: '1',
-            reference: AssetReference.file('main_menu.mp3'),
-          );
-          final creditsMenuMusic = AssetReferenceReference(
-            variableName: '2',
-            reference: AssetReference.file('credits.mp3'),
-          );
-          final pauseMusic = AssetReferenceReference(
-            variableName: '3',
-            reference: AssetReference.file('pause_menu.mp3'),
-          );
-          final soundMusic = AssetReferenceReference(
-            variableName: '4',
-            reference: AssetReference.file('sound_menu.mp3'),
-          );
           final world = World(
-            title: 'Ambiances Test',
-            musicAssets: [
-              mainMenuMusic,
-              creditsMenuMusic,
-              pauseMusic,
-              soundMusic,
-            ],
-            mainMenuOptions: MainMenuOptions(
-              music: Sound(id: mainMenuMusic.variableName, gain: 1.0),
-            ),
-            creditsMenuOptions: CreditsMenuOptions(
-              music: Sound(id: creditsMenuMusic.variableName, gain: 2.0),
-            ),
-            pauseMenuOptions: PauseMenuOptions(
-              music: Sound(id: pauseMusic.variableName, gain: 3.0),
-            ),
-            soundMenuOptions: SoundMenuOptions(
-              music: Sound(id: soundMusic.variableName, gain: 4.0),
+            title: 'Test WorldContext Class',
+            globalOptions: WorldOptions(
+              appName: appName,
+              orgName: orgName,
             ),
           );
           final game = Game(world.title);
           final worldContext = WorldContext(sdl: sdl, game: game, world: world);
-          var ambiance = world.creditsMenuMusic!;
-          expect(ambiance.sound, creditsMenuMusic.reference);
-          expect(ambiance.gain, 2.0);
-          ambiance = world.mainMenuMusic!;
-          expect(ambiance.sound, mainMenuMusic.reference);
-          expect(ambiance.gain, 1.0);
-          ambiance = worldContext.world.pauseMenuMusic!;
-          expect(ambiance.sound, pauseMusic.reference);
-          expect(ambiance.gain, 3.0);
-          ambiance = world.soundMenuMusic!;
-          expect(ambiance.sound, soundMusic.reference);
-          expect(ambiance.gain, 4.0);
+          expect(worldContext.sdl, sdl);
+          expect(worldContext.game, game);
+          expect(worldContext.world, world);
+          expect(worldContext.customCommands, isEmpty);
+          expect(worldContext.conditionalFunctions, isEmpty);
+          expect(
+            worldContext.preferencesDirectory,
+            sdl.getPrefPath(
+              orgName,
+              appName,
+            ),
+          );
+          expect(worldContext.errorHandler, isNull);
+        },
+      );
+      test(
+        '.playerPreference',
+        () {
+          expect(
+            worldContext.playerPreferencesFile.path,
+            path.join(directory.path, preferencesFilename),
+          );
+          if (worldContext.playerPreferencesFile.existsSync()) {
+            worldContext.playerPreferencesFile.deleteSync(recursive: true);
+          }
+          expect(worldContext.playerPreferencesFile.existsSync(), isFalse);
+          final defaultPrefs = world.defaultPlayerPreferences;
+          final prefs = worldContext.playerPreferences;
+          expect(prefs.ambianceGain, defaultPrefs.ambianceGain);
+          expect(prefs.interfaceSoundsGain, defaultPrefs.interfaceSoundsGain);
+          expect(prefs.musicGain, defaultPrefs.musicGain);
+          expect(prefs.pannerStrategy, defaultPrefs.pannerStrategy);
+          expect(prefs.questStages, isEmpty);
+          expect(prefs.turnSensitivity, defaultPrefs.turnSensitivity);
+          prefs.ambianceGain *= 2;
+          expect(prefs.ambianceGain, defaultPrefs.ambianceGain * 2);
+        },
+      );
+      test(
+        '.triggerMapFile',
+        () {
+          expect(
+            worldContext.triggerMapFile.path,
+            path.join(
+              worldContext.preferencesDirectory,
+              triggerMapFilename,
+            ),
+          );
+        },
+      );
+      test(
+        '.savePlayerPreferences',
+        () {
+          if (worldContext.playerPreferencesFile.existsSync()) {
+            worldContext.playerPreferencesFile.deleteSync(recursive: true);
+          }
+          final prefs = worldContext.playerPreferences
+            ..ambianceGain *= 2
+            ..interfaceSoundsGain *= 3
+            ..musicGain *= 3;
+          worldContext.savePlayerPreferences();
+          expect(worldContext.playerPreferencesFile.existsSync(), isTrue);
+          final data = worldContext.playerPreferencesFile.readAsStringSync();
+          final json = jsonDecode(data) as JsonType;
+          final prefs2 = PlayerPreferences.fromJson(json);
+          expect(prefs2.ambianceGain, prefs.ambianceGain);
+          expect(prefs2.interfaceSoundsGain, prefs.interfaceSoundsGain);
+          expect(prefs2.musicGain, prefs.musicGain);
         },
       );
       test(
@@ -154,34 +197,74 @@ void main() {
         },
       );
       test(
-        'getButton',
+        '.getAssetStore',
         () {
-          final activateSound = AssetReferenceReference(
-            variableName: 'activate',
-            reference: AssetReference.file('activate.mp3'),
+          final world = World();
+          final worldContext = WorldContext(
+            sdl: sdl,
+            game: Game('Test asset stores'),
+            world: world,
           );
-          final moveSound = AssetReferenceReference(
-            variableName: 'move',
-            reference: AssetReference.file('activate.mp3'),
+          expect(
+            worldContext.getAssetStore(CustomSoundAssetStore.credits).assets,
+            world.creditsAssets,
+          );
+          expect(
+            worldContext.getAssetStore(CustomSoundAssetStore.equipment).assets,
+            world.equipmentAssets,
+          );
+          expect(
+            worldContext.getAssetStore(CustomSoundAssetStore.interface).assets,
+            world.interfaceSoundsAssets,
+          );
+          expect(
+            worldContext.getAssetStore(CustomSoundAssetStore.music).assets,
+            world.musicAssets,
+          );
+          expect(
+            worldContext.getAssetStore(CustomSoundAssetStore.terrain).assets,
+            world.terrainAssets,
+          );
+        },
+      );
+      test(
+        '.getCustomSound',
+        () {
+          final ambiance = AssetReference.file('ambiance.wav');
+          final ambianceReference = AssetReferenceReference(
+            variableName: 'ambiance',
+            reference: ambiance,
+          );
+          final terrain = AssetReference.collection('grass');
+          final terrainReference = AssetReferenceReference(
+            variableName: 'terrain',
+            reference: terrain,
           );
           final world = World(
-            interfaceSoundsAssets: [activateSound, moveSound],
-            soundOptions: SoundOptions(
-              menuActivateSound: Sound(
-                id: activateSound.variableName,
-                gain: 3.0,
-              ),
-              menuMoveSound: Sound(id: moveSound.variableName, gain: 5.0),
-            ),
+            ambianceAssets: [ambianceReference],
+            terrainAssets: [terrainReference],
           );
-          final game = Game(world.title);
-          final worldContext = WorldContext(sdl: sdl, game: game, world: world);
-          final button = worldContext.getButton(() {
-            throw _ButtonException();
-          });
-          expect(button.activateSound, activateSound.reference);
-          expect(button.onActivate, isNotNull);
-          expect(() => button.onActivate!(), throwsA(isA<_ButtonException>()));
+          final worldContext = WorldContext(
+            sdl: sdl,
+            game: game,
+            world: world,
+          );
+          expect(
+            worldContext.getCustomSound(CustomSound(
+              assetStore: CustomSoundAssetStore.ambiances,
+              id: ambianceReference.variableName,
+            )),
+            ambiance,
+          );
+          expect(
+            worldContext.getCustomSound(
+              CustomSound(
+                assetStore: CustomSoundAssetStore.terrain,
+                id: terrainReference.variableName,
+              ),
+            ),
+            terrain,
+          );
         },
       );
       test(
@@ -216,39 +299,181 @@ void main() {
         },
       );
       test(
-        '.getAssetStore',
+        '.getButton',
         () {
-          final world = World();
-          final worldContext = WorldContext(
-            sdl: sdl,
-            game: Game('Test asset stores'),
-            world: world,
+          final activateSound = AssetReferenceReference(
+            variableName: 'activate',
+            reference: AssetReference.file('activate.mp3'),
+          );
+          final moveSound = AssetReferenceReference(
+            variableName: 'move',
+            reference: AssetReference.file('activate.mp3'),
+          );
+          final world = World(
+            interfaceSoundsAssets: [activateSound, moveSound],
+            soundOptions: SoundOptions(
+              menuActivateSound: Sound(
+                id: activateSound.variableName,
+                gain: 3.0,
+              ),
+              menuMoveSound: Sound(id: moveSound.variableName, gain: 5.0),
+            ),
+          );
+          final game = Game(world.title);
+          final worldContext = WorldContext(sdl: sdl, game: game, world: world);
+          final button = worldContext.getButton(() {
+            throw _ButtonException();
+          });
+          expect(button.activateSound, activateSound.reference);
+          expect(button.onActivate, isNotNull);
+          expect(() => button.onActivate!(), throwsA(isA<_ButtonException>()));
+        },
+      );
+      test(
+        '.getMainMenu',
+        () {
+          final menu = worldContext.getMainMenu();
+          expect(menu.worldContext, worldContext);
+        },
+      );
+      test(
+        '.getCreditsMenu',
+        () {
+          final menu = worldContext.getCreditsMenu();
+          expect(menu, isA<CreditsMenu>());
+        },
+      );
+      test(
+        '.getSoundOptionsMenu',
+        () {
+          final menu = worldContext.getSoundOptionsMenu();
+          expect(menu.worldContext, worldContext);
+        },
+      );
+      test(
+        '.getZoneLevel',
+        () {
+          final pondZone = PondZone.generate();
+          final zone = pondZone.zone;
+          final world = World(zones: [zone]);
+          pondZone.generateTerrains(world);
+          final worldContext = WorldContext(sdl: sdl, game: game, world: world);
+          final level = worldContext.getZoneLevel(zone);
+          expect(level.worldContext, worldContext);
+          expect(level.zone, zone);
+        },
+      );
+      test(
+        '.getPauseMenu',
+        () {
+          final pondZone = PondZone.generate();
+          final zone = pondZone.zone;
+          final world = World(zones: [zone]);
+          final worldContext = WorldContext(sdl: sdl, game: game, world: world);
+          final menu = worldContext.getPauseMenu(zone);
+          expect(menu.worldContext, worldContext);
+          expect(menu.zone, zone);
+        },
+      );
+      test(
+        '.getQuestMenu',
+        () {
+          final menu = worldContext.getQuestMenu();
+          expect(menu.worldContext, worldContext);
+        },
+      );
+      test(
+        '.getSceneLevel',
+        () {
+          final command = WorldCommand(id: 'command1', name: 'First Command');
+          final scene = Scene(
+            id: 'scene1',
+            name: 'First Scene',
+            sections: [],
+          );
+          final world = World(
+            scenes: [scene],
+            commandCategories: [
+              CommandCategory(
+                id: 'category1',
+                name: 'First Command Category',
+                commands: [command],
+              ),
+            ],
+          );
+          final worldContext = WorldContext(sdl: sdl, game: game, world: world);
+          var level = worldContext.getSceneLevel(scene: scene);
+          expect(level.callCommand, isNull);
+          expect(level.index, isZero);
+          expect(level.scene, scene);
+          expect(level.sound, isNull);
+          expect(level.worldContext, worldContext);
+          final callCommand = CallCommand(commandId: command.id);
+          level = worldContext.getSceneLevel(
+            scene: scene,
+            callCommand: callCommand,
+          );
+          expect(level.callCommand, callCommand);
+          expect(level.index, isZero);
+          expect(level.scene, scene);
+          expect(level.sound, isNull);
+          expect(level.worldContext, worldContext);
+        },
+      );
+      test(
+        '.getConversationLevel',
+        () {
+          final response = ConversationResponse(id: 'response1');
+          final branch =
+              ConversationBranch(id: 'branch1', responseIds: [response.id]);
+          final conversation = Conversation(
+            id: 'conversation1',
+            name: 'First Conversation',
+            branches: [branch],
+            initialBranchId: branch.id,
+            responses: [response],
+          );
+          final world = World(
+            conversationCategories: [
+              ConversationCategory(
+                id: 'category1',
+                name: 'First Category',
+                conversations: [conversation],
+              )
+            ],
+          );
+          final worldContext = WorldContext(sdl: sdl, game: game, world: world);
+          const fadeTime = 12345;
+          final level = worldContext.getConversationLevel(
+            conversation: conversation,
+            fadeTime: fadeTime,
+          );
+          expect(level.branch, isNull);
+          expect(level.conversation, conversation);
+          expect(level.fadeTime, fadeTime);
+          expect(level.reverb, isNull);
+          expect(level.soundChannel, isNull);
+          expect(level.worldContext, worldContext);
+        },
+      );
+      test(
+        '.getWorldJsonString',
+        () {
+          final zone = PondZone.generate().zone;
+          final world = World(zones: [zone]);
+          final worldContext = WorldContext(sdl: sdl, game: game, world: world);
+          expect(
+            worldContext.getWorldJsonString(compact: false),
+            indentedJsonEncoder.convert(world),
           );
           expect(
-            worldContext.getAssetStore(CustomSoundAssetStore.credits).assets,
-            world.creditsAssets,
-          );
-          expect(
-            worldContext.getAssetStore(CustomSoundAssetStore.equipment).assets,
-            world.equipmentAssets,
-          );
-          expect(
-            worldContext.getAssetStore(CustomSoundAssetStore.interface).assets,
-            world.interfaceSoundsAssets,
-          );
-          expect(
-            worldContext.getAssetStore(CustomSoundAssetStore.music).assets,
-            world.musicAssets,
-          );
-          expect(
-            worldContext.getAssetStore(CustomSoundAssetStore.terrain).assets,
-            world.terrainAssets,
+            worldContext.getWorldJsonString(),
+            jsonEncode(world),
           );
         },
       );
     },
   );
-  final game = Game('Load Tests');
   group(
     'Load function tests',
     () {
@@ -291,7 +516,36 @@ void main() {
     },
   );
   group(
-    '.runCommand',
+    'Save Functions',
+    () {
+      final zone = PondZone.generate().zone;
+      final world = World(zones: [zone]);
+      final worldContext = WorldContext(sdl: sdl, game: game, world: world);
+      final file = File(encryptedWorldFilename);
+      tearDown(
+        () {
+          if (file.existsSync()) {
+            file.deleteSync(recursive: true);
+          }
+        },
+      );
+      test(
+        '.saveEncrypted',
+        () {
+          final encryptionKey = worldContext.saveEncrypted();
+          expect(encryptionKey, isA<String>());
+          expect(file.existsSync(), isTrue);
+          final world2 = World.loadEncrypted(encryptionKey: encryptionKey);
+          expect(world2.zones.length, 1);
+          final json1 = world.toJson();
+          final json2 = world2.toJson();
+          expect(jsonEncode(json1), jsonEncode(json2));
+        },
+      );
+    },
+  );
+  group(
+    'Handle Commands',
     () {
       final command1 = WorldCommand(id: 'command1', name: 'Command 1');
       final command2 = WorldCommand(id: 'command2', name: 'Command 2');
@@ -305,7 +559,29 @@ void main() {
         name: 'Category 2',
         commands: [command2],
       );
-      final world = World(commandCategories: [category1, category2]);
+      final pondZone = PondZone.generate();
+      final zone = pondZone.zone;
+      for (final box in zone.boxes) {
+        zone.locationMarkers.add(
+          LocationMarker(
+            id: 'marker_${box.id}',
+            message: CustomMessage(text: 'Box ${box.name}'),
+            coordinates: Coordinates(
+              0,
+              0,
+              clamp: CoordinateClamp(
+                boxId: box.id,
+                corner: BoxCorner.southwest,
+              ),
+            ),
+          ),
+        );
+      }
+      final world = World(
+        commandCategories: [category1, category2],
+        zones: [zone],
+      );
+      pondZone.generateTerrains(world);
       final worldContext = WorldContext(sdl: sdl, game: game, world: world);
       test(
         'Detect command loops',
@@ -316,6 +592,117 @@ void main() {
             () => worldContext.runCommand(command: command1),
             throwsA(isA<UnsupportedError>()),
           );
+        },
+      );
+      test(
+        '.handleLocalTeleport',
+        () {
+          final level = worldContext.getZoneLevel(zone)..onPush();
+          expect(level.heading, isZero);
+          expect(level.coordinates.x, isZero);
+          expect(level.coordinates.y, isZero);
+          for (var i = 0; i < zone.locationMarkers.length; i++) {
+            final box = zone.boxes[i];
+            final marker = zone.locationMarkers[i];
+            final boxCoordinates = zone.getAbsoluteCoordinates(box.start);
+            final markerCoordinates = zone.getAbsoluteCoordinates(
+              marker.coordinates,
+            );
+            expect(boxCoordinates.x, markerCoordinates.x);
+            expect(boxCoordinates.y, markerCoordinates.y);
+            final localTeleport = LocalTeleport(
+              locationMarkerId: marker.id,
+              heading: game.random.nextInt(360),
+            );
+            worldContext.handleLocalTeleport(
+              localTeleport: localTeleport,
+              zoneLevel: level,
+            );
+            expect(level.heading, localTeleport.heading);
+            expect(
+              level.coordinates.x,
+              markerCoordinates.x + level.coordinatesOffset.x,
+            );
+            expect(
+              level.coordinates.y,
+              markerCoordinates.y + level.coordinatesOffset.y,
+            );
+          }
+        },
+      );
+      test(
+        '.handleWalkingMode',
+        () {
+          final level = worldContext.getZoneLevel(zone);
+          expect(level.currentWalkingOptions, isNull);
+          expect(level.walkingMode, WalkingMode.stationary);
+          worldContext.handleWalkingMode(
+            walkingMode: WalkingMode.fast,
+            zoneLevel: level,
+          );
+          expect(level.currentWalkingOptions, level.currentTerrain.fastWalk);
+          expect(level.walkingMode, WalkingMode.fast);
+          worldContext.handleWalkingMode(
+            walkingMode: WalkingMode.slow,
+            zoneLevel: level,
+          );
+          expect(level.currentWalkingOptions, level.currentTerrain.slowWalk);
+          expect(level.walkingMode, WalkingMode.slow);
+          worldContext.handleWalkingMode(
+            walkingMode: WalkingMode.stationary,
+            zoneLevel: level,
+          );
+          expect(level.currentWalkingOptions, isNull);
+          expect(level.walkingMode, WalkingMode.stationary);
+        },
+      );
+      test(
+        '.handleZoneTeleport',
+        () {
+          var zoneTeleport = ZoneTeleport(
+            zoneId: zone.id,
+            minCoordinates: Coordinates(1, 2),
+            heading: 90,
+          );
+          final menu = worldContext.getMainMenu();
+          game.pushLevel(menu);
+          expect(game.currentLevel, menu);
+          worldContext.handleZoneTeleport(zoneTeleport: zoneTeleport);
+          var level = game.currentLevel;
+          expect(level, isA<ZoneLevel>());
+          level as ZoneLevel;
+          expect(level.coordinates.x, zoneTeleport.minCoordinates.x);
+          expect(level.coordinates.y, zoneTeleport.minCoordinates.y);
+          expect(level.heading, zoneTeleport.heading);
+          expect(level.worldContext, worldContext);
+          expect(level.zone, zone);
+          // Check that popping the level doesn't reveal the main menu or
+          // anything.
+          game.popLevel();
+          expect(game.currentLevel, isNull);
+          zoneTeleport = ZoneTeleport(
+            zoneId: zone.id,
+            minCoordinates: Coordinates(0, 0),
+            heading: 45,
+            maxCoordinates: Coordinates(10, 10),
+          );
+          worldContext.handleZoneTeleport(zoneTeleport: zoneTeleport);
+          level = game.currentLevel as ZoneLevel;
+          expect(
+            level.coordinates.x,
+            inInclusiveRange(
+              zoneTeleport.minCoordinates.x,
+              zoneTeleport.maxCoordinates!.x,
+            ),
+          );
+          expect(
+            level.coordinates.y,
+            inInclusiveRange(
+              zoneTeleport.minCoordinates.y,
+              zoneTeleport.maxCoordinates!.y,
+            ),
+          );
+          expect(level.heading, zoneTeleport.heading);
         },
       );
     },

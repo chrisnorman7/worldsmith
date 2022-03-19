@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
 import 'dart:math';
@@ -81,9 +82,8 @@ class WorldContext {
   final String preferencesDirectory;
 
   /// The file where [playerPreferences] should be saved.
-  File get playerPreferencesFile => File(
-        path.join(preferencesDirectory, preferencesFilename),
-      );
+  File get playerPreferencesFile =>
+      File(path.join(preferencesDirectory, preferencesFilename));
 
   /// The file where the trigger map should be stored.
   File get triggerMapFile =>
@@ -119,7 +119,7 @@ class WorldContext {
 
   /// Save the current [playerPreferences];
   void savePlayerPreferences() {
-    final preferences = _playerPreferences!;
+    final preferences = playerPreferences;
     final json = preferences.toJson();
     final data = indentedJsonEncoder.convert(json);
     playerPreferencesFile.writeAsStringSync(data);
@@ -249,17 +249,16 @@ class WorldContext {
         callCommand: callCommand,
       );
 
-  /// Get a suitable level for the given [startConversation].
-  ConversationLevel getConversationLevel(StartConversation startConversation) {
-    final conversation = world.getConversation(
-      startConversation.conversationId,
-    );
-    return ConversationLevel(
-      worldContext: this,
-      conversation: conversation,
-      fadeTime: startConversation.fadeTime,
-    );
-  }
+  /// Get a suitable level for the given [conversation].
+  ConversationLevel getConversationLevel({
+    required Conversation conversation,
+    int? fadeTime,
+  }) =>
+      ConversationLevel(
+        worldContext: this,
+        conversation: conversation,
+        fadeTime: fadeTime,
+      );
 
   /// Returns the given [world] as a JSON string.
   String getWorldJsonString({bool compact = true}) {
@@ -394,13 +393,16 @@ class WorldContext {
   }) {
     final zone = zoneLevel.zone;
     final marker = zone.getLocationMarker(localTeleport.locationMarkerId);
+    zoneLevel.heading = localTeleport.heading.toDouble();
     final destination = zone.getAbsoluteCoordinates(marker.coordinates);
-    zoneLevel
-      ..moveTo(
-        destination: destination.toDouble(),
-        updateLastWalked: false,
-      )
-      ..heading = localTeleport.heading.toDouble();
+    final offset = zoneLevel.coordinatesOffset;
+    zoneLevel.moveTo(
+      destination: Point(
+        destination.x + offset.x,
+        destination.y + offset.y,
+      ).toDouble(),
+      updateLastWalked: false,
+    );
   }
 
   /// Handle a [walkingMode] command.
@@ -458,7 +460,13 @@ class WorldContext {
 
   /// Handle a [startConversation] command.
   void handleStartConversation(StartConversation startConversation) {
-    final level = getConversationLevel(startConversation);
+    final conversation = world.getConversation(
+      startConversation.conversationId,
+    );
+    final level = getConversationLevel(
+      conversation: conversation,
+      fadeTime: startConversation.fadeTime,
+    );
     if (game.currentLevel is MainMenu) {
       game.replaceLevel(
         level,

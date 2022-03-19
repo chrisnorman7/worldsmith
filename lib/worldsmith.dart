@@ -22,6 +22,7 @@ export 'src/json/messages/custom_sound.dart';
 export 'src/json/options/credits_menu_options.dart';
 export 'src/json/options/main_menu_options.dart';
 export 'src/json/options/pause_menu_options.dart';
+export 'src/json/options/sound_menu_options.dart';
 export 'src/json/options/sound_options.dart';
 export 'src/json/options/walking_options.dart';
 export 'src/json/options/world_options.dart';
