@@ -726,6 +726,12 @@ void main() {
           );
         },
       );
+      test(
+        '.handleStartConversation',
+        () {
+          expect(world.conversationCategories, isNotEmpty);
+        },
+      );
     },
   );
 }
