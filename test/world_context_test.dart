@@ -773,6 +773,27 @@ void main() {
           expect(level.branch, branch);
         },
       );
+      test(
+        '.handleSetQuestStage',
+        () {
+          final stage = QuestStage(id: 'stage1');
+          final quest = Quest(
+            id: 'quest1',
+            name: 'Quest 1',
+            stages: [stage, QuestStage(id: 'stage2')],
+          );
+          world.quests.add(quest);
+          final prefs = worldContext.playerPreferences..questStages.clear();
+          worldContext.handleSetQuestStage(
+            SetQuestStage(questId: quest.id, stageId: stage.id),
+          );
+          expect(prefs.questStages[quest.id], stage.id);
+          worldContext.handleSetQuestStage(
+            SetQuestStage(questId: quest.id, stageId: null),
+          );
+          expect(prefs.questStages[quest.id], isNull);
+        },
+      );
     },
   );
 }
