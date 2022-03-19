@@ -252,10 +252,12 @@ class WorldContext {
   /// Get a suitable level for the given [conversation].
   ConversationLevel getConversationLevel({
     required Conversation conversation,
+    required int pushInitialBranchAfter,
     int? fadeTime,
   }) =>
       ConversationLevel(
         worldContext: this,
+        pushInitialBranchAfter: pushInitialBranchAfter,
         conversation: conversation,
         fadeTime: fadeTime,
       );
@@ -465,6 +467,7 @@ class WorldContext {
     );
     final level = getConversationLevel(
       conversation: conversation,
+      pushInitialBranchAfter: startConversation.pushInitialBranchAfter,
       fadeTime: startConversation.fadeTime,
     );
     if (game.currentLevel is MainMenu) {

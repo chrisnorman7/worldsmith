@@ -16,6 +16,7 @@ class ConversationLevel extends Level {
   ConversationLevel({
     required this.worldContext,
     required this.conversation,
+    required this.pushInitialBranchAfter,
     required this.fadeTime,
   }) : super(
           game: worldContext.game,
@@ -30,6 +31,9 @@ class ConversationLevel extends Level {
 
   /// The conversation to render.
   final Conversation conversation;
+
+  /// How long to wait before pushing the initial branch.
+  int pushInitialBranchAfter;
 
   /// The fade time to use.
   ///

@@ -448,9 +448,11 @@ void main() {
           const fadeTime = 12345;
           final level = worldContext.getConversationLevel(
             conversation: conversation,
+            pushInitialBranchAfter: 14,
             fadeTime: fadeTime,
           );
           expect(level.branch, isNull);
+          expect(level.pushInitialBranchAfter, 14);
           expect(level.conversation, conversation);
           expect(level.fadeTime, fadeTime);
           expect(level.reverb, isNull);
@@ -728,8 +730,47 @@ void main() {
       );
       test(
         '.handleStartConversation',
-        () {
-          expect(world.conversationCategories, isNotEmpty);
+        () async {
+          final response = ConversationResponse(id: 'response1');
+          final branch = ConversationBranch(
+            id: 'branch1',
+            responseIds: [response.id],
+          );
+          final conversation = Conversation(
+            id: 'conversation1',
+            name: 'First Conversation',
+            branches: [branch],
+            initialBranchId: branch.id,
+            responses: [response],
+          );
+          final category = ConversationCategory(
+            id: 'category1',
+            name: 'First Conversation Category',
+            conversations: [conversation],
+          );
+          world.conversationCategories.add(category);
+          final startConversation = StartConversation(
+            conversationId: conversation.id,
+            fadeTime: 1234,
+          );
+          while (game.currentLevel != null) {
+            game.popLevel();
+          }
+          expect(game.currentLevel, isNull);
+          game.pushLevel(worldContext.getMainMenu());
+          world.mainMenuOptions.fadeTime = null;
+          expect(world.mainMenuOptions.fadeTime, isNull);
+          worldContext.handleStartConversation(startConversation);
+          expect(identical(worldContext.game, game), isTrue);
+          final level = game.currentLevel as ConversationLevel;
+          expect(level.branch, isNull);
+          expect(level.conversation, conversation);
+          expect(level.fadeTime, startConversation.fadeTime);
+          expect(level.reverb, isNull);
+          await game.tick(sdl, startConversation.pushInitialBranchAfter - 1);
+          expect(level.branch, isNull);
+          await game.tick(sdl, 1);
+          expect(level.branch, branch);
         },
       );
     },

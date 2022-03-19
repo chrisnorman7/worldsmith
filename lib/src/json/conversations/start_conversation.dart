@@ -9,6 +9,7 @@ class StartConversation {
   /// Create an instance.
   StartConversation({
     required this.conversationId,
+    this.pushInitialBranchAfter = 5,
     this.fadeTime = 500,
   });
 
@@ -18,6 +19,9 @@ class StartConversation {
 
   /// The ID of the conversation to start.
   String conversationId;
+
+  /// How long should the game wait before pushing the first branch.
+  int pushInitialBranchAfter;
 
   /// The fade time to use.
   int? fadeTime;
