@@ -31,6 +31,16 @@ class _ButtonException implements Exception {}
 void main() {
   final sdl = Sdl();
   final game = Game('Test Game');
+  final directory = Directory(
+    sdl.getPrefPath(orgName, appName),
+  );
+  tearDownAll(
+    () {
+      if (directory.existsSync() == true) {
+        directory.deleteSync(recursive: true);
+      }
+    },
+  );
   group(
     'WorldContext class',
     () {
@@ -44,16 +54,6 @@ void main() {
         sdl: sdl,
         game: game,
         world: world,
-      );
-      final directory = Directory(
-        sdl.getPrefPath(orgName, appName),
-      );
-      tearDownAll(
-        () {
-          if (directory.existsSync() == true) {
-            directory.deleteSync(recursive: true);
-          }
-        },
       );
       test(
         'Initialisation',
@@ -792,6 +792,61 @@ void main() {
             SetQuestStage(questId: quest.id, stageId: null),
           );
           expect(prefs.questStages[quest.id], isNull);
+        },
+      );
+    },
+  );
+  group(
+    'Conditionals',
+    () {
+      final world = World(
+        globalOptions: WorldOptions(appName: appName, orgName: orgName),
+      );
+      final worldContext = WorldContext(sdl: sdl, game: game, world: world);
+      test(
+        '.handleQuestCondition',
+        () {
+          final stage = QuestStage(id: 'stage1');
+          final quest = Quest(
+            id: 'quest1',
+            name: 'Quest 1',
+            stages: [stage, QuestStage(id: 'stage2')],
+          );
+          world.quests.add(quest);
+          final prefs = worldContext.playerPreferences..questStages.clear();
+          expect(
+            worldContext.handleQuestCondition(
+              QuestCondition(questId: quest.id, stageId: null),
+            ),
+            isTrue,
+          );
+          expect(prefs.questStages[quest.id], isNull);
+          expect(
+            worldContext.handleQuestCondition(
+              QuestCondition(questId: quest.id, stageId: stage.id),
+            ),
+            isFalse,
+          );
+          expect(prefs.questStages[quest.id], isNull);
+          prefs.questStages[quest.id] = stage.id;
+          expect(
+            worldContext.handleQuestCondition(
+              QuestCondition(questId: quest.id, stageId: null),
+            ),
+            isFalse,
+          );
+          expect(
+            worldContext.handleQuestCondition(
+              QuestCondition(questId: quest.id, stageId: quest.stages.last.id),
+            ),
+            isFalse,
+          );
+          expect(
+            worldContext.handleQuestCondition(
+              QuestCondition(questId: quest.id, stageId: stage.id),
+            ),
+            isTrue,
+          );
         },
       );
     },
