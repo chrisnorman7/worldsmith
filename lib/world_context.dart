@@ -583,8 +583,8 @@ class WorldContext {
 
   /// Handle playing a rumble effect.
   void handlePlayRumble(PlayRumble playRumble) {
-    for (final controller in game.gameControllers.values) {
-      controller.joystick.rumble(
+    for (final joystick in game.joysticks.values) {
+      joystick.rumble(
         duration: playRumble.duration,
         lowFrequency: playRumble.leftFrequency,
         highFrequency: playRumble.rightFrequency,
