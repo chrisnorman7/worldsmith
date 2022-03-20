@@ -14,6 +14,7 @@ import 'package:ziggurat_sounds/ziggurat_sounds.dart';
 
 import 'command_triggers.dart';
 import 'constants.dart';
+import 'src/json/commands/play_rumble.dart';
 import 'util.dart';
 import 'worldsmith.dart';
 
@@ -27,7 +28,8 @@ class WorldContext {
     this.customCommands = const {},
     this.conditionalFunctions = const {},
     this.errorHandler,
-  }) : preferencesDirectory = sdl.getPrefPath(
+  })  : hapticDevices = [],
+        preferencesDirectory = sdl.getPrefPath(
           world.globalOptions.orgName,
           world.globalOptions.appName,
         );
@@ -77,6 +79,9 @@ class WorldContext {
 
   /// The map of custom conditional functions.
   final ConditionalFunctionsMap conditionalFunctions;
+
+  /// The list of initialised haptic devices.
+  final List<Haptic> hapticDevices;
 
   /// The directory where preferences should be stored.
   final String preferencesDirectory;
@@ -342,6 +347,10 @@ class WorldContext {
     }
     game.sounds.listen(onSound);
     sdl.init();
+    for (var i = 0; i < sdl.numHaptics; i++) {
+      final haptic = sdl.openHaptic(i)..init();
+      hapticDevices.add(haptic);
+    }
     try {
       await game.run(
         sdl,
@@ -366,6 +375,9 @@ class WorldContext {
       context?.destroy();
       synthizer?.shutdown();
       sdl.quit();
+      for (final haptic in hapticDevices) {
+        haptic.close();
+      }
     }
   }
 
@@ -571,6 +583,13 @@ class WorldContext {
       );
     } else {
       game.pushLevel(level);
+    }
+  }
+
+  /// Handle playing a rumble effect.
+  void handlePlayRumble(PlayRumble playRumble) {
+    for (final haptic in hapticDevices) {
+      haptic.rumblePlay(playRumble.strength, playRumble.duration);
     }
   }
 
