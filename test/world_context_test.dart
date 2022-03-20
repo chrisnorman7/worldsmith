@@ -16,7 +16,7 @@ const orgName = 'com.test';
 const appName = 'test_game';
 
 final worldFile = File('world.json');
-final worldFileEncrypted = File(encryptedWorldFilename + '.test');
+final worldFileEncrypted = File('$encryptedWorldFilename.test');
 
 class _WorksException implements Exception {}
 
