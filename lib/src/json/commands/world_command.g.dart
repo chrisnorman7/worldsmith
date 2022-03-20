@@ -40,6 +40,9 @@ WorldCommand _$WorldCommandFromJson(Map<String, dynamic> json) => WorldCommand(
       showScene: json['showScene'] == null
           ? null
           : ShowScene.fromJson(json['showScene'] as Map<String, dynamic>),
+      playRumble: json['playRumble'] == null
+          ? null
+          : PlayRumble.fromJson(json['playRumble'] as Map<String, dynamic>),
     );
 
 Map<String, dynamic> _$WorldCommandToJson(WorldCommand instance) =>
@@ -56,6 +59,7 @@ Map<String, dynamic> _$WorldCommandToJson(WorldCommand instance) =>
       'setQuestStage': instance.setQuestStage,
       'returnToMainMenu': instance.returnToMainMenu,
       'showScene': instance.showScene,
+      'playRumble': instance.playRumble,
     };
 
 const _$WalkingModeEnumMap = {

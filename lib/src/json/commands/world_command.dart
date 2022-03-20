@@ -7,6 +7,7 @@ import '../messages/custom_message.dart';
 import '../scenes/show_scene.dart';
 import 'call_command.dart';
 import 'local_teleport.dart';
+import 'play_rumble.dart';
 import 'return_to_main_menu.dart';
 import 'set_quest_stage.dart';
 import 'zone_teleport.dart';
@@ -30,6 +31,7 @@ class WorldCommand {
     this.setQuestStage,
     this.returnToMainMenu,
     this.showScene,
+    this.playRumble,
   })  : message = message ?? CustomMessage(),
         callCommands = callCommands ?? [];
 
@@ -74,6 +76,9 @@ class WorldCommand {
 
   /// Show a scene.
   ShowScene? showScene;
+
+  /// Play a rumble effect.
+  PlayRumble? playRumble;
 
   /// Convert an instance to JSON.
   Map<String, dynamic> toJson() => _$WorldCommandToJson(this);
