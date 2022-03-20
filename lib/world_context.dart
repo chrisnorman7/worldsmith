@@ -346,10 +346,6 @@ class WorldContext {
     }
     game.sounds.listen(onSound);
     sdl.init();
-    for (var i = 0; i < sdl.numHaptics; i++) {
-      final haptic = sdl.openHaptic(i)..init();
-      hapticDevices.add(haptic);
-    }
     try {
       await game.run(
         sdl,
@@ -587,8 +583,12 @@ class WorldContext {
 
   /// Handle playing a rumble effect.
   void handlePlayRumble(PlayRumble playRumble) {
-    for (final haptic in hapticDevices) {
-      haptic.rumblePlay(playRumble.strength, playRumble.duration);
+    for (final controller in game.gameControllers.values) {
+      controller.joystick.rumble(
+        duration: playRumble.duration,
+        lowFrequency: playRumble.leftFrequency,
+        highFrequency: playRumble.rightFrequency,
+      );
     }
   }
 

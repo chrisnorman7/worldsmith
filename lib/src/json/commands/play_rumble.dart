@@ -8,7 +8,8 @@ part 'play_rumble.g.dart';
 class PlayRumble {
   /// Create an instance.
   PlayRumble({
-    this.strength = 0.7,
+    this.leftFrequency = 65535,
+    this.rightFrequency = 65535,
     this.duration = 500,
   });
 
@@ -16,10 +17,15 @@ class PlayRumble {
   factory PlayRumble.fromJson(Map<String, dynamic> json) =>
       _$PlayRumbleFromJson(json);
 
-  /// The strength of the rumble.
+  /// The strength of the left motor.
   ///
-  /// This value should be between `0.0` and `1.0`.
-  double strength;
+  /// This value should be between `0` and `65535`.
+  int leftFrequency;
+
+  /// The strength of the right motor.
+  ///
+  /// This value should be between `0` and `65535`.
+  int rightFrequency;
 
   /// The number of milliseconds the rumble should go on for.
   int duration;

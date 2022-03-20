@@ -7,12 +7,14 @@ part of 'play_rumble.dart';
 // **************************************************************************
 
 PlayRumble _$PlayRumbleFromJson(Map<String, dynamic> json) => PlayRumble(
-      strength: (json['strength'] as num?)?.toDouble() ?? 0.7,
+      leftFrequency: json['leftFrequency'] as int? ?? 65535,
+      rightFrequency: json['rightFrequency'] as int? ?? 65535,
       duration: json['duration'] as int? ?? 500,
     );
 
 Map<String, dynamic> _$PlayRumbleToJson(PlayRumble instance) =>
     <String, dynamic>{
-      'strength': instance.strength,
+      'leftFrequency': instance.leftFrequency,
+      'rightFrequency': instance.rightFrequency,
       'duration': instance.duration,
     };
