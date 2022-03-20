@@ -1,5 +1,11 @@
 # Changelog
 
+## [0.18.0]
+
+### Added
+
+* Commands can now trigger rumble effects.
+
 ## [0.17.0]
 
 ### Added
