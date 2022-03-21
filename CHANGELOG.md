@@ -5,6 +5,7 @@
 ### Added
 
 * Commands can now trigger rumble effects.
+* Commands can now open URLs.
 
 ## [0.17.0]
 
