@@ -32,6 +32,7 @@ class WorldCommand {
     this.returnToMainMenu,
     this.showScene,
     this.playRumble,
+    this.url,
   })  : message = message ?? CustomMessage(),
         callCommands = callCommands ?? [];
 
@@ -79,6 +80,9 @@ class WorldCommand {
 
   /// Play a rumble effect.
   PlayRumble? playRumble;
+
+  /// Open a URL.
+  String? url;
 
   /// Convert an instance to JSON.
   Map<String, dynamic> toJson() => _$WorldCommandToJson(this);

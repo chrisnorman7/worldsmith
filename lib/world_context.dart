@@ -6,6 +6,7 @@ import 'dart:math';
 import 'package:dart_sdl/dart_sdl.dart';
 import 'package:dart_synthizer/dart_synthizer.dart';
 import 'package:encrypt/encrypt.dart';
+import 'package:open_url/open_url.dart';
 import 'package:path/path.dart' as path;
 import 'package:ziggurat/menus.dart';
 import 'package:ziggurat/sound.dart';
@@ -592,6 +593,12 @@ class WorldContext {
     }
   }
 
+  /// Handle opening a URL.
+  void handleUrl(String url) {
+    game.outputText('Opening $url...');
+    openUrl(url);
+  }
+
   /// Run the given [command].
   void runCommand({
     required WorldCommand command,
@@ -655,6 +662,14 @@ class WorldContext {
     final showScene = command.showScene;
     if (showScene != null) {
       handleShowScene(showScene);
+    }
+    final playRumble = command.playRumble;
+    if (playRumble != null) {
+      handlePlayRumble(playRumble);
+    }
+    final url = command.url;
+    if (url != null) {
+      handleUrl(url);
     }
   }
 
