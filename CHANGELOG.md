@@ -1,5 +1,11 @@
 # Changelog
 
+## [0.19.0]
+
+### Removed
+
+* Removed the `LocalTeleport` class.
+
 ## [0.18.0]
 
 ### Added
