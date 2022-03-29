@@ -396,25 +396,6 @@ class WorldContext {
     }
   }
 
-  /// Handle a [localTeleport] command.
-  void handleLocalTeleport({
-    required LocalTeleport localTeleport,
-    required ZoneLevel zoneLevel,
-  }) {
-    final zone = zoneLevel.zone;
-    final marker = zone.getLocationMarker(localTeleport.locationMarkerId);
-    zoneLevel.heading = localTeleport.heading.toDouble();
-    final destination = zone.getAbsoluteCoordinates(marker.coordinates);
-    final offset = zoneLevel.coordinatesOffset;
-    zoneLevel.moveTo(
-      destination: Point(
-        destination.x + offset.x,
-        destination.y + offset.y,
-      ).toDouble(),
-      updateLastWalked: false,
-    );
-  }
-
   /// Handle a [walkingMode] command.
   void handleWalkingMode({
     required WalkingMode walkingMode,
@@ -615,13 +596,6 @@ class WorldContext {
       soundChannel: soundChannel,
     );
     if (zoneLevel != null) {
-      final localTeleport = command.localTeleport;
-      if (localTeleport != null) {
-        handleLocalTeleport(
-          localTeleport: localTeleport,
-          zoneLevel: zoneLevel,
-        );
-      }
       final walkingMode = command.walkingMode;
       if (walkingMode != null) {
         handleWalkingMode(

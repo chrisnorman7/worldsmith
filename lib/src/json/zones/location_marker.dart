@@ -1,6 +1,5 @@
 import 'package:json_annotation/json_annotation.dart';
 
-import '../commands/local_teleport.dart';
 import '../messages/custom_message.dart';
 import 'coordinates.dart';
 import 'zone.dart';
@@ -8,8 +7,6 @@ import 'zone.dart';
 part 'location_marker.g.dart';
 
 /// A location marker in a [Zone].
-///
-/// Location markers are used by the [LocalTeleport] class.
 @JsonSerializable()
 class LocationMarker {
   /// Create an instance.

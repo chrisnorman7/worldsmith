@@ -6,7 +6,6 @@ import '../conversations/start_conversation.dart';
 import '../messages/custom_message.dart';
 import '../scenes/show_scene.dart';
 import 'call_command.dart';
-import 'local_teleport.dart';
 import 'play_rumble.dart';
 import 'return_to_main_menu.dart';
 import 'set_quest_stage.dart';
@@ -22,7 +21,6 @@ class WorldCommand {
     required this.id,
     required this.name,
     CustomMessage? message,
-    this.localTeleport,
     this.zoneTeleport,
     this.walkingMode,
     this.customCommandName,
@@ -48,9 +46,6 @@ class WorldCommand {
 
   /// A message to show.
   final CustomMessage message;
-
-  /// Teleport somewhere in the current zone.
-  LocalTeleport? localTeleport;
 
   /// Teleport to another zone.
   ZoneTeleport? zoneTeleport;

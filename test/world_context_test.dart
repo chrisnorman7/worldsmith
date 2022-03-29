@@ -605,42 +605,6 @@ void main() {
         },
       );
       test(
-        '.handleLocalTeleport',
-        () {
-          final level = worldContext.getZoneLevel(zone)..onPush();
-          expect(level.heading, isZero);
-          expect(level.coordinates.x, isZero);
-          expect(level.coordinates.y, isZero);
-          for (var i = 0; i < zone.locationMarkers.length; i++) {
-            final box = zone.boxes[i];
-            final marker = zone.locationMarkers[i];
-            final boxCoordinates = zone.getAbsoluteCoordinates(box.start);
-            final markerCoordinates = zone.getAbsoluteCoordinates(
-              marker.coordinates,
-            );
-            expect(boxCoordinates.x, markerCoordinates.x);
-            expect(boxCoordinates.y, markerCoordinates.y);
-            final localTeleport = LocalTeleport(
-              locationMarkerId: marker.id,
-              heading: game.random.nextInt(360),
-            );
-            worldContext.handleLocalTeleport(
-              localTeleport: localTeleport,
-              zoneLevel: level,
-            );
-            expect(level.heading, localTeleport.heading);
-            expect(
-              level.coordinates.x,
-              markerCoordinates.x + level.coordinatesOffset.x,
-            );
-            expect(
-              level.coordinates.y,
-              markerCoordinates.y + level.coordinatesOffset.y,
-            );
-          }
-        },
-      );
-      test(
         '.handleWalkingMode',
         () {
           final level = worldContext.getZoneLevel(zone);
