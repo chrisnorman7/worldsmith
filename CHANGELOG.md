@@ -2,9 +2,14 @@
 
 ## [0.19.0]
 
+### Changed
+
+* Updated lots of packages.
+* Updated analysis options to make code cleaner.
+
 ### Removed
 
-* Removed the `LocalTeleport` class.
+z* Removed the `LocalTeleport` class.
 
 ## [0.18.0]
 
