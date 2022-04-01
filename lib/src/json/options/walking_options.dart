@@ -17,7 +17,7 @@ class WalkingOptions {
   });
 
   /// Create an instance from a JSON object.
-  factory WalkingOptions.fromJson(Map<String, dynamic> json) =>
+  factory WalkingOptions.fromJson(final Map<String, dynamic> json) =>
       _$WalkingOptionsFromJson(json);
 
   /// How many milliseconds must elapse between taking a footstep.

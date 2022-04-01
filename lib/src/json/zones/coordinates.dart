@@ -25,7 +25,7 @@ class CoordinateClamp {
   CoordinateClamp({required this.boxId, required this.corner});
 
   /// Create an instance from a JSON object.
-  factory CoordinateClamp.fromJson(Map<String, dynamic> json) =>
+  factory CoordinateClamp.fromJson(final Map<String, dynamic> json) =>
       _$CoordinateClampFromJson(json);
 
   /// The ID of the box to clamp to.
@@ -49,7 +49,7 @@ class Coordinates {
   Coordinates(this.x, this.y, {this.clamp});
 
   /// Create an instance from a JSON object.
-  factory Coordinates.fromJson(Map<String, dynamic> json) =>
+  factory Coordinates.fromJson(final Map<String, dynamic> json) =>
       _$CoordinatesFromJson(json);
 
   /// The x coordinate.

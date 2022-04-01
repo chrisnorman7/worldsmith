@@ -15,7 +15,7 @@ class ConversationCategory {
   });
 
   /// Create an instance from a JSON object.
-  factory ConversationCategory.fromJson(Map<String, dynamic> json) =>
+  factory ConversationCategory.fromJson(final Map<String, dynamic> json) =>
       _$ConversationCategoryFromJson(json);
 
   /// The ID of this category.

@@ -11,7 +11,7 @@ class CustomMessage {
   CustomMessage({this.text, this.sound});
 
   /// Create an instance from a JSON object.
-  factory CustomMessage.fromJson(Map<String, dynamic> json) =>
+  factory CustomMessage.fromJson(final Map<String, dynamic> json) =>
       _$CustomMessageFromJson(json);
 
   /// The text to show.

@@ -27,18 +27,18 @@ class ZoneLevel extends Level {
   ZoneLevel({
     required this.worldContext,
     required this.zone,
-    double initialHeading = 0.0,
-    Point<double> coordinates = _origin,
+    final double initialHeading = 0.0,
+    final Point<double> coordinates = _origin,
     this.walkingDirection = WalkingDirection.forwards,
     this.timeSinceLastWalked = 1000000,
   })  : _firstStepTaken = false,
         _slowWalk = false,
         _heading = initialHeading,
         _coordinates = coordinates,
-        _coordinatesOffset = Point(0, 0),
+        _coordinatesOffset = const Point(0, 0),
         _tiles = [],
         _objects = [],
-        _end = Point(0, 0),
+        _end = const Point(0, 0),
         affectedInterfaceSounds = worldContext.game.createSoundChannel(),
         boxReverbs = {},
         currentTerrain = worldContext.world.getTerrain(zone.defaultTerrainId),
@@ -52,7 +52,7 @@ class ZoneLevel extends Level {
           ),
           ambiances: zone.ambiances
               .map(
-                (sound) => getAmbiance(
+                (final sound) => getAmbiance(
                   assets: worldContext.world.ambianceAssets,
                   sound: sound,
                 )!,
@@ -79,7 +79,7 @@ class ZoneLevel extends Level {
   double get heading => _heading;
 
   /// Set the player's heading.
-  set heading(double value) {
+  set heading(final double value) {
     _heading = value % 360;
     game.setListenerOrientation(value);
   }
@@ -91,7 +91,7 @@ class ZoneLevel extends Level {
   Point<double> get coordinates => _coordinates;
 
   /// Set the listener's position.
-  set coordinates(Point<double> value) {
+  set coordinates(final Point<double> value) {
     _coordinates = value;
     game.setListenerPosition(value.x, value.y, 0.0);
   }
@@ -157,7 +157,7 @@ class ZoneLevel extends Level {
   /// Get a valid sound channel for the given [object].
   ///
   /// The sound channel will be created if it hasn't already.
-  SoundChannel getZoneObjectSoundChannel(ZoneObject object) {
+  SoundChannel getZoneObjectSoundChannel(final ZoneObject object) {
     final coordinates = zone
         .getAbsoluteCoordinates(
           object.initialCoordinates,
@@ -217,7 +217,7 @@ class ZoneLevel extends Level {
   ///
   /// If the provided [box] is `null`, then the reverb will be null.
   /// Otherwise, the reverb preset from the [box] will be used.
-  void setReverb(Box? box) {
+  void setReverb(final Box? box) {
     if (box == null) {
       if (affectedInterfaceSounds.reverb != null) {
         affectedInterfaceSounds.reverb = null;
@@ -367,7 +367,7 @@ class ZoneLevel extends Level {
         },
       ),
     );
-    var minCoordinates = Point(0, 0);
+    var minCoordinates = const Point(0, 0);
     final startCoordinates = <String, Point<int>>{};
     final endCoordinates = <String, Point<int>>{};
     // First pass: Get the minimum and maximum coordinates.
@@ -441,7 +441,7 @@ class ZoneLevel extends Level {
 
   /// Reset state.
   @override
-  void onReveal(Level old) {
+  void onReveal(final Level old) {
     super.onReveal(old);
     resetState();
     final music = zone.music;
@@ -491,7 +491,7 @@ class ZoneLevel extends Level {
 
   /// This zone has been covered, probably by a [PauseMenu] instance.
   @override
-  void onCover(Level other) {
+  void onCover(final Level other) {
     super.onCover(other);
     stopWalking();
     final music = zone.music;
@@ -541,7 +541,7 @@ class ZoneLevel extends Level {
 
   /// Destroy all the created reverbs, and the sound channel.
   @override
-  void onPop(double? fadeLength) {
+  void onPop(final double? fadeLength) {
     super.onPop(fadeLength);
     while (boxReverbs.isNotEmpty) {
       boxReverbs.remove(boxReverbs.keys.first)!.destroy();
@@ -551,7 +551,7 @@ class ZoneLevel extends Level {
   }
 
   /// Get the reverb for the given [box].
-  CreateReverb? getBoxReverb(Box box) {
+  CreateReverb? getBoxReverb(final Box box) {
     final reverbId = box.reverbId;
     if (reverbId == null) {
       return null;
@@ -565,7 +565,7 @@ class ZoneLevel extends Level {
   }
 
   /// Start walking if the time is right.
-  void maybeWalk(int timeDelta) {
+  void maybeWalk(final int timeDelta) {
     final walkingOptions = currentWalkingOptions;
     if (walkingOptions != null) {
       if (timeSinceLastWalked >= walkingOptions.interval) {
@@ -592,9 +592,9 @@ class ZoneLevel extends Level {
 
   /// Move directly to the given [destination].
   Box? moveTo({
-    required Point<double> destination,
-    bool updateLastWalked = true,
-    bool runWalkCommand = true,
+    required final Point<double> destination,
+    final bool updateLastWalked = true,
+    final bool runWalkCommand = true,
   }) {
     final oldBox = getBox();
     final s = size;
@@ -692,7 +692,7 @@ class ZoneLevel extends Level {
   }
 
   /// Walk a bit.
-  Box? walk(WalkingOptions options) {
+  Box? walk(final WalkingOptions options) {
     final double bearing;
     switch (walkingDirection) {
       case WalkingDirection.forwards:
@@ -710,7 +710,7 @@ class ZoneLevel extends Level {
     }
     final destination = coordinatesInDirection(
       _coordinates,
-      bearing.toDouble(),
+      bearing,
       options.distance,
     );
     return moveTo(destination: destination);
@@ -718,7 +718,7 @@ class ZoneLevel extends Level {
 
   /// Maybe walk.
   @override
-  Future<void> tick(Sdl sdl, int timeDelta) async {
+  Future<void> tick(final Sdl sdl, final int timeDelta) async {
     super.tick(sdl, timeDelta);
     timeSinceLastWalked += timeDelta;
     maybeWalk(timeDelta);
@@ -734,7 +734,7 @@ class ZoneLevel extends Level {
 
   /// Handle SDL events.
   @override
-  void handleSdlEvent(Event event) {
+  void handleSdlEvent(final Event event) {
     if (event is ControllerAxisEvent) {
       if (event.axis == GameControllerAxis.lefty) {
         var value = event.smallValue;

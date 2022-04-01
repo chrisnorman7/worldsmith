@@ -18,7 +18,7 @@ class CommandCategory {
   });
 
   /// Create an instance from a JSON object.
-  factory CommandCategory.fromJson(Map<String, dynamic> json) =>
+  factory CommandCategory.fromJson(final Map<String, dynamic> json) =>
       _$CommandCategoryFromJson(json);
 
   /// The ID for this category.

@@ -60,35 +60,35 @@ void main() {
     () {
       final world = World(
         creditsAssets: [
-          AssetReferenceReference(
+          const AssetReferenceReference(
             variableName: 'sound1',
             reference: AssetReference.file('something'),
           )
         ],
         equipmentAssets: [
-          AssetReferenceReference(
+          const AssetReferenceReference(
             variableName: 'sword1',
             reference: AssetReference.collection('sword1'),
           )
         ],
         interfaceSoundsAssets: [
-          AssetReferenceReference(
+          const AssetReferenceReference(
             variableName: 'menuActivate',
             reference: AssetReference.file('menuActivate'),
           ),
-          AssetReferenceReference(
+          const AssetReferenceReference(
             variableName: 'menuMove',
             reference: AssetReference.file('menuActivate'),
           )
         ],
         musicAssets: [
-          AssetReferenceReference(
+          const AssetReferenceReference(
             variableName: 'music',
             reference: AssetReference.file('music.mp3'),
           )
         ],
         terrainAssets: [
-          AssetReferenceReference(
+          const AssetReferenceReference(
             variableName: 'grass',
             reference: AssetReference.collection('grass'),
           )
@@ -166,19 +166,19 @@ void main() {
       test(
         'Ambiances',
         () {
-          final mainMenuMusic = AssetReferenceReference(
+          const mainMenuMusic = AssetReferenceReference(
             variableName: '1',
             reference: AssetReference.file('main_menu.mp3'),
           );
-          final creditsMenuMusic = AssetReferenceReference(
+          const creditsMenuMusic = AssetReferenceReference(
             variableName: '2',
             reference: AssetReference.file('credits.mp3'),
           );
-          final pauseMusic = AssetReferenceReference(
+          const pauseMusic = AssetReferenceReference(
             variableName: '3',
             reference: AssetReference.file('pause_menu.mp3'),
           );
-          final soundMusic = AssetReferenceReference(
+          const soundMusic = AssetReferenceReference(
             variableName: '4',
             reference: AssetReference.file('sound_menu.mp3'),
           );

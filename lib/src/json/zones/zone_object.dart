@@ -15,13 +15,13 @@ class ZoneObject {
   ZoneObject({
     required this.id,
     required this.name,
-    Coordinates? initialCoordinates,
+    final Coordinates? initialCoordinates,
     this.ambiance,
     this.collideCommand,
   }) : initialCoordinates = initialCoordinates ?? Coordinates(0, 0);
 
   /// Create an instance from a JSON object.
-  factory ZoneObject.fromJson(Map<String, dynamic> json) =>
+  factory ZoneObject.fromJson(final Map<String, dynamic> json) =>
       _$ZoneObjectFromJson(json);
 
   /// The ID of this object.

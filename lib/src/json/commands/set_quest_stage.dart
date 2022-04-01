@@ -13,7 +13,7 @@ class SetQuestStage {
   });
 
   /// Create an instance from a JSON object.
-  factory SetQuestStage.fromJson(Map<String, dynamic> json) =>
+  factory SetQuestStage.fromJson(final Map<String, dynamic> json) =>
       _$SetQuestStageFromJson(json);
 
   /// The ID of the quest.

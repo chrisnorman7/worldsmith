@@ -69,7 +69,7 @@ class SoundOptionsMenu extends ParameterMenu {
   final WorldContext worldContext;
 
   /// Change the panning strategy.
-  void changePannerStrategy(int direction) {
+  void changePannerStrategy(final int direction) {
     final world = worldContext.world;
     var index = worldContext.playerPreferences.pannerStrategy.index + direction;
     if (index >= DefaultPannerStrategy.values.length) {

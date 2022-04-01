@@ -21,7 +21,7 @@ class Conversation {
   });
 
   /// Create an instance from a JSON object.
-  factory Conversation.fromJson(Map<String, dynamic> json) =>
+  factory Conversation.fromJson(final Map<String, dynamic> json) =>
       _$ConversationFromJson(json);
 
   /// The ID of this conversation.
@@ -34,8 +34,8 @@ class Conversation {
   final List<ConversationBranch> branches;
 
   /// Get the branch with the given [id].
-  ConversationBranch getBranch(String id) => branches.firstWhere(
-        (element) => element.id == id,
+  ConversationBranch getBranch(final String id) => branches.firstWhere(
+        (final element) => element.id == id,
       );
 
   /// The ID of the first branch to be reached.
@@ -48,8 +48,8 @@ class Conversation {
   final List<ConversationResponse> responses;
 
   /// Get the response with the given [id].
-  ConversationResponse getResponse(String id) => responses.firstWhere(
-        (element) => element.id == id,
+  ConversationResponse getResponse(final String id) => responses.firstWhere(
+        (final element) => element.id == id,
       );
 
   /// The music for this conversation.

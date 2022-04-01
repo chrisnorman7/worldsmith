@@ -17,7 +17,7 @@ class LocationMarker {
   });
 
   /// Create an instance from a JSON object.
-  factory LocationMarker.fromJson(Map<String, dynamic> json) =>
+  factory LocationMarker.fromJson(final Map<String, dynamic> json) =>
       _$LocationMarkerFromJson(json);
 
   /// The ID of this marker.

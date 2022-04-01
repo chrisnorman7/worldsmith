@@ -6,7 +6,7 @@ import '../../world_context.dart';
 import '../json/commands/world_command.dart';
 import '../json/messages/custom_message.dart';
 
-void _unimplemented(Game game) => game.outputText('Unimplemented.');
+void _unimplemented(final Game game) => game.outputText('Unimplemented.');
 
 /// The main menu for the given [worldContext].
 class MainMenu extends Menu {

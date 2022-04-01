@@ -18,7 +18,7 @@ class Terrain {
   });
 
   /// Create an instance from a JSON object.
-  factory Terrain.fromJson(Map<String, dynamic> json) =>
+  factory Terrain.fromJson(final Map<String, dynamic> json) =>
       _$TerrainFromJson(json);
 
   /// The ID of this terrain.

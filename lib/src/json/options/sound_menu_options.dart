@@ -22,7 +22,7 @@ class SoundMenuOptions {
   });
 
   /// Create an instance from a JSON object.
-  factory SoundMenuOptions.fromJson(Map<String, dynamic> json) =>
+  factory SoundMenuOptions.fromJson(final Map<String, dynamic> json) =>
       _$SoundMenuOptionsFromJson(json);
 
   /// The title of the menu.

@@ -38,12 +38,12 @@ class CustomSound extends Sound {
   /// Create an instance.
   CustomSound({
     required this.assetStore,
-    required String id,
-    double gain = 0.7,
+    required final String id,
+    final double gain = 0.7,
   }) : super(id: id, gain: gain);
 
   /// Create an instance from a JSON object.
-  factory CustomSound.fromJson(Map<String, dynamic> json) =>
+  factory CustomSound.fromJson(final Map<String, dynamic> json) =>
       _$CustomSoundFromJson(json);
 
   /// The asset store where [id] resides.

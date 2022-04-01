@@ -14,12 +14,12 @@ class MainMenuOptions {
     this.title = 'Main Menu',
     this.music,
     this.fadeTime = 4.0,
-    CustomMessage? newGameMessage,
-    CustomMessage? savedGameMessage,
-    CustomMessage? creditsMessage,
-    CustomMessage? soundOptionsMessage,
-    CustomMessage? exitMessage,
-    CustomMessage? onExitMessage,
+    final CustomMessage? newGameMessage,
+    final CustomMessage? savedGameMessage,
+    final CustomMessage? creditsMessage,
+    final CustomMessage? soundOptionsMessage,
+    final CustomMessage? exitMessage,
+    final CustomMessage? onExitMessage,
     this.startGameCommandId,
   })  : newGameMessage =
             newGameMessage ?? CustomMessage(text: 'Start New Game'),
@@ -33,7 +33,7 @@ class MainMenuOptions {
             onExitMessage ?? CustomMessage(text: 'The game will now close.');
 
   /// Create an instance from a JSON object.
-  factory MainMenuOptions.fromJson(Map<String, dynamic> json) =>
+  factory MainMenuOptions.fromJson(final Map<String, dynamic> json) =>
       _$MainMenuOptionsFromJson(json);
 
   /// The title of the menu.

@@ -13,7 +13,7 @@ class QuestMenuOptions {
   });
 
   /// Create an instance from a JSON object.
-  factory QuestMenuOptions.fromJson(Map<String, dynamic> json) =>
+  factory QuestMenuOptions.fromJson(final Map<String, dynamic> json) =>
       _$QuestMenuOptionsFromJson(json);
 
   /// The title of this menu.

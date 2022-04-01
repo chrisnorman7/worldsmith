@@ -85,32 +85,32 @@ class World {
   /// Create an instance.
   World({
     this.title = 'Untitled World',
-    WorldOptions? globalOptions,
-    SoundOptions? soundOptions,
-    MainMenuOptions? mainMenuOptions,
-    CreditsList? credits,
-    CreditsMenuOptions? creditsMenuOptions,
-    SoundMenuOptions? soundMenuOptions,
-    AssetList? creditsAssets,
-    AssetList? musicAssets,
-    AssetList? interfaceSoundsAssets,
-    AssetList? equipmentAssets,
-    AssetList? terrainAssets,
-    AssetList? ambianceAssets,
-    AssetList? conversationAssets,
-    AssetList? questAssets,
-    DirectionsMap? directions,
-    EquipmentPositions? equipmentPositions,
-    TerrainsList? terrains,
-    ZonesList? zones,
-    PauseMenuOptions? pauseMenuOptions,
-    ReverbsList? reverbs,
-    CommandCategoryList? commandCategories,
-    PlayerPreferences? defaultPlayerPreferences,
-    ConversationCategoryList? conversationCategories,
-    QuestList? quests,
-    QuestMenuOptions? questMenuOptions,
-    SceneList? scenes,
+    final WorldOptions? globalOptions,
+    final SoundOptions? soundOptions,
+    final MainMenuOptions? mainMenuOptions,
+    final CreditsList? credits,
+    final CreditsMenuOptions? creditsMenuOptions,
+    final SoundMenuOptions? soundMenuOptions,
+    final AssetList? creditsAssets,
+    final AssetList? musicAssets,
+    final AssetList? interfaceSoundsAssets,
+    final AssetList? equipmentAssets,
+    final AssetList? terrainAssets,
+    final AssetList? ambianceAssets,
+    final AssetList? conversationAssets,
+    final AssetList? questAssets,
+    final DirectionsMap? directions,
+    final EquipmentPositions? equipmentPositions,
+    final TerrainsList? terrains,
+    final ZonesList? zones,
+    final PauseMenuOptions? pauseMenuOptions,
+    final ReverbsList? reverbs,
+    final CommandCategoryList? commandCategories,
+    final PlayerPreferences? defaultPlayerPreferences,
+    final ConversationCategoryList? conversationCategories,
+    final QuestList? quests,
+    final QuestMenuOptions? questMenuOptions,
+    final SceneList? scenes,
   })  : globalOptions = globalOptions ?? WorldOptions(),
         soundOptions = soundOptions ?? SoundOptions(),
         mainMenuOptions = mainMenuOptions ?? MainMenuOptions(),
@@ -143,16 +143,17 @@ class World {
         scenes = scenes ?? [];
 
   /// Create an instance from a JSON object.
-  factory World.fromJson(Map<String, dynamic> json) => _$WorldFromJson(json);
+  factory World.fromJson(final Map<String, dynamic> json) =>
+      _$WorldFromJson(json);
 
   /// Load an instance from the provided [string].
-  factory World.fromString(String string) {
+  factory World.fromString(final String string) {
     final json = jsonDecode(string) as JsonType;
     return World.fromJson(json);
   }
 
   /// Return an instance loaded from the given [filename].
-  factory World.fromFilename(String filename) {
+  factory World.fromFilename(final String filename) {
     final file = File(filename);
     final data = file.readAsStringSync();
     return World.fromString(data);
@@ -166,8 +167,8 @@ class World {
   /// If [filename] is not given, then the default [encryptedWorldFilename] is
   /// used.
   factory World.loadEncrypted({
-    required String encryptionKey,
-    String filename = encryptedWorldFilename,
+    required final String encryptionKey,
+    final String filename = encryptedWorldFilename,
   }) {
     final asset = AssetReference.file(filename, encryptionKey: encryptionKey);
     final bytes = asset.load(Random());
@@ -190,8 +191,9 @@ class World {
       return null;
     }
     return getAssetReferenceReference(
-            assets: interfaceSoundsAssets, id: sound.id)
-        .reference;
+      assets: interfaceSoundsAssets,
+      id: sound.id,
+    ).reference;
   }
 
   /// The menu activate sound.
@@ -201,8 +203,9 @@ class World {
       return null;
     }
     return getAssetReferenceReference(
-            assets: interfaceSoundsAssets, id: sound.id)
-        .reference;
+      assets: interfaceSoundsAssets,
+      id: sound.id,
+    ).reference;
   }
 
   /// Get the menu cancel sound.
@@ -212,8 +215,9 @@ class World {
       return null;
     }
     return getAssetReferenceReference(
-            assets: interfaceSoundsAssets, id: sound.id)
-        .reference;
+      assets: interfaceSoundsAssets,
+      id: sound.id,
+    ).reference;
   }
 
   /// The options for the main menu.
@@ -291,7 +295,10 @@ class World {
 
   /// The asset store for terrain sounds.
   AssetStore get terrainAssetStore => getAssetStore(
-      name: 'terrain', assets: terrainAssets, comment: 'Terrain sounds');
+        name: 'terrain',
+        assets: terrainAssets,
+        comment: 'Terrain sounds',
+      );
 
   /// The list of assets to be used for ambiances.
   final AssetList ambianceAssets;
@@ -333,14 +340,15 @@ class World {
   final TerrainsList terrains;
 
   /// Get the terrain with the given [id].
-  Terrain getTerrain(String id) =>
-      terrains.firstWhere((element) => element.id == id);
+  Terrain getTerrain(final String id) =>
+      terrains.firstWhere((final element) => element.id == id);
 
   /// The list of zones that this world has.
   final ZonesList zones;
 
   /// Get the zone with the given [id].
-  Zone getZone(String id) => zones.firstWhere((element) => element.id == id);
+  Zone getZone(final String id) =>
+      zones.firstWhere((final element) => element.id == id);
 
   /// The options for the pause menu.
   final PauseMenuOptions pauseMenuOptions;
@@ -355,8 +363,8 @@ class World {
   final ReverbsList reverbs;
 
   /// Return the reverb with the given [id].
-  ReverbPreset getReverb(String id) =>
-      reverbs.firstWhere((element) => element.id == id).reverbPreset;
+  ReverbPreset getReverb(final String id) =>
+      reverbs.firstWhere((final element) => element.id == id).reverbPreset;
 
   /// A list of command categories.
   final CommandCategoryList commandCategories;
@@ -366,8 +374,8 @@ class World {
       [for (final category in commandCategories) ...category.commands];
 
   /// Get the command with the given [id].
-  WorldCommand getCommand(String id) =>
-      commands.firstWhere((element) => element.id == id);
+  WorldCommand getCommand(final String id) =>
+      commands.firstWhere((final element) => element.id == id);
 
   /// The default player preferences.
   final PlayerPreferences defaultPlayerPreferences;
@@ -381,14 +389,15 @@ class World {
       ];
 
   /// Get the conversation with the given [id].
-  Conversation getConversation(String id) =>
-      conversations.firstWhere((element) => element.id == id);
+  Conversation getConversation(final String id) =>
+      conversations.firstWhere((final element) => element.id == id);
 
   /// All the quests in the world.
   final QuestList quests;
 
   /// Get the quest with the given [id].
-  Quest getQuest(String id) => quests.firstWhere((element) => element.id == id);
+  Quest getQuest(final String id) =>
+      quests.firstWhere((final element) => element.id == id);
 
   /// The options for the quest menu.
   final QuestMenuOptions questMenuOptions;
@@ -397,7 +406,8 @@ class World {
   final SceneList scenes;
 
   /// Get the scene with the given [id].
-  Scene getScene(String id) => scenes.firstWhere((element) => element.id == id);
+  Scene getScene(final String id) =>
+      scenes.firstWhere((final element) => element.id == id);
 
   /// Convert an instance to JSON.
   Map<String, dynamic> toJson() => _$WorldToJson(this);

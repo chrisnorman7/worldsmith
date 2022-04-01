@@ -20,7 +20,7 @@ class ZoneTeleport {
   });
 
   /// Create an instance from a JSON object.
-  factory ZoneTeleport.fromJson(Map<String, dynamic> json) =>
+  factory ZoneTeleport.fromJson(final Map<String, dynamic> json) =>
       _$ZoneTeleportFromJson(json);
 
   /// The ID of the zone to go to.
@@ -46,8 +46,8 @@ class ZoneTeleport {
   /// If [maxCoordinates] is `null`, `[minCoordinates] will be returned.
   /// Otherwise, a set of random coordinates between the two will be returned.
   Point<int> getCoordinates({
-    required Zone zone,
-    required Random random,
+    required final Zone zone,
+    required final Random random,
   }) {
     final lower = zone.getAbsoluteCoordinates(minCoordinates);
     final end = maxCoordinates;

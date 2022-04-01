@@ -25,7 +25,7 @@ class Box {
   });
 
   /// Create an instance from a JSON object.
-  factory Box.fromJson(Map<String, dynamic> json) => _$BoxFromJson(json);
+  factory Box.fromJson(final Map<String, dynamic> json) => _$BoxFromJson(json);
 
   /// The ID of this box.
   final String id;
@@ -75,7 +75,7 @@ class Box {
 
   /// Compare 2 objects.
   @override
-  bool operator ==(Object other) {
+  bool operator ==(final Object other) {
     if (other is Box) {
       return other.id == id;
     }

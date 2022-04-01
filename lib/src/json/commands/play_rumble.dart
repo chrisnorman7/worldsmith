@@ -14,7 +14,7 @@ class PlayRumble {
   });
 
   /// Create an instance from a JSON object.
-  factory PlayRumble.fromJson(Map<String, dynamic> json) =>
+  factory PlayRumble.fromJson(final Map<String, dynamic> json) =>
       _$PlayRumbleFromJson(json);
 
   /// The strength of the left motor.

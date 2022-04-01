@@ -16,7 +16,8 @@ class Quest {
   });
 
   /// Create an instance from a JSON object.
-  factory Quest.fromJson(Map<String, dynamic> json) => _$QuestFromJson(json);
+  factory Quest.fromJson(final Map<String, dynamic> json) =>
+      _$QuestFromJson(json);
 
   /// The ID of this quest.
   final String id;
@@ -28,8 +29,8 @@ class Quest {
   final List<QuestStage> stages;
 
   /// Get the stage with the given [id].
-  QuestStage getStage(String id) =>
-      stages.firstWhere((element) => element.id == id);
+  QuestStage getStage(final String id) =>
+      stages.firstWhere((final element) => element.id == id);
 
   /// Convert an instance to JSON.
   Map<String, dynamic> toJson() => _$QuestToJson(this);

@@ -17,7 +17,7 @@ class ReverbPresetReference {
   });
 
   /// Create an instance from a JSON object.
-  factory ReverbPresetReference.fromJson(Map<String, dynamic> json) =>
+  factory ReverbPresetReference.fromJson(final Map<String, dynamic> json) =>
       _$ReverbPresetReferenceFromJson(json);
 
   /// The ID of this reverb.

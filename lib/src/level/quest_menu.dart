@@ -17,11 +17,12 @@ class QuestMenu extends Menu {
             if (worldContext.playerPreferences.questStages.isEmpty)
               MenuItem(
                 worldContext.getMenuItemMessage(
-                    text: worldContext.world.questMenuOptions.noQuestsMessage),
+                  text: worldContext.world.questMenuOptions.noQuestsMessage,
+                ),
                 menuItemLabel,
               ),
             ...worldContext.playerPreferences.questStages.entries.map<MenuItem>(
-              (e) {
+              (final e) {
                 final world = worldContext.world;
                 final quest = world.getQuest(e.key);
                 final stage = quest.getStage(e.value);

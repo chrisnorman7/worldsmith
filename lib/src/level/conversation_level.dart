@@ -69,7 +69,7 @@ class ConversationLevel extends Level {
   }
 
   /// Show the given [branch].
-  void showBranch(ConversationBranch branch) {
+  void showBranch(final ConversationBranch branch) {
     this.branch = branch;
     final world = worldContext.world;
     final sound = branch.sound;
@@ -81,23 +81,25 @@ class ConversationLevel extends Level {
         sound: sound == null
             ? null
             : getAssetReferenceReference(
-                    assets: world.conversationAssets, id: sound.id)
-                .reference,
+                assets: world.conversationAssets,
+                id: sound.id,
+              ).reference,
         text: branch.text,
       ),
       soundChannel: soundChannel,
-      items: branch.responseIds.where((element) {
+      items: branch.responseIds.where((final element) {
         final response = conversation.getResponse(element);
         return worldContext.handleConditionals(response.conditions);
       }).map<MenuItem>(
-        (id) {
+        (final id) {
           final response = conversation.getResponse(id);
           final sound = response.sound;
           final assetReference = sound == null
               ? null
               : getAssetReferenceReference(
-                      assets: world.conversationAssets, id: sound.id)
-                  .reference;
+                  assets: world.conversationAssets,
+                  id: sound.id,
+                ).reference;
           final message = Message(
             gain: sound?.gain ?? world.soundOptions.defaultGain,
             keepAlive: true,

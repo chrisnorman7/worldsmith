@@ -1,7 +1,7 @@
 import 'package:args/command_runner.dart';
 import 'package:worldsmith/commands.dart';
 
-Future<void> main(List<String> args) async {
+Future<void> main(final List<String> args) async {
   final command = CommandRunner<void>(
     'worldsmith',
     'Work with worldsmith directories.',

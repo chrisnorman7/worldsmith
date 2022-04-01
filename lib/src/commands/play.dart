@@ -21,7 +21,7 @@ class PlayCommand extends Command<void> {
         for (final file in Directory.current
             .listSync()
             .whereType<File>()
-            .where((element) => element.path.endsWith('.json')))
+            .where((final element) => element.path.endsWith('.json')))
           path.basename(file.path)
       ],
       defaultsTo: 'project.json',

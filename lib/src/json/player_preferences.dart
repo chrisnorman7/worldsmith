@@ -15,11 +15,11 @@ class PlayerPreferences {
     this.ambianceGain = 0.7,
     this.pannerStrategy = DefaultPannerStrategy.stereo,
     this.turnSensitivity = 3,
-    Map<String, String>? questStages,
+    final Map<String, String>? questStages,
   }) : questStages = questStages ?? {};
 
   /// Create an instance from a JSON object.
-  factory PlayerPreferences.fromJson(Map<String, dynamic> json) =>
+  factory PlayerPreferences.fromJson(final Map<String, dynamic> json) =>
       _$PlayerPreferencesFromJson(json);
 
   /// The gain for the interface sounds.

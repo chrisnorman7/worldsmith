@@ -15,7 +15,7 @@ class SceneSection {
   });
 
   /// Create an instance from a JSON object.
-  factory SceneSection.fromJson(Map<String, dynamic> json) =>
+  factory SceneSection.fromJson(final Map<String, dynamic> json) =>
       _$SceneSectionFromJson(json);
 
   /// The message that will be shown.

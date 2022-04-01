@@ -24,7 +24,7 @@ class SoundOptions {
   });
 
   /// Create an instance from a JSON object.
-  factory SoundOptions.fromJson(Map<String, dynamic> json) =>
+  factory SoundOptions.fromJson(final Map<String, dynamic> json) =>
       _$SoundOptionsFromJson(json);
 
   /// The default gain when no other gain is provided.

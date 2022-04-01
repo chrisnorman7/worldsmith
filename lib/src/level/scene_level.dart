@@ -95,7 +95,7 @@ class SceneLevel extends Level {
 
   /// Destroy everything.
   @override
-  void onPop(double? fadeLength) {
+  void onPop(final double? fadeLength) {
     super.onPop(fadeLength);
     _reverb?.destroy();
     _reverb = null;

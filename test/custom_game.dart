@@ -3,7 +3,7 @@ import 'package:ziggurat/ziggurat.dart';
 /// A game that stores text.
 class CustomGame extends Game {
   /// Create an instance.
-  CustomGame(String title)
+  CustomGame(final String title)
       : strings = [],
         super(title);
 
@@ -11,5 +11,5 @@ class CustomGame extends Game {
   final List<String> strings;
 
   @override
-  void outputText(String text) => strings.add(text);
+  void outputText(final String text) => strings.add(text);
 }

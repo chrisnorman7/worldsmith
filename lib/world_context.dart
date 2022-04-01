@@ -36,11 +36,11 @@ class WorldContext {
 
   /// Return an instance with its [world] loaded from an encrypted file.
   factory WorldContext.loadEncrypted({
-    required String encryptionKey,
-    String filename = encryptedWorldFilename,
-    Game? game,
-    CustomCommandsMap customCommands = const {},
-    ErrorHandler? errorHandler,
+    required final String encryptionKey,
+    final String filename = encryptedWorldFilename,
+    final Game? game,
+    final CustomCommandsMap customCommands = const {},
+    final ErrorHandler? errorHandler,
   }) {
     final sdl = Sdl();
     final world = World.loadEncrypted(
@@ -134,10 +134,13 @@ class WorldContext {
   final ErrorHandler? errorHandler;
 
   /// A function that will be called when hitting the edge of a [ZoneLevel].
-  void onEdgeOfZoneLevel(ZoneLevel zoneLevel, Point<double> coordinates) {}
+  void onEdgeOfZoneLevel(
+    final ZoneLevel zoneLevel,
+    final Point<double> coordinates,
+  ) {}
 
   /// Get a message suitable for a [MenuItem] label.
-  Message getMenuItemMessage({String? text}) => Message(
+  Message getMenuItemMessage({final String? text}) => Message(
         gain: world.soundOptions.menuMoveSound?.gain ??
             world.soundOptions.defaultGain,
         keepAlive: true,
@@ -147,10 +150,10 @@ class WorldContext {
 
   /// Get a message with the given [sound].
   Message getSoundMessage({
-    required Sound sound,
-    required AssetList assets,
-    required String? text,
-    bool keepAlive = false,
+    required final Sound sound,
+    required final AssetList assets,
+    required final String? text,
+    final bool keepAlive = false,
   }) =>
       Message(
         gain: sound.gain,
@@ -163,7 +166,7 @@ class WorldContext {
       );
 
   /// Get the asset store for the given [customSoundAssetStore].
-  AssetStore getAssetStore(CustomSoundAssetStore customSoundAssetStore) {
+  AssetStore getAssetStore(final CustomSoundAssetStore customSoundAssetStore) {
     switch (customSoundAssetStore) {
       case CustomSoundAssetStore.ambiances:
         return world.ambianceAssetStore;
@@ -185,7 +188,7 @@ class WorldContext {
   }
 
   /// Get the sound from the given [sound].
-  AssetReference getCustomSound(CustomSound sound) =>
+  AssetReference getCustomSound(final CustomSound sound) =>
       getAssetReferenceReference(
         assets: getAssetStore(sound.assetStore).assets,
         id: sound.id,
@@ -193,10 +196,10 @@ class WorldContext {
 
   /// Convert the given [message].
   Message getCustomMessage(
-    CustomMessage message, {
-    Map<String, String> replacements = const {},
-    bool keepAlive = false,
-    AssetReference? nullSound,
+    final CustomMessage message, {
+    final Map<String, String> replacements = const {},
+    final bool keepAlive = false,
+    final AssetReference? nullSound,
   }) {
     var text = message.text;
     if (text != null) {
@@ -221,7 +224,7 @@ class WorldContext {
   }
 
   /// Get a button with the proper activate sound.
-  Button getButton(TaskFunction func) =>
+  Button getButton(final TaskFunction func) =>
       Button(func, activateSound: world.menuActivateSound);
 
   /// Get the main menu for the given [WorldContext].
@@ -234,19 +237,19 @@ class WorldContext {
   SoundOptionsMenu getSoundOptionsMenu() => SoundOptionsMenu(this);
 
   /// Return a zone level.
-  ZoneLevel getZoneLevel(Zone zone) =>
+  ZoneLevel getZoneLevel(final Zone zone) =>
       ZoneLevel(worldContext: this, zone: zone);
 
   /// Returns the pause menu.
-  PauseMenu getPauseMenu(Zone zone) => PauseMenu(this, zone);
+  PauseMenu getPauseMenu(final Zone zone) => PauseMenu(this, zone);
 
   /// Get the quests menu.
   QuestMenu getQuestMenu() => QuestMenu(worldContext: this);
 
   /// Get a level for the given [scene].
   SceneLevel getSceneLevel({
-    required Scene scene,
-    CallCommand? callCommand,
+    required final Scene scene,
+    final CallCommand? callCommand,
   }) =>
       SceneLevel(
         worldContext: this,
@@ -256,9 +259,9 @@ class WorldContext {
 
   /// Get a suitable level for the given [conversation].
   ConversationLevel getConversationLevel({
-    required Conversation conversation,
-    required int pushInitialBranchAfter,
-    int? fadeTime,
+    required final Conversation conversation,
+    required final int pushInitialBranchAfter,
+    final int? fadeTime,
   }) =>
       ConversationLevel(
         worldContext: this,
@@ -268,7 +271,7 @@ class WorldContext {
       );
 
   /// Returns the given [world] as a JSON string.
-  String getWorldJsonString({bool compact = true}) {
+  String getWorldJsonString({final bool compact = true}) {
     final json = world.toJson();
     if (compact) {
       return jsonEncode(json);
@@ -279,7 +282,7 @@ class WorldContext {
   /// Save the given [world] with a random encryption key.
   ///
   /// The encryption key will be returned.
-  String saveEncrypted({String filename = encryptedWorldFilename}) {
+  String saveEncrypted({final String filename = encryptedWorldFilename}) {
     final file = File(filename);
     final encryptionKey = SecureRandom(32).base64;
     final key = Key.fromBase64(encryptionKey);
@@ -298,7 +301,7 @@ class WorldContext {
   /// Run this world.
   ///
   /// If [sdl] is not `null`, then it should call [Sdl.init] itself.
-  Future<void> run({EventCallback<SoundEvent>? onSound}) async {
+  Future<void> run({final EventCallback<SoundEvent>? onSound}) async {
     Synthizer? synthizer;
     Context? context;
     if (triggerMapFile.existsSync() == true) {
@@ -307,7 +310,7 @@ class WorldContext {
       final triggerMap = TriggerMap.fromJson(json);
       for (final trigger in triggerMap.triggers) {
         game.triggerMap.triggers.removeWhere(
-          (element) => element.name == trigger.name,
+          (final element) => element.name == trigger.name,
         );
       }
       game.triggerMap.triggers.addAll(triggerMap.triggers);
@@ -343,9 +346,10 @@ class WorldContext {
           random: game.random,
         ),
       );
-      onSound = soundManager.handleEvent;
+      game.sounds.listen(soundManager.handleEvent);
+    } else {
+      game.sounds.listen(onSound);
     }
-    game.sounds.listen(onSound);
     sdl.init();
     try {
       await game.run(
@@ -365,7 +369,7 @@ class WorldContext {
       final json = game.triggerMap.toJson();
       final data = indentedJsonEncoder.convert(json);
       triggerMapFile.writeAsStringSync(data);
-    } catch (e) {
+    } on Exception {
       rethrow;
     } finally {
       context?.destroy();
@@ -379,10 +383,10 @@ class WorldContext {
 
   /// Output a custom [message].
   void outputCustomMessage(
-    CustomMessage message, {
-    AssetReference? nullSound,
-    Map<String, String> replacements = const {},
-    SoundChannel? soundChannel,
+    final CustomMessage message, {
+    final AssetReference? nullSound,
+    final Map<String, String> replacements = const {},
+    final SoundChannel? soundChannel,
   }) {
     if (message.sound != null || message.text != null) {
       game.outputMessage(
@@ -398,8 +402,8 @@ class WorldContext {
 
   /// Handle a [walkingMode] command.
   void handleWalkingMode({
-    required WalkingMode walkingMode,
-    required ZoneLevel zoneLevel,
+    required final WalkingMode walkingMode,
+    required final ZoneLevel zoneLevel,
   }) {
     switch (walkingMode) {
       case WalkingMode.stationary:
@@ -416,7 +420,7 @@ class WorldContext {
 
   /// Handle a [zoneTeleport] command.
   void handleZoneTeleport({
-    required ZoneTeleport zoneTeleport,
+    required final ZoneTeleport zoneTeleport,
   }) {
     final zone = world.getZone(zoneTeleport.zoneId);
     final coordinates = zoneTeleport.getCoordinates(
@@ -430,7 +434,7 @@ class WorldContext {
   }
 
   /// Handle the custom command with the given [name].
-  void handleCustomCommandName(String name) {
+  void handleCustomCommandName(final String name) {
     try {
       final f = customCommands[name];
       if (f == null) {
@@ -439,7 +443,7 @@ class WorldContext {
         );
       }
       f(this);
-    } catch (e, s) {
+    } on Exception catch (e, s) {
       final f = errorHandler;
       if (f != null) {
         f(e, s);
@@ -450,7 +454,7 @@ class WorldContext {
   }
 
   /// Handle a [startConversation] command.
-  void handleStartConversation(StartConversation startConversation) {
+  void handleStartConversation(final StartConversation startConversation) {
     final conversation = world.getConversation(
       startConversation.conversationId,
     );
@@ -470,7 +474,7 @@ class WorldContext {
   }
 
   /// Handle a [setQuestStage] instance.
-  void handleSetQuestStage(SetQuestStage setQuestStage) {
+  void handleSetQuestStage(final SetQuestStage setQuestStage) {
     final stageId = setQuestStage.stageId;
     if (stageId == null) {
       playerPreferences.questStages.remove(setQuestStage.questId);
@@ -481,7 +485,7 @@ class WorldContext {
   }
 
   /// Handle the given [questCondition].
-  bool handleQuestCondition(QuestCondition questCondition) =>
+  bool handleQuestCondition(final QuestCondition questCondition) =>
       playerPreferences.questStages[questCondition.questId] ==
       questCondition.stageId;
 
@@ -489,14 +493,14 @@ class WorldContext {
   ///
   /// The default implementation returns `false` if the function fails, and
   /// [errorHandler] is not `null`.
-  bool handleConditionalFunction(String name) {
+  bool handleConditionalFunction(final String name) {
     final f = conditionalFunctions[name];
     if (f == null) {
       throw UnimplementedError('There is no conditional function named $name.');
     }
     try {
       return f(this);
-    } catch (e, s) {
+    } on Exception catch (e, s) {
       final f = errorHandler;
       if (f != null) {
         f(e, s);
@@ -507,7 +511,7 @@ class WorldContext {
   }
 
   /// Handle the given [conditional].
-  bool handleConditional(Conditional conditional) {
+  bool handleConditional(final Conditional conditional) {
     final questCondition = conditional.questCondition;
     if (questCondition != null) {
       if (handleQuestCondition(questCondition) == false) {
@@ -525,7 +529,7 @@ class WorldContext {
   }
 
   /// Handle a list of [conditionals].
-  bool handleConditionals(Iterable<Conditional> conditionals) {
+  bool handleConditionals(final Iterable<Conditional> conditionals) {
     for (final conditional in conditionals) {
       if (handleConditional(conditional) == false) {
         return false;
@@ -535,7 +539,7 @@ class WorldContext {
   }
 
   /// Return to the main menu.
-  void handleReturnToMainMenu(ReturnToMainMenu returnToMainMenu) {
+  void handleReturnToMainMenu(final ReturnToMainMenu returnToMainMenu) {
     final fadeTime = returnToMainMenu.fadeTime;
     while (game.currentLevel != null) {
       game.popLevel(ambianceFadeTime: fadeTime);
@@ -547,7 +551,7 @@ class WorldContext {
   }
 
   /// Handle a show scene event.
-  void handleShowScene(ShowScene showScene) {
+  void handleShowScene(final ShowScene showScene) {
     final scene = world.getScene(showScene.sceneId);
     final level = getSceneLevel(
       scene: scene,
@@ -564,7 +568,7 @@ class WorldContext {
   }
 
   /// Handle playing a rumble effect.
-  void handlePlayRumble(PlayRumble playRumble) {
+  void handlePlayRumble(final PlayRumble playRumble) {
     for (final joystick in game.joysticks.values) {
       joystick.rumble(
         duration: playRumble.duration,
@@ -575,19 +579,19 @@ class WorldContext {
   }
 
   /// Handle opening a URL.
-  void handleUrl(String url) {
+  void handleUrl(final String url) {
     game.outputText('Opening $url...');
     openUrl(url);
   }
 
   /// Run the given [command].
   void runCommand({
-    required WorldCommand command,
-    Map<String, String> replacements = const {},
-    ZoneLevel? zoneLevel,
-    SoundChannel? soundChannel,
-    AssetReference? nullSound,
-    List<CallCommand> calledCommands = const [],
+    required final WorldCommand command,
+    final Map<String, String> replacements = const {},
+    final ZoneLevel? zoneLevel,
+    final SoundChannel? soundChannel,
+    final AssetReference? nullSound,
+    final List<CallCommand> calledCommands = const [],
   }) {
     outputCustomMessage(
       command.message,
@@ -649,12 +653,12 @@ class WorldContext {
 
   /// Handle a list of [callCommands].
   void handleCallCommands({
-    required List<CallCommand> callCommands,
-    List<CallCommand> calledCommands = const [],
-    Map<String, String> replacements = const {},
-    AssetReference? nullSound,
-    SoundChannel? soundChannel,
-    ZoneLevel? zoneLevel,
+    required final List<CallCommand> callCommands,
+    final List<CallCommand> calledCommands = const [],
+    final Map<String, String> replacements = const {},
+    final AssetReference? nullSound,
+    final SoundChannel? soundChannel,
+    final ZoneLevel? zoneLevel,
   }) {
     for (final callCommand in callCommands) {
       handleCallCommand(
@@ -670,23 +674,23 @@ class WorldContext {
 
   /// Call the specified [callCommand].
   void handleCallCommand({
-    required CallCommand callCommand,
-    List<CallCommand> calledCommands = const [],
-    Map<String, String> replacements = const {},
-    AssetReference? nullSound,
-    SoundChannel? soundChannel,
-    ZoneLevel? zoneLevel,
+    required final CallCommand callCommand,
+    final List<CallCommand> calledCommands = const [],
+    final Map<String, String> replacements = const {},
+    final AssetReference? nullSound,
+    final SoundChannel? soundChannel,
+    final ZoneLevel? zoneLevel,
   }) {
     if (calledCommands.contains(callCommand)) {
       final category = world.commandCategories.firstWhere(
-        (element) => element.commands
+        (final element) => element.commands
             .where(
-              (element) => element.id == callCommand.commandId,
+              (final element) => element.id == callCommand.commandId,
             )
             .isNotEmpty,
       );
       final commandName = category.commands.firstWhere(
-        (element) => element.id == callCommand.commandId,
+        (final element) => element.id == callCommand.commandId,
       );
       throw UnsupportedError(
         'The $commandName command from the ${category.name} is attempting '
@@ -722,7 +726,7 @@ class WorldContext {
   }
 
   /// Get the name of the nearest direction to [bearing].
-  String getDirectionName(int bearing) {
+  String getDirectionName(final int bearing) {
     String? direction;
     int? difference;
     for (final entry in world.directions.entries) {
@@ -740,11 +744,11 @@ class WorldContext {
   ///
   /// If the id is `null`, nothing happens.
   void runWorldCommandId(
-    String? id, {
-    Map<String, String> replacements = const {},
-    AssetReference? nullSound,
-    SoundChannel? soundChannel,
-    ZoneLevel? zoneLevel,
+    final String? id, {
+    final Map<String, String> replacements = const {},
+    final AssetReference? nullSound,
+    final SoundChannel? soundChannel,
+    final ZoneLevel? zoneLevel,
   }) {
     if (id != null) {
       final command = world.getCommand(id);
@@ -760,8 +764,8 @@ class WorldContext {
 
   /// Increase the gain on the given [soundChannel] by [value].
   void changeSoundChannelGain({
-    required SoundChannel soundChannel,
-    required double value,
+    required final SoundChannel soundChannel,
+    required final double value,
   }) {
     var gain = soundChannel.gain + value;
     if (gain < 0) {
@@ -788,8 +792,10 @@ class WorldContext {
   }
 
   /// Get a valid parameter for the given [soundChannel] and [title].
-  ParameterMenuParameter getGainParameter(
-          {required String title, required SoundChannel soundChannel}) =>
+  ParameterMenuParameter getGainParameter({
+    required final String title,
+    required final SoundChannel soundChannel,
+  }) =>
       ParameterMenuParameter(
         getLabel: () {
           final gain = soundChannel.gain.toStringAsFixed(1);

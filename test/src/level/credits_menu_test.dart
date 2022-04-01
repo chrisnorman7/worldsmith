@@ -11,7 +11,7 @@ void main() {
     'CreditsMenu class',
     () {
       final sdl = Sdl();
-      final zigguratSound = AssetReferenceReference(
+      const zigguratSound = AssetReferenceReference(
         variableName: 'ziggurat_sound',
         reference: AssetReference.file('ziggurat.mp3'),
       );
@@ -21,7 +21,7 @@ void main() {
         sound: Sound(id: zigguratSound.variableName, gain: 1.0),
         url: 'https://pub.dev/packages/ziggurat',
       );
-      final synthizerSound = AssetReferenceReference(
+      const synthizerSound = AssetReferenceReference(
         variableName: 'synthizer_sound',
         reference: AssetReference.file('synthizer.mp3'),
       );
@@ -32,13 +32,14 @@ void main() {
         url: 'https://synthizer.github.io/',
       );
       final otherCredit = WorldCredit(id: 'other_credit', title: 'Many Others');
-      final creditsMusic = AssetReferenceReference(
+      const creditsMusic = AssetReferenceReference(
         variableName: 'credits_music',
         reference: AssetReference.file('credits_music.mp3'),
       );
-      final moveSound = AssetReferenceReference(
-          variableName: 'move_sound',
-          reference: AssetReference.file('menu_move.mp3'));
+      const moveSound = AssetReferenceReference(
+        variableName: 'move_sound',
+        reference: AssetReference.file('menu_move.mp3'),
+      );
       final world = World(
         title: 'World With Credits',
         credits: [synthizerCredit, zigguratCredit, otherCredit],
@@ -49,7 +50,8 @@ void main() {
         interfaceSoundsAssets: [moveSound],
         musicAssets: [creditsMusic],
         soundOptions: SoundOptions(
-            menuMoveSound: Sound(id: moveSound.variableName, gain: 4.0)),
+          menuMoveSound: Sound(id: moveSound.variableName, gain: 4.0),
+        ),
       );
       final game = Game(world.title);
       final worldContext = WorldContext(sdl: sdl, game: game, world: world);

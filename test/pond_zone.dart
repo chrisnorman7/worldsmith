@@ -133,7 +133,7 @@ class PondZone {
   final Zone zone;
 
   /// Generate the needed terrains.
-  void generateTerrains(World world) {
+  void generateTerrains(final World world) {
     for (final box in [northBank, eastBank, southBank, westBank, pondBox]) {
       final terrainId = box.terrainId;
       world.terrains.add(

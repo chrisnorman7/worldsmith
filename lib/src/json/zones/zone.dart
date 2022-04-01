@@ -29,18 +29,19 @@ class Zone {
     this.musicFadeGain = 0.1,
     this.ambianceFadeTime,
     this.ambianceFadeGain = 0.1,
-    List<Sound>? ambiances,
+    final List<Sound>? ambiances,
     this.topDownMap = true,
     this.edgeCommand,
     this.turnAmount = 45,
-    List<ZoneObject>? objects,
-    List<LocationMarker>? locationMarkers,
+    final List<ZoneObject>? objects,
+    final List<LocationMarker>? locationMarkers,
   })  : ambiances = ambiances ?? [],
         objects = objects ?? [],
         locationMarkers = locationMarkers ?? [];
 
   /// Create an instance from a JSON object.
-  factory Zone.fromJson(Map<String, dynamic> json) => _$ZoneFromJson(json);
+  factory Zone.fromJson(final Map<String, dynamic> json) =>
+      _$ZoneFromJson(json);
 
   /// The ID of this zone.
   final String id;
@@ -88,20 +89,22 @@ class Zone {
   final List<LocationMarker> locationMarkers;
 
   /// Get the location marker with the given [id].
-  LocationMarker getLocationMarker(String id) => locationMarkers.firstWhere(
-        (element) => element.id == id,
+  LocationMarker getLocationMarker(final String id) =>
+      locationMarkers.firstWhere(
+        (final element) => element.id == id,
       );
 
   /// Get a box by its [id].
-  Box getBox(String id) => boxes.firstWhere((element) => element.id == id);
+  Box getBox(final String id) =>
+      boxes.firstWhere((final element) => element.id == id);
 
   /// Get an object by its [id].
-  ZoneObject getZoneObject(String id) => objects.firstWhere(
-        (element) => element.id == id,
+  ZoneObject getZoneObject(final String id) => objects.firstWhere(
+        (final element) => element.id == id,
       );
 
   /// Get the absolute coordinates for the given [Coordinates].
-  Point<int> getAbsoluteCoordinates(Coordinates coordinates) {
+  Point<int> getAbsoluteCoordinates(final Coordinates coordinates) {
     final clamp = coordinates.clamp;
     if (clamp == null) {
       return Point(coordinates.x, coordinates.y);
@@ -126,12 +129,16 @@ class Zone {
   }
 
   /// Get the point at the northwest corner of the given [box].
-  Point<int> getBoxNorthwestCorner(Box box) => Point(
-      getAbsoluteCoordinates(box.start).x, getAbsoluteCoordinates(box.end).y);
+  Point<int> getBoxNorthwestCorner(final Box box) => Point(
+        getAbsoluteCoordinates(box.start).x,
+        getAbsoluteCoordinates(box.end).y,
+      );
 
   /// Get the coordinates at the southeast corner of the given [box].
-  Point<int> getBoxSoutheastCorner(Box box) => Point(
-      getAbsoluteCoordinates(box.end).x, getAbsoluteCoordinates(box.start).y);
+  Point<int> getBoxSoutheastCorner(final Box box) => Point(
+        getAbsoluteCoordinates(box.end).x,
+        getAbsoluteCoordinates(box.start).y,
+      );
 
   /// Convert an instance to JSON.
   Map<String, dynamic> toJson() => _$ZoneToJson(this);

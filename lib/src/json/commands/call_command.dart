@@ -10,12 +10,12 @@ class CallCommand {
   /// Create an instance.
   CallCommand({
     required this.commandId,
-    List<Conditional>? conditions,
+    final List<Conditional>? conditions,
     this.callAfter,
   }) : conditions = conditions ?? [];
 
   /// Create an instance from a JSON object.
-  factory CallCommand.fromJson(Map<String, dynamic> json) =>
+  factory CallCommand.fromJson(final Map<String, dynamic> json) =>
       _$CallCommandFromJson(json);
 
   /// The conditions which must be satisfied in order for the command to run.

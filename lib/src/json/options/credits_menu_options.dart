@@ -16,7 +16,7 @@ class CreditsMenuOptions {
   });
 
   /// Create an instance from a JSON object.
-  factory CreditsMenuOptions.fromJson(Map<String, dynamic> json) =>
+  factory CreditsMenuOptions.fromJson(final Map<String, dynamic> json) =>
       _$CreditsMenuOptionsFromJson(json);
 
   /// The title of the menu.

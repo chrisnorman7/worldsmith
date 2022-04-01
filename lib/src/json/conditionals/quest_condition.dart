@@ -16,7 +16,7 @@ class QuestCondition {
   });
 
   /// Create an instance from a JSON object.
-  factory QuestCondition.fromJson(Map<String, dynamic> json) =>
+  factory QuestCondition.fromJson(final Map<String, dynamic> json) =>
       _$QuestConditionFromJson(json);
 
   /// The ID of the [Quest].

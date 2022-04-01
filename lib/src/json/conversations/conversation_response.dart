@@ -20,7 +20,7 @@ class ConversationResponse {
   /// Create an instance.
   ConversationResponse({
     required this.id,
-    List<Conditional>? conditions,
+    final List<Conditional>? conditions,
     this.text,
     this.sound,
     this.nextBranch,
@@ -28,7 +28,7 @@ class ConversationResponse {
   }) : conditions = conditions ?? [];
 
   /// Create an instance from a JSON object.
-  factory ConversationResponse.fromJson(Map<String, dynamic> json) =>
+  factory ConversationResponse.fromJson(final Map<String, dynamic> json) =>
       _$ConversationResponseFromJson(json);
 
   /// The ID of this response.

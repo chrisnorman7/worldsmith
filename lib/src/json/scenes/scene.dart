@@ -20,7 +20,8 @@ class Scene {
   });
 
   /// Create an instance from a JSON object.
-  factory Scene.fromJson(Map<String, dynamic> json) => _$SceneFromJson(json);
+  factory Scene.fromJson(final Map<String, dynamic> json) =>
+      _$SceneFromJson(json);
 
   /// The ID of this scene.
   final String id;

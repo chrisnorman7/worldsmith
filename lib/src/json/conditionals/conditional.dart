@@ -28,7 +28,7 @@ class Conditional {
         );
 
   /// Create an instance from a JSON object.
-  factory Conditional.fromJson(Map<String, dynamic> json) =>
+  factory Conditional.fromJson(final Map<String, dynamic> json) =>
       _$ConditionalFromJson(json);
 
   /// The condition of a particular quest.

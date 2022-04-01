@@ -14,7 +14,7 @@ class WorldCredit {
   WorldCredit({required this.id, required this.title, this.url, this.sound});
 
   /// Create an instance from a JSON object.
-  factory WorldCredit.fromJson(Map<String, dynamic> json) =>
+  factory WorldCredit.fromJson(final Map<String, dynamic> json) =>
       _$WorldCreditFromJson(json);
 
   /// The ID of this credit.

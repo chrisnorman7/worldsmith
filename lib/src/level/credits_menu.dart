@@ -8,7 +8,7 @@ import '../../world_context.dart';
 /// The credits menu.
 class CreditsMenu extends Menu {
   /// Create an instance.
-  CreditsMenu(WorldContext worldContext)
+  CreditsMenu(final WorldContext worldContext)
       : super(
           game: worldContext.game,
           title: Message(text: worldContext.world.creditsMenuOptions.title),

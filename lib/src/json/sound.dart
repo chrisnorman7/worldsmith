@@ -13,7 +13,8 @@ class Sound {
   Sound({required this.id, this.gain = 0.7});
 
   /// Create an instance from a JSON object.
-  factory Sound.fromJson(Map<String, dynamic> json) => _$SoundFromJson(json);
+  factory Sound.fromJson(final Map<String, dynamic> json) =>
+      _$SoundFromJson(json);
 
   /// The ID of the sound to play.
   ///

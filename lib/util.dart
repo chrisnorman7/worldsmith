@@ -11,18 +11,18 @@ import 'src/json/world.dart';
 
 /// Return the asset reference with the given [id].
 AssetReferenceReference getAssetReferenceReference({
-  required AssetList assets,
-  required String id,
+  required final AssetList assets,
+  required final String id,
 }) =>
     assets.firstWhere(
-      (element) => element.variableName == id,
+      (final element) => element.variableName == id,
     );
 
 /// Get an ambiance from the given [sound].
 Ambiance? getAmbiance({
-  required AssetList assets,
-  required Sound? sound,
-  Point<double>? position,
+  required final AssetList assets,
+  required final Sound? sound,
+  final Point<double>? position,
 }) {
   if (sound == null) {
     return null;
@@ -37,8 +37,8 @@ Ambiance? getAmbiance({
 
 /// Get an ambiance from the given [sound].
 Music? getMusic({
-  required AssetList assets,
-  required Sound? sound,
+  required final AssetList assets,
+  required final Sound? sound,
 }) {
   if (sound == null) {
     return null;
@@ -52,11 +52,11 @@ Music? getMusic({
 
 /// Play the given [sound] through the given [channel].
 PlaySound playSound({
-  required SoundChannel channel,
-  required Sound sound,
-  required AssetList assets,
-  bool keepAlive = false,
-  bool looping = false,
+  required final SoundChannel channel,
+  required final Sound sound,
+  required final AssetList assets,
+  final bool keepAlive = false,
+  final bool looping = false,
 }) =>
     channel.playSound(
       getAssetReferenceReference(assets: assets, id: sound.id).reference,
@@ -67,9 +67,9 @@ PlaySound playSound({
 
 /// Returns an asset store.
 AssetStore getAssetStore({
-  required String name,
-  required AssetList assets,
-  required String comment,
+  required final String name,
+  required final AssetList assets,
+  required final String comment,
 }) =>
     AssetStore(
       filename: path.join(assetsDirectory, '$name.dart'),

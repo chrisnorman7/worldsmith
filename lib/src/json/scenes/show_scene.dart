@@ -15,7 +15,7 @@ class ShowScene {
   });
 
   /// Create an instance from a JSON object.
-  factory ShowScene.fromJson(Map<String, dynamic> json) =>
+  factory ShowScene.fromJson(final Map<String, dynamic> json) =>
       _$ShowSceneFromJson(json);
 
   /// The ID of the scene to show.

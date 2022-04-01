@@ -13,7 +13,7 @@ class EquipmentPosition {
   });
 
   /// Create an instance from a JSON object.
-  factory EquipmentPosition.fromJson(Map<String, dynamic> json) =>
+  factory EquipmentPosition.fromJson(final Map<String, dynamic> json) =>
       _$EquipmentPositionFromJson(json);
 
   /// The ID of this position.

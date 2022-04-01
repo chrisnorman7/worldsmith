@@ -20,11 +20,11 @@ class WorldCommand {
   WorldCommand({
     required this.id,
     required this.name,
-    CustomMessage? message,
+    final CustomMessage? message,
     this.zoneTeleport,
     this.walkingMode,
     this.customCommandName,
-    List<CallCommand>? callCommands,
+    final List<CallCommand>? callCommands,
     this.startConversation,
     this.setQuestStage,
     this.returnToMainMenu,
@@ -35,7 +35,7 @@ class WorldCommand {
         callCommands = callCommands ?? [];
 
   /// Create an instance from a JSON object.
-  factory WorldCommand.fromJson(Map<String, dynamic> json) =>
+  factory WorldCommand.fromJson(final Map<String, dynamic> json) =>
       _$WorldCommandFromJson(json);
 
   /// The ID of this command.

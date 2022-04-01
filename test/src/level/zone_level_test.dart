@@ -15,13 +15,13 @@ void main() {
     'ZoneLevel class',
     () {
       final sdl = Sdl();
-      final ambiance1Asset = AssetReference.file('ambiance1.mp3');
-      final ambiance2Asset = AssetReference.file('ambiance2.mp3');
-      final ambiance1Reference = AssetReferenceReference(
+      const ambiance1Asset = AssetReference.file('ambiance1.mp3');
+      const ambiance2Asset = AssetReference.file('ambiance2.mp3');
+      const ambiance1Reference = AssetReferenceReference(
         variableName: 'ambiance1',
         reference: ambiance1Asset,
       );
-      final ambiance2Reference = AssetReferenceReference(
+      const ambiance2Reference = AssetReferenceReference(
         variableName: 'ambiance2',
         reference: ambiance2Asset,
       );
@@ -33,11 +33,11 @@ void main() {
         id: ambiance2Reference.variableName,
         gain: 2.0,
       );
-      final slowWalkReference = AssetReferenceReference(
+      const slowWalkReference = AssetReferenceReference(
         variableName: 'slow_walk',
         reference: AssetReference.file('slow_walk.mp3'),
       );
-      final fastWalkReference = AssetReferenceReference(
+      const fastWalkReference = AssetReferenceReference(
         variableName: 'fast_walk',
         reference: AssetReference.file('fast_walk.mp3'),
       );
@@ -53,8 +53,8 @@ void main() {
           sound: Sound(id: fastWalkReference.variableName),
         ),
       );
-      final musicAsset = AssetReference.file('music.mp3');
-      final musicReference = AssetReferenceReference(
+      const musicAsset = AssetReference.file('music.mp3');
+      const musicReference = AssetReferenceReference(
         variableName: 'music',
         reference: musicAsset,
         comment: 'Level music',
@@ -75,8 +75,8 @@ void main() {
       test(
         'Initialisation',
         () {
-          expect(pondZoneLevel.coordinates, Point(0.0, 0.0));
-          expect(pondZoneLevel.coordinatesOffset, Point(2, 2));
+          expect(pondZoneLevel.coordinates, const Point(0.0, 0.0));
+          expect(pondZoneLevel.coordinatesOffset, const Point(2, 2));
           expect(pondZoneLevel.heading, isZero);
           expect(pondZoneLevel.tiles.length, pondZoneLevel.size.x + 1);
           expect(pondZoneLevel.tiles.first.length, pondZoneLevel.size.y + 1);
@@ -107,7 +107,7 @@ void main() {
           expect(game.strings.length, 1);
           expect(game.strings.first, '0, 0');
           pondZoneLevel
-            ..coordinates = Point(pi, 15.54321)
+            ..coordinates = const Point(pi, 15.54321)
             ..showCoordinates();
           expect(game.strings.length, 2);
           expect(game.strings.last, '3, 15');

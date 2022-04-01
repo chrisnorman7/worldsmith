@@ -43,7 +43,7 @@ class BuildCommand extends Command<void> {
           for (final file in Directory.current
               .listSync()
               .whereType<File>()
-              .where((element) => element.path.endsWith('.json')))
+              .where((final element) => element.path.endsWith('.json')))
             path.basename(file.path)
         ],
         defaultsTo: 'project.json',
@@ -74,7 +74,7 @@ class BuildCommand extends Command<void> {
   /// Run the given [executable] with the given [arguments].
   ///
   /// If there is a non-0 exit code, [ProcessError] will be thrown.
-  void runProcess(String executable, List<String> arguments) {
+  void runProcess(final String executable, final List<String> arguments) {
     final result = Process.runSync(executable, arguments);
     print(result.stdout);
     if (result.exitCode != 0) {

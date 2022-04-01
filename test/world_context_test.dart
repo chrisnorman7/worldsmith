@@ -21,7 +21,7 @@ final worldFileEncrypted = File('$encryptedWorldFilename.test');
 class _WorksException implements Exception {}
 
 /// Save the given [world].
-void saveWorld(World world) {
+void saveWorld(final World world) {
   final data = jsonEncode(world.toJson());
   worldFile.writeAsStringSync(data);
 }
@@ -148,7 +148,7 @@ void main() {
           expect(message.gain, world.soundOptions.defaultGain);
           expect(message.keepAlive, isTrue);
           expect(message.sound, isNull);
-          final reference = AssetReferenceReference(
+          const reference = AssetReferenceReference(
             variableName: 'move',
             reference: AssetReference.file('menu_move.mp3'),
           );
@@ -166,11 +166,11 @@ void main() {
       test(
         '.getSoundMessage',
         () {
-          final reference1 = AssetReferenceReference(
+          const reference1 = AssetReferenceReference(
             variableName: '1',
             reference: AssetReference.file('1.mp3'),
           );
-          final reference2 = AssetReferenceReference(
+          const reference2 = AssetReferenceReference(
             variableName: '2',
             reference: AssetReference.file('2.mp3'),
           );
@@ -232,13 +232,13 @@ void main() {
       test(
         '.getCustomSound',
         () {
-          final ambiance = AssetReference.file('ambiance.wav');
-          final ambianceReference = AssetReferenceReference(
+          const ambiance = AssetReference.file('ambiance.wav');
+          const ambianceReference = AssetReferenceReference(
             variableName: 'ambiance',
             reference: ambiance,
           );
-          final terrain = AssetReference.collection('grass');
-          final terrainReference = AssetReferenceReference(
+          const terrain = AssetReference.collection('grass');
+          const terrainReference = AssetReferenceReference(
             variableName: 'terrain',
             reference: terrain,
           );
@@ -252,10 +252,12 @@ void main() {
             world: world,
           );
           expect(
-            worldContext.getCustomSound(CustomSound(
-              assetStore: CustomSoundAssetStore.ambiances,
-              id: ambianceReference.variableName,
-            )),
+            worldContext.getCustomSound(
+              CustomSound(
+                assetStore: CustomSoundAssetStore.ambiances,
+                id: ambianceReference.variableName,
+              ),
+            ),
             ambiance,
           );
           expect(
@@ -272,7 +274,7 @@ void main() {
       test(
         '.getCustomMessage',
         () {
-          final assetReferenceReference = AssetReferenceReference(
+          const assetReferenceReference = AssetReferenceReference(
             variableName: 'testing',
             reference: AssetReference('testing.wav', AssetType.file),
           );
@@ -303,11 +305,11 @@ void main() {
       test(
         '.getButton',
         () {
-          final activateSound = AssetReferenceReference(
+          const activateSound = AssetReferenceReference(
             variableName: 'activate',
             reference: AssetReference.file('activate.mp3'),
           );
-          final moveSound = AssetReferenceReference(
+          const moveSound = AssetReferenceReference(
             variableName: 'move',
             reference: AssetReference.file('activate.mp3'),
           );
@@ -591,7 +593,9 @@ void main() {
         sdl: sdl,
         game: game,
         world: world,
-        customCommands: {commandName: (context) => throw _WorksException()},
+        customCommands: {
+          commandName: (final context) => throw _WorksException()
+        },
       );
       test(
         'Detect command loops',

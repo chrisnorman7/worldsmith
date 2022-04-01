@@ -18,7 +18,7 @@ class ConversationBranch {
   });
 
   /// Create an instance from a JSON object.
-  factory ConversationBranch.fromJson(Map<String, dynamic> json) =>
+  factory ConversationBranch.fromJson(final Map<String, dynamic> json) =>
       _$ConversationBranchFromJson(json);
 
   /// The ID of this branch.

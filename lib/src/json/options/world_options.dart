@@ -18,7 +18,7 @@ class WorldOptions {
   });
 
   /// Create an instance from a JSON object.
-  factory WorldOptions.fromJson(Map<String, dynamic> json) =>
+  factory WorldOptions.fromJson(final Map<String, dynamic> json) =>
       _$WorldOptionsFromJson(json);
 
   /// The version of the game.

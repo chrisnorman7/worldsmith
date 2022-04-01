@@ -14,7 +14,7 @@ class StartConversation {
   });
 
   /// Create an instance from a JSON object.
-  factory StartConversation.fromJson(Map<String, dynamic> json) =>
+  factory StartConversation.fromJson(final Map<String, dynamic> json) =>
       _$StartConversationFromJson(json);
 
   /// The ID of the conversation to start.

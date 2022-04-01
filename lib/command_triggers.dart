@@ -107,7 +107,7 @@ const nextSceneSectionCommandTrigger = CommandTrigger(
 );
 
 /// The default trigger map.
-final defaultTriggerMap = TriggerMap(
+const defaultTriggerMap = TriggerMap(
   [
     slowWalkCommandTrigger,
     walkForwardsCommandTrigger,

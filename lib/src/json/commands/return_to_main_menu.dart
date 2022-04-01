@@ -13,7 +13,7 @@ class ReturnToMainMenu {
   });
 
   /// Create an instance from a JSON object.
-  factory ReturnToMainMenu.fromJson(Map<String, dynamic> json) =>
+  factory ReturnToMainMenu.fromJson(final Map<String, dynamic> json) =>
       _$ReturnToMainMenuFromJson(json);
 
   /// The fade time to use.
