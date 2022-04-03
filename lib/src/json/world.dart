@@ -14,7 +14,7 @@ import 'commands/command_category.dart';
 import 'commands/world_command.dart';
 import 'conversations/conversation.dart';
 import 'conversations/conversation_category.dart';
-import 'equipment_position.dart';
+import 'equipment/equipment_position.dart';
 import 'messages/custom_sound.dart';
 import 'options/credits_menu_options.dart';
 import 'options/main_menu_options.dart';
