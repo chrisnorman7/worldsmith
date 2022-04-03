@@ -65,9 +65,7 @@ World _$WorldFromJson(Map<String, dynamic> json) => World(
       directions: (json['directions'] as Map<String, dynamic>?)?.map(
         (k, e) => MapEntry(k, (e as num).toDouble()),
       ),
-      equipmentPositions: (json['equipmentPositions'] as List<dynamic>?)
-          ?.map((e) => EquipmentPosition.fromJson(e as Map<String, dynamic>))
-          .toList(),
+      equipmentPositions: json['equipmentPositions'] as List<dynamic>?,
       terrains: (json['terrains'] as List<dynamic>?)
           ?.map((e) => Terrain.fromJson(e as Map<String, dynamic>))
           .toList(),

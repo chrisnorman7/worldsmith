@@ -1,7 +1,7 @@
 /// Provides the [ShowScene] class.
 import 'package:json_annotation/json_annotation.dart';
 
-import '../commands/call_command.dart';
+import 'call_command.dart';
 
 part 'show_scene.g.dart';
 

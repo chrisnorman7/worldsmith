@@ -2,13 +2,13 @@ import 'package:json_annotation/json_annotation.dart';
 
 import '../../../world_context.dart';
 import '../../level/walking_mode.dart';
-import '../conversations/start_conversation.dart';
 import '../messages/custom_message.dart';
-import '../scenes/show_scene.dart';
 import 'call_command.dart';
 import 'play_rumble.dart';
 import 'return_to_main_menu.dart';
 import 'set_quest_stage.dart';
+import 'show_scene.dart';
+import 'start_conversation.dart';
 import 'zone_teleport.dart';
 
 part 'world_command.g.dart';
