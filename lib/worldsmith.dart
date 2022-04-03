@@ -34,6 +34,7 @@ export 'src/json/scenes/scene.dart';
 export 'src/json/scenes/scene_section.dart';
 export 'src/json/scenes/show_scene.dart';
 export 'src/json/sound.dart';
+export 'src/json/stats/_stats.dart';
 export 'src/json/world.dart';
 export 'src/json/world_credit.dart';
 export 'src/json/zones/box.dart';

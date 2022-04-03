@@ -102,6 +102,9 @@ World _$WorldFromJson(Map<String, dynamic> json) => World(
       scenes: (json['scenes'] as List<dynamic>?)
           ?.map((e) => Scene.fromJson(e as Map<String, dynamic>))
           .toList(),
+      stats: (json['stats'] as List<dynamic>?)
+          ?.map((e) => WorldStat.fromJson(e as Map<String, dynamic>))
+          .toList(),
     );
 
 Map<String, dynamic> _$WorldToJson(World instance) => <String, dynamic>{
@@ -132,4 +135,5 @@ Map<String, dynamic> _$WorldToJson(World instance) => <String, dynamic>{
       'quests': instance.quests,
       'questMenuOptions': instance.questMenuOptions,
       'scenes': instance.scenes,
+      'stats': instance.stats,
     };

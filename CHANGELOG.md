@@ -2,6 +2,10 @@
 
 ## [0.19.0]
 
+### Added
+
+* Added a stats system.
+
 ### Changed
 
 * Updated lots of packages.

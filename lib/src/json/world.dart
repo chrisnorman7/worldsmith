@@ -27,6 +27,7 @@ import 'player_preferences.dart';
 import 'quests/quest.dart';
 import 'reverb_preset_reference.dart';
 import 'scenes/scene.dart';
+import 'stats/world_stat.dart';
 import 'world_credit.dart';
 import 'zones/terrain.dart';
 import 'zones/zone.dart';
@@ -65,6 +66,9 @@ typedef QuestList = List<Quest>;
 
 /// A list of scenes.
 typedef SceneList = List<Scene>;
+
+/// A list of stats.
+typedef StatList = List<WorldStat>;
 
 /// The top-level world object.
 ///
@@ -111,6 +115,7 @@ class World {
     final QuestList? quests,
     final QuestMenuOptions? questMenuOptions,
     final SceneList? scenes,
+    final StatList? stats,
   })  : globalOptions = globalOptions ?? WorldOptions(),
         soundOptions = soundOptions ?? SoundOptions(),
         mainMenuOptions = mainMenuOptions ?? MainMenuOptions(),
@@ -140,7 +145,8 @@ class World {
         conversationCategories = conversationCategories ?? [],
         quests = quests ?? [],
         questMenuOptions = questMenuOptions ?? QuestMenuOptions(),
-        scenes = scenes ?? [];
+        scenes = scenes ?? [],
+        stats = stats ?? [];
 
   /// Create an instance from a JSON object.
   factory World.fromJson(final Map<String, dynamic> json) =>
@@ -408,6 +414,13 @@ class World {
   /// Get the scene with the given [id].
   Scene getScene(final String id) =>
       scenes.firstWhere((final element) => element.id == id);
+
+  /// The stats for this world.
+  final StatList stats;
+
+  /// Get the stat with the given [id].
+  WorldStat getStat(final String id) =>
+      stats.firstWhere((final element) => element.id == id);
 
   /// Convert an instance to JSON.
   Map<String, dynamic> toJson() => _$WorldToJson(this);
