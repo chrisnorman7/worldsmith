@@ -1,7 +1,7 @@
 import 'package:json_annotation/json_annotation.dart';
 
 import '../../../world_context.dart';
-import '../../level/walking_mode.dart';
+import '../../levels/walking_mode.dart';
 import '../messages/custom_message.dart';
 import 'call_command.dart';
 import 'play_rumble.dart';

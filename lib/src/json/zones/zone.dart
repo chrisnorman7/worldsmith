@@ -3,7 +3,7 @@ import 'dart:math';
 
 import 'package:json_annotation/json_annotation.dart';
 
-import '../../level/pause_menu.dart';
+import '../../levels/pause_menu.dart';
 import '../commands/call_command.dart';
 import '../sound.dart';
 import '../world.dart';
