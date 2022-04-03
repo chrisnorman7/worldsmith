@@ -478,6 +478,24 @@ void main() {
           );
         },
       );
+      test(
+        '.playerStats',
+        () {
+          final str = WorldStat(id: 'str', name: 'Strength');
+          final dex = WorldStat(id: 'dex', name: 'Dexterity');
+          final world = World(stats: [str, dex]);
+          final worldContext = WorldContext(sdl: sdl, game: game, world: world);
+          final stats = worldContext.playerStats;
+          expect(stats.getStat(str), str.defaultValue);
+          expect(stats.getStat(dex), dex.defaultValue);
+          worldContext.playerPreferences.stats[str.id] = 1234;
+          expect(
+            stats.getStat(str),
+            worldContext.playerPreferences.stats[str.id],
+          );
+          expect(stats.getStat(dex), dex.defaultValue);
+        },
+      );
     },
   );
   group(

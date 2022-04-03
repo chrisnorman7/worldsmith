@@ -5,6 +5,7 @@ import '../commands/world_command.dart';
 import '../conversations/conversation.dart';
 import '../conversations/conversation_response.dart';
 import 'quest_condition.dart';
+import 'stat_condition.dart';
 
 part 'conditional.g.dart';
 
@@ -22,6 +23,7 @@ class Conditional {
     this.questCondition,
     this.chance = 1,
     this.conditionFunctionName,
+    this.statCondition,
   }) : assert(
           chance >= 1,
           'The `chance` value must be no less than 1.',
@@ -42,6 +44,9 @@ class Conditional {
 
   /// The name of a custom condition function to run.
   String? conditionFunctionName;
+
+  /// The condition of stats.
+  StatCondition? statCondition;
 
   /// Convert an instance to JSON.
   Map<String, dynamic> toJson() => _$ConditionalToJson(this);

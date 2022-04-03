@@ -133,6 +133,12 @@ class WorldContext {
   /// A function that will handle errors from [WorldCommand] instances.
   final ErrorHandler? errorHandler;
 
+  /// The current player statistics.
+  Statistics get playerStats => Statistics(
+        defaultStats: world.defaultPlayerStats,
+        currentStats: playerPreferences.stats,
+      );
+
   /// A function that will be called when hitting the edge of a [ZoneLevel].
   void onEdgeOfZoneLevel(
     final ZoneLevel zoneLevel,
@@ -488,6 +494,9 @@ class WorldContext {
   bool handleQuestCondition(final QuestCondition questCondition) =>
       playerPreferences.questStages[questCondition.questId] ==
       questCondition.stageId;
+
+  /// Handle the given [statCondition] for the player.
+  bool handleStatCondition(final StatCondition statCondition) => true;
 
   /// Handle a conditional function with the given [name].
   ///

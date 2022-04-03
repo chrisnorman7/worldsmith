@@ -13,6 +13,10 @@ Conditional _$ConditionalFromJson(Map<String, dynamic> json) => Conditional(
               json['questCondition'] as Map<String, dynamic>),
       chance: json['chance'] as int? ?? 1,
       conditionFunctionName: json['conditionFunctionName'] as String?,
+      statCondition: json['statCondition'] == null
+          ? null
+          : StatCondition.fromJson(
+              json['statCondition'] as Map<String, dynamic>),
     );
 
 Map<String, dynamic> _$ConditionalToJson(Conditional instance) =>
@@ -20,4 +24,5 @@ Map<String, dynamic> _$ConditionalToJson(Conditional instance) =>
       'questCondition': instance.questCondition,
       'chance': instance.chance,
       'conditionFunctionName': instance.conditionFunctionName,
+      'statCondition': instance.statCondition,
     };

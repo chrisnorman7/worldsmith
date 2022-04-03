@@ -116,6 +116,7 @@ class World {
     final QuestMenuOptions? questMenuOptions,
     final SceneList? scenes,
     final StatList? stats,
+    final Map<String, int>? defaultPlayerStats,
   })  : globalOptions = globalOptions ?? WorldOptions(),
         soundOptions = soundOptions ?? SoundOptions(),
         mainMenuOptions = mainMenuOptions ?? MainMenuOptions(),
@@ -146,7 +147,8 @@ class World {
         quests = quests ?? [],
         questMenuOptions = questMenuOptions ?? QuestMenuOptions(),
         scenes = scenes ?? [],
-        stats = stats ?? [];
+        stats = stats ?? [],
+        defaultPlayerStats = defaultPlayerStats ?? {};
 
   /// Create an instance from a JSON object.
   factory World.fromJson(final Map<String, dynamic> json) =>
@@ -421,6 +423,9 @@ class World {
   /// Get the stat with the given [id].
   WorldStat getStat(final String id) =>
       stats.firstWhere((final element) => element.id == id);
+
+  /// The default player stats.
+  final Map<String, int> defaultPlayerStats;
 
   /// Convert an instance to JSON.
   Map<String, dynamic> toJson() => _$WorldToJson(this);

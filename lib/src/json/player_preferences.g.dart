@@ -19,6 +19,9 @@ PlayerPreferences _$PlayerPreferencesFromJson(Map<String, dynamic> json) =>
       questStages: (json['questStages'] as Map<String, dynamic>?)?.map(
         (k, e) => MapEntry(k, e as String),
       ),
+      stats: (json['stats'] as Map<String, dynamic>?)?.map(
+        (k, e) => MapEntry(k, e as int),
+      ),
     );
 
 Map<String, dynamic> _$PlayerPreferencesToJson(PlayerPreferences instance) =>
@@ -29,6 +32,7 @@ Map<String, dynamic> _$PlayerPreferencesToJson(PlayerPreferences instance) =>
       'pannerStrategy': _$DefaultPannerStrategyEnumMap[instance.pannerStrategy],
       'turnSensitivity': instance.turnSensitivity,
       'questStages': instance.questStages,
+      'stats': instance.stats,
     };
 
 const _$DefaultPannerStrategyEnumMap = {

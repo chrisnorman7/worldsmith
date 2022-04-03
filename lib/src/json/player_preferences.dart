@@ -16,7 +16,9 @@ class PlayerPreferences {
     this.pannerStrategy = DefaultPannerStrategy.stereo,
     this.turnSensitivity = 3,
     final Map<String, String>? questStages,
-  }) : questStages = questStages ?? {};
+    final Map<String, int>? stats,
+  })  : questStages = questStages ?? {},
+        stats = stats ?? {};
 
   /// Create an instance from a JSON object.
   factory PlayerPreferences.fromJson(final Map<String, dynamic> json) =>
@@ -42,6 +44,9 @@ class PlayerPreferences {
 
   /// The current stages of all [Quest]s the player has embarked upon.
   final Map<String, String> questStages;
+
+  /// The current stats for the player.
+  final Map<String, int> stats;
 
   /// Convert an instance to JSON.
   Map<String, dynamic> toJson() => _$PlayerPreferencesToJson(this);
