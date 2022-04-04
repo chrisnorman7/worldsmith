@@ -14,7 +14,18 @@ NpcMove _$NpcMoveFromJson(Map<String, dynamic> json) => NpcMove(
           ? null
           : Sound.fromJson(json['moveSound'] as Map<String, dynamic>),
       walkingMode:
-          $enumDecodeNullable(_$WalkingModeEnumMap, json['walkingMode']),
+          $enumDecodeNullable(_$WalkingModeEnumMap, json['walkingMode']) ??
+              WalkingMode.fast,
+      stepSize: (json['stepSize'] as num?)?.toDouble(),
+      startCommand: json['startCommand'] == null
+          ? null
+          : CallCommand.fromJson(json['startCommand'] as Map<String, dynamic>),
+      moveCommand: json['moveCommand'] == null
+          ? null
+          : CallCommand.fromJson(json['moveCommand'] as Map<String, dynamic>),
+      endCommand: json['endCommand'] == null
+          ? null
+          : CallCommand.fromJson(json['endCommand'] as Map<String, dynamic>),
     );
 
 Map<String, dynamic> _$NpcMoveToJson(NpcMove instance) => <String, dynamic>{
@@ -23,6 +34,10 @@ Map<String, dynamic> _$NpcMoveToJson(NpcMove instance) => <String, dynamic>{
       'maxMoveInterval': instance.maxMoveInterval,
       'moveSound': instance.moveSound,
       'walkingMode': _$WalkingModeEnumMap[instance.walkingMode],
+      'stepSize': instance.stepSize,
+      'startCommand': instance.startCommand,
+      'moveCommand': instance.moveCommand,
+      'endCommand': instance.endCommand,
     };
 
 const _$WalkingModeEnumMap = {

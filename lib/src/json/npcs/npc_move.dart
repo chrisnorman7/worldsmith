@@ -2,6 +2,7 @@
 import 'package:json_annotation/json_annotation.dart';
 
 import '../../levels/walking_mode.dart';
+import '../commands/call_command.dart';
 import '../sound.dart';
 import '../zones/location_marker.dart';
 import 'npc.dart';
@@ -17,7 +18,11 @@ class NpcMove {
     this.minMoveInterval = 100,
     this.maxMoveInterval = 5000,
     this.moveSound,
-    this.walkingMode,
+    this.walkingMode = WalkingMode.fast,
+    this.stepSize,
+    this.startCommand,
+    this.moveCommand,
+    this.endCommand,
   });
 
   /// Create an instance from a JSON object.
@@ -40,8 +45,24 @@ class NpcMove {
 
   /// The walking mode to use.
   ///
-  /// If this value is `null`, then moves will be silent.
-  WalkingMode? walkingMode;
+  /// If this value is [WalkingMode.stationary], and [moveSound] is `null`, then
+  /// moves will be silent.
+  WalkingMode walkingMode;
+
+  /// How far to move each time.
+  ///
+  /// If this value is `null`, then the step length will be inferred from the
+  /// terrain.
+  double? stepSize;
+
+  /// Call a command when this movement is started.
+  CallCommand? startCommand;
+
+  /// Call a command every time this NPC steps in this move.
+  CallCommand? moveCommand;
+
+  /// Call a command when the NPC reaches the given marker.
+  CallCommand? endCommand;
 
   /// Convert an instance to JSON.
   Map<String, dynamic> toJson() => _$NpcMoveToJson(this);

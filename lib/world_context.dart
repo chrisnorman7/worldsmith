@@ -594,6 +594,9 @@ class WorldContext {
   }
 
   /// Run the given [command].
+  ///
+  /// All of [nullSound], [soundChannel], and [replacements] will be passed to
+  /// [outputCustomMessage].
   void runCommand({
     required final WorldCommand command,
     final Map<String, String> replacements = const {},
