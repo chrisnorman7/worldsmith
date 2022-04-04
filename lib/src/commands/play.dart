@@ -3,7 +3,7 @@ import 'dart:io';
 import 'package:args/command_runner.dart';
 import 'package:dart_sdl/dart_sdl.dart';
 import 'package:path/path.dart' as path;
-import 'package:ziggurat/ziggurat.dart' show Game;
+import 'package:ziggurat/ziggurat.dart' show Game, TriggerMap;
 
 import '../../command_triggers.dart';
 import '../../world_context.dart';
@@ -39,7 +39,10 @@ class PlayCommand extends Command<void> {
     final results = argResults!;
     final filename = results['filename'] as String;
     final world = World.fromFilename(filename);
-    final game = Game(world.title, triggerMap: defaultTriggerMap);
+    final game = Game(
+      world.title,
+      triggerMap: TriggerMap(List.from(defaultTriggerMap.triggers)),
+    );
     final sdl = Sdl();
     final worldContext = WorldContext(
       sdl: sdl,
