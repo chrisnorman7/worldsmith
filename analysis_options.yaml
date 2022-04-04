@@ -8,6 +8,7 @@ analyzer:
     - lib/src/json/conversations/*.g.dart
     - lib/src/json/equipment/*.g.dart
     - lib/src/json/messages/*.g.dart
+    - lib/src/json/npcs/*.g.dart
     - lib/src/json/options/*.g.dart
     - lib/src/json/scenes/*.g.dart
     - lib/src/json/stats/*.g.dart

@@ -5,6 +5,7 @@ import 'package:json_annotation/json_annotation.dart';
 
 import '../../levels/pause_menu.dart';
 import '../commands/call_command.dart';
+import '../npcs/npc.dart';
 import '../sound.dart';
 import '../world.dart';
 import 'box.dart';
@@ -35,9 +36,11 @@ class Zone {
     this.turnAmount = 45,
     final List<ZoneObject>? objects,
     final List<LocationMarker>? locationMarkers,
+    final List<Npc>? npcs,
   })  : ambiances = ambiances ?? [],
         objects = objects ?? [],
-        locationMarkers = locationMarkers ?? [];
+        locationMarkers = locationMarkers ?? [],
+        npcs = npcs ?? [];
 
   /// Create an instance from a JSON object.
   factory Zone.fromJson(final Map<String, dynamic> json) =>
@@ -93,6 +96,9 @@ class Zone {
       locationMarkers.firstWhere(
         (final element) => element.id == id,
       );
+
+  /// The NPC's which belong to this zone.
+  final List<Npc> npcs;
 
   /// Get a box by its [id].
   Box getBox(final String id) =>
