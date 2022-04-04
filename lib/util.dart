@@ -19,14 +19,11 @@ AssetReferenceReference getAssetReferenceReference({
     );
 
 /// Get an ambiance from the given [sound].
-Ambiance? getAmbiance({
+Ambiance getAmbiance({
   required final AssetList assets,
-  required final Sound? sound,
+  required final Sound sound,
   final Point<double>? position,
 }) {
-  if (sound == null) {
-    return null;
-  }
   final reference = getAssetReferenceReference(assets: assets, id: sound.id);
   return Ambiance(
     sound: reference.reference,
