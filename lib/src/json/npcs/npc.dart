@@ -15,8 +15,9 @@ class Npc {
   /// Create an instance.
   Npc({
     required this.id,
-    required this.coordinates,
+    required this.initialCoordinates,
     required this.stats,
+    this.z = 0.0,
     this.name = 'Unnamed NPC',
     this.ambiance,
     final List<NpcMove>? moves,
@@ -33,7 +34,13 @@ class Npc {
   String name;
 
   /// The coordinates where this NPC will pop.
-  Coordinates coordinates;
+  Coordinates initialCoordinates;
+
+  /// The z coordinate for this NPC.
+  ///
+  /// If you change this coordinate, then sounds made by this NPC will appear to
+  /// come above or below.
+  double z;
 
   /// The stats for this NPC.
   final Statistics stats;

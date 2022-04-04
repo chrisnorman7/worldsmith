@@ -8,9 +8,10 @@ part of 'npc.dart';
 
 Npc _$NpcFromJson(Map<String, dynamic> json) => Npc(
       id: json['id'] as String,
-      coordinates:
-          Coordinates.fromJson(json['coordinates'] as Map<String, dynamic>),
+      initialCoordinates: Coordinates.fromJson(
+          json['initialCoordinates'] as Map<String, dynamic>),
       stats: Statistics.fromJson(json['stats'] as Map<String, dynamic>),
+      z: (json['z'] as num?)?.toDouble() ?? 0.0,
       name: json['name'] as String? ?? 'Unnamed NPC',
       ambiance: json['ambiance'] == null
           ? null
@@ -26,7 +27,8 @@ Npc _$NpcFromJson(Map<String, dynamic> json) => Npc(
 Map<String, dynamic> _$NpcToJson(Npc instance) => <String, dynamic>{
       'id': instance.id,
       'name': instance.name,
-      'coordinates': instance.coordinates,
+      'initialCoordinates': instance.initialCoordinates,
+      'z': instance.z,
       'stats': instance.stats,
       'ambiance': instance.ambiance,
       'moves': instance.moves,
