@@ -15,6 +15,7 @@ class NpcCollision {
     this.distance = 1.0,
     this.collideWithNpcs = false,
     this.collideWithPlayer = true,
+    this.collideWithObjects = false,
   });
 
   /// Create an instance from a JSON object.
@@ -32,6 +33,9 @@ class NpcCollision {
 
   /// Whether to collide with other [Npc]'s.
   bool collideWithNpcs;
+
+  /// Whether the NPC should collide with objects.
+  bool collideWithObjects;
 
   /// Convert an instance to JSON.
   Map<String, dynamic> toJson() => _$NpcCollisionToJson(this);

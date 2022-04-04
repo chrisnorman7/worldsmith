@@ -11,6 +11,7 @@ NpcCollision _$NpcCollisionFromJson(Map<String, dynamic> json) => NpcCollision(
       distance: (json['distance'] as num?)?.toDouble() ?? 1.0,
       collideWithNpcs: json['collideWithNpcs'] as bool? ?? false,
       collideWithPlayer: json['collideWithPlayer'] as bool? ?? true,
+      collideWithObjects: json['collideWithObjects'] as bool? ?? false,
     );
 
 Map<String, dynamic> _$NpcCollisionToJson(NpcCollision instance) =>
@@ -19,4 +20,5 @@ Map<String, dynamic> _$NpcCollisionToJson(NpcCollision instance) =>
       'distance': instance.distance,
       'collideWithPlayer': instance.collideWithPlayer,
       'collideWithNpcs': instance.collideWithNpcs,
+      'collideWithObjects': instance.collideWithObjects,
     };
