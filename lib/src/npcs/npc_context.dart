@@ -4,12 +4,13 @@ import 'package:ziggurat/sound.dart';
 
 import '../json/npcs/npc.dart';
 import '../json/npcs/npc_move.dart';
+import '../json/npcs/zone_npc.dart';
 
 /// A context for an [Npc].
 class NpcContext {
   /// Create an instance.
   NpcContext({
-    required this.npc,
+    required this.zoneNpc,
     required this.coordinates,
     required this.channel,
     this.ambiance,
@@ -18,7 +19,7 @@ class NpcContext {
   });
 
   /// The NPC that this context represents.
-  final Npc npc;
+  final ZoneNpc zoneNpc;
 
   /// The coordinates of this NPC.
   Point<double> coordinates;
@@ -38,17 +39,20 @@ class NpcContext {
   /// The index of the [NpcMove] this is being acted out.
   int moveIndex;
 
+  /// The current move.
+  NpcMove get move => zoneNpc.moves[moveIndex];
+
   /// How many millisecond are left until the NPC must move again.
   int timeUntilMove;
 
-  /// Set [timeUntilMove] according to the values on the [npc].
+  /// Set [timeUntilMove] according to the values on the [zoneNpc].
   void resetTimeUntilMove({required final Random random, final NpcMove? move}) {
     if (move == null) {
       timeUntilMove = 0;
     } else {
       final a = min(move.minMoveInterval, move.maxMoveInterval);
       final b = max(move.minMoveInterval, move.maxMoveInterval);
-      timeUntilMove = a + random.nextInt(b);
+      timeUntilMove = a + random.nextInt(b - a);
     }
   }
 }

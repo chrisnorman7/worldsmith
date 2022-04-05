@@ -5,7 +5,7 @@ import 'package:json_annotation/json_annotation.dart';
 
 import '../../levels/pause_menu.dart';
 import '../commands/call_command.dart';
-import '../npcs/npc.dart';
+import '../npcs/zone_npc.dart';
 import '../sound.dart';
 import '../world.dart';
 import 'box.dart';
@@ -36,7 +36,7 @@ class Zone {
     this.turnAmount = 45,
     final List<ZoneObject>? objects,
     final List<LocationMarker>? locationMarkers,
-    final List<Npc>? npcs,
+    final List<ZoneNpc>? npcs,
   })  : ambiances = ambiances ?? [],
         objects = objects ?? [],
         locationMarkers = locationMarkers ?? [],
@@ -97,8 +97,8 @@ class Zone {
         (final element) => element.id == id,
       );
 
-  /// The NPC's which belong to this zone.
-  final List<Npc> npcs;
+  /// A list of mobiles that should be loaded into this zone.
+  final List<ZoneNpc> npcs;
 
   /// Get a box by its [id].
   Box getBox(final String id) =>

@@ -16,6 +16,7 @@ import 'conversations/conversation.dart';
 import 'conversations/conversation_category.dart';
 import 'equipment/equipment_position.dart';
 import 'messages/custom_sound.dart';
+import 'npcs/npc.dart';
 import 'options/credits_menu_options.dart';
 import 'options/main_menu_options.dart';
 import 'options/pause_menu_options.dart';
@@ -117,6 +118,7 @@ class World {
     final SceneList? scenes,
     final StatList? stats,
     final Map<String, int>? defaultPlayerStats,
+    final List<Npc>? npcs,
   })  : globalOptions = globalOptions ?? WorldOptions(),
         soundOptions = soundOptions ?? SoundOptions(),
         mainMenuOptions = mainMenuOptions ?? MainMenuOptions(),
@@ -148,7 +150,8 @@ class World {
         questMenuOptions = questMenuOptions ?? QuestMenuOptions(),
         scenes = scenes ?? [],
         stats = stats ?? [],
-        defaultPlayerStats = defaultPlayerStats ?? {};
+        defaultPlayerStats = defaultPlayerStats ?? {},
+        npcs = npcs ?? [];
 
   /// Create an instance from a JSON object.
   factory World.fromJson(final Map<String, dynamic> json) =>
@@ -426,6 +429,13 @@ class World {
 
   /// The default player stats.
   final Map<String, int> defaultPlayerStats;
+
+  /// The NPC's which belong to this world.
+  final List<Npc> npcs;
+
+  /// Return the NPC with the given [id].
+  Npc getNpc(final String id) =>
+      npcs.firstWhere((final element) => element.id == id);
 
   /// Convert an instance to JSON.
   Map<String, dynamic> toJson() => _$WorldToJson(this);

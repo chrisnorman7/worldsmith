@@ -35,7 +35,7 @@ Zone _$ZoneFromJson(Map<String, dynamic> json) => Zone(
           ?.map((e) => LocationMarker.fromJson(e as Map<String, dynamic>))
           .toList(),
       npcs: (json['npcs'] as List<dynamic>?)
-          ?.map((e) => Npc.fromJson(e as Map<String, dynamic>))
+          ?.map((e) => ZoneNpc.fromJson(e as Map<String, dynamic>))
           .toList(),
     );
 

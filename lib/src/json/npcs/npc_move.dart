@@ -45,14 +45,13 @@ class NpcMove {
 
   /// The walking mode to use.
   ///
-  /// If this value is [WalkingMode.stationary], and [moveSound] is `null`, then
-  /// moves will be silent.
+  /// If this value is [WalkingMode.stationary], the NPC will stop moving.
   WalkingMode walkingMode;
 
   /// How far to move each time.
   ///
   /// If this value is `null`, then the step length will be inferred from the
-  /// terrain.
+  /// terrain options for the current [walkingMode].
   double? stepSize;
 
   /// Call a command when this movement is started.

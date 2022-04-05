@@ -47,6 +47,8 @@ class ZoneLevel extends Level {
         zoneObjectAmbiances = {},
         npcContexts = zone.npcs.map<NpcContext>(
           (final e) {
+            final world = worldContext.world;
+            final npc = world.getNpc(e.npcId);
             final coordinates =
                 zone.getAbsoluteCoordinates(e.initialCoordinates).toDouble();
             final channel = worldContext.game.createSoundChannel(
@@ -56,15 +58,15 @@ class ZoneLevel extends Level {
                 z: e.z,
               ),
             );
-            final sound = e.ambiance;
+            final sound = npc.ambiance;
             final ambiance = sound == null
                 ? null
                 : getAmbiance(
-                    assets: worldContext.world.ambianceAssets,
+                    assets: world.ambianceAssets,
                     sound: sound,
                   );
             return NpcContext(
-              npc: e,
+              zoneNpc: e,
               coordinates: coordinates,
               channel: channel,
               ambiance: ambiance == null
@@ -826,26 +828,43 @@ class ZoneLevel extends Level {
   /// Move the NPC's identified by [npcContexts].
   void moveNpcs(final int timeDelta) {
     for (final context in npcContexts) {
-      if (context.npc.moves.isNotEmpty) {
-        context.timeUntilMove -= timeDelta;
-        moveNpc(context, timeDelta);
+      if (context.zoneNpc.moves.isNotEmpty) {
+        final move = context.move;
+        if (move.walkingMode != WalkingMode.stationary) {
+          context.timeUntilMove -= timeDelta;
+          if (context.timeUntilMove <= 0) {
+            moveNpc(context);
+          }
+        }
       }
     }
   }
 
   /// Move the npc with the given [context].
-  void moveNpc(final NpcContext context, final int timeDelta) {
+  void moveNpc(final NpcContext context) {
     final world = worldContext.world;
-    final npc = context.npc;
-    var move = npc.moves[context.moveIndex];
-    final marker = zone.getLocationMarker(move.locationMarkerId);
-    final destination = zone.getAbsoluteCoordinates(marker.coordinates);
+    final zoneNpc = context.zoneNpc;
+    final npc = world.getNpc(zoneNpc.npcId);
+    var move = context.move;
     var box = getBox(context.coordinates);
     var terrainId = box?.terrainId ?? zone.defaultTerrainId;
     var terrain = world.getTerrain(terrainId);
-    final walkingOptions = move.walkingMode == WalkingMode.slow
-        ? terrain.slowWalk
-        : terrain.fastWalk;
+    final WalkingOptions walkingOptions;
+    switch (move.walkingMode) {
+      case WalkingMode.stationary:
+        // This should never happen, because of the check in `moveNpcs`.
+        throw StateError(
+          'The current move has a walking mode of `WalkingMode.stationary`.',
+        );
+      case WalkingMode.slow:
+        walkingOptions = terrain.slowWalk;
+        break;
+      case WalkingMode.fast:
+        walkingOptions = terrain.fastWalk;
+        break;
+    }
+    final marker = zone.getLocationMarker(move.locationMarkerId);
+    final destination = zone.getAbsoluteCoordinates(marker.coordinates);
     final stepSize = move.stepSize ?? walkingOptions.distance;
     var x = context.coordinates.x;
     var y = context.coordinates.y;
@@ -861,7 +880,11 @@ class ZoneLevel extends Level {
     }
     final channel = context.channel;
     context.coordinates = Point(x, y);
-    channel.position = SoundPosition3d(x: x, y: y, z: npc.z);
+    channel.position = SoundPosition3d(
+      x: x,
+      y: y,
+      z: zoneNpc.z,
+    );
     box = getBox(context.coordinates);
     terrainId = box?.terrainId ?? zone.defaultTerrainId;
     terrain = world.getTerrain(terrainId);
@@ -880,7 +903,7 @@ class ZoneLevel extends Level {
     }
     if (x.floor() == destination.x && y.floor() == destination.y) {
       context.moveIndex++;
-      if (context.moveIndex >= npc.moves.length) {
+      if (context.moveIndex >= zoneNpc.moves.length) {
         context.moveIndex = 0;
         final endCommand = move.endCommand;
         if (endCommand != null) {
@@ -891,7 +914,7 @@ class ZoneLevel extends Level {
             zoneLevel: this,
           );
         }
-        move = npc.moves[context.moveIndex];
+        move = zoneNpc.moves[context.moveIndex];
         final startCommand = move.startCommand;
         if (startCommand != null) {
           worldContext.handleCallCommand(
@@ -903,27 +926,15 @@ class ZoneLevel extends Level {
         }
       }
     }
-    final Sound? sound;
-    final moveSound = move.moveSound;
-    if (moveSound != null) {
-      sound = moveSound;
-    } else {
-      switch (move.walkingMode) {
-        case WalkingMode.stationary:
-          sound = null;
-          break;
-        case WalkingMode.slow:
-          sound = terrain.slowWalk.sound;
-          break;
-        case WalkingMode.fast:
-          sound = terrain.fastWalk.sound;
-          break;
-      }
-    }
+    final sound = move.moveSound ?? walkingOptions.sound;
     if (sound != null) {
+      final assetReferenceReference = getAssetReferenceReference(
+        assets: world.terrainAssets,
+        id: sound.id,
+      );
+      context.lastMovementSound?.destroy();
       context.lastMovementSound = channel.playSound(
-        getAssetReferenceReference(assets: world.terrainAssets, id: sound.id)
-            .reference,
+        assetReferenceReference.reference,
         gain: sound.gain,
         keepAlive: true,
       );
