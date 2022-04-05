@@ -15,6 +15,7 @@ class NpcMove {
   /// Create an instance.
   NpcMove({
     required this.locationMarkerId,
+    this.z = 0.0,
     this.minMoveInterval = 100,
     this.maxMoveInterval = 5000,
     this.moveSound,
@@ -31,6 +32,12 @@ class NpcMove {
 
   /// The ID of the [LocationMarker] to move to.
   String locationMarkerId;
+
+  /// The z coordinate for this NPC.
+  ///
+  /// If you change this coordinate, then sounds made by this NPC will appear to
+  /// come above or below.
+  double z;
 
   /// The minimum number of milliseconds between steps.
   int minMoveInterval;

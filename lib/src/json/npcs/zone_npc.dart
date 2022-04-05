@@ -16,7 +16,6 @@ class ZoneNpc {
   ZoneNpc({
     required this.npcId,
     required this.initialCoordinates,
-    this.z = 0.0,
     final List<NpcMove>? moves,
     this.collision,
   }) : moves = moves ?? [];
@@ -30,12 +29,6 @@ class ZoneNpc {
 
   /// The coordinates where this NPC will pop.
   Coordinates initialCoordinates;
-
-  /// The z coordinate for this NPC.
-  ///
-  /// If you change this coordinate, then sounds made by this NPC will appear to
-  /// come above or below.
-  double z;
 
   /// The moves this NPC will perform.
   final List<NpcMove> moves;

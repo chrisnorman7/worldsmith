@@ -55,7 +55,6 @@ class ZoneLevel extends Level {
               position: SoundPosition3d(
                 x: coordinates.x,
                 y: coordinates.y,
-                z: e.z,
               ),
             );
             final sound = npc.ambiance;
@@ -883,7 +882,7 @@ class ZoneLevel extends Level {
     channel.position = SoundPosition3d(
       x: x,
       y: y,
-      z: zoneNpc.z,
+      z: move.z,
     );
     box = getBox(context.coordinates);
     terrainId = box?.terrainId ?? zone.defaultTerrainId;

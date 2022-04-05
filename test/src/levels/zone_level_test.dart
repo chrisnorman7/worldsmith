@@ -4,6 +4,7 @@ import 'package:dart_sdl/dart_sdl.dart';
 import 'package:test/test.dart';
 import 'package:worldsmith/world_context.dart';
 import 'package:worldsmith/worldsmith.dart';
+import 'package:ziggurat/sound.dart';
 import 'package:ziggurat/ziggurat.dart';
 import 'package:ziggurat_sounds/ziggurat_sounds.dart';
 
@@ -200,6 +201,282 @@ void main() {
           expect(ambiance2Ambiance.gain, ambiance2.gain);
           expect(ambiance2Ambiance.position, isNull);
           expect(ambiance2Ambiance.sound, ambiance2Asset);
+        },
+      );
+    },
+  );
+  group(
+    'Npcs',
+    () {
+      const slowWalkInterval = 500;
+      const fastWalkInterval = 200;
+      final defaultTerrain = Terrain(
+        id: 'default',
+        name: 'Default Terrain',
+        slowWalk: WalkingOptions(interval: slowWalkInterval),
+        fastWalk: WalkingOptions(interval: fastWalkInterval),
+      );
+      final grass = Terrain(
+        id: 'grass',
+        name: 'Grass',
+        slowWalk: WalkingOptions(interval: slowWalkInterval),
+        fastWalk: WalkingOptions(interval: fastWalkInterval),
+      );
+      final water = Terrain(
+        id: 'water',
+        name: 'Water',
+        slowWalk: WalkingOptions(interval: slowWalkInterval),
+        fastWalk: WalkingOptions(interval: fastWalkInterval),
+      );
+      final dirt = Terrain(
+        id: 'dirt',
+        name: 'Dirt',
+        slowWalk: WalkingOptions(interval: slowWalkInterval),
+        fastWalk: WalkingOptions(interval: fastWalkInterval),
+      );
+      final sand = Terrain(
+        id: 'sand',
+        name: 'Sand',
+        slowWalk: WalkingOptions(interval: slowWalkInterval),
+        fastWalk: WalkingOptions(interval: fastWalkInterval),
+      );
+      const boxSize = 5;
+      final sw = Box(
+        id: 'sw',
+        name: 'Southwest',
+        start: Coordinates(0, 0),
+        end: Coordinates(boxSize, boxSize),
+        terrainId: grass.id,
+      );
+      final nw = Box(
+        id: 'nw',
+        name: 'Northwest',
+        start: Coordinates(
+          0,
+          1,
+          clamp: CoordinateClamp(boxId: sw.id, corner: BoxCorner.northwest),
+        ),
+        end: Coordinates(
+          0,
+          boxSize + 1,
+          clamp: CoordinateClamp(
+            boxId: sw.id,
+            corner: BoxCorner.northeast,
+          ),
+        ),
+        terrainId: water.id,
+      );
+      final ne = Box(
+        id: 'ne',
+        name: 'Northeast',
+        start: Coordinates(
+          1,
+          1,
+          clamp: CoordinateClamp(
+            boxId: sw.id,
+            corner: BoxCorner.northeast,
+          ),
+        ),
+        end: Coordinates(
+          boxSize + 1,
+          boxSize + 1,
+          clamp: CoordinateClamp(
+            boxId: sw.id,
+            corner: BoxCorner.northeast,
+          ),
+        ),
+        terrainId: dirt.id,
+      );
+      final se = Box(
+        id: 'se',
+        name: 'Southeast',
+        start: Coordinates(
+          1,
+          0,
+          clamp: CoordinateClamp(
+            boxId: sw.id,
+            corner: BoxCorner.southeast,
+          ),
+        ),
+        end: Coordinates(
+          0,
+          -1,
+          clamp: CoordinateClamp(
+            boxId: ne.id,
+            corner: BoxCorner.southeast,
+          ),
+        ),
+        terrainId: sand.id,
+      );
+      final zone = Zone(
+        id: 'zone',
+        name: 'Zone',
+        boxes: [sw, se, nw, ne],
+        defaultTerrainId: defaultTerrain.id,
+      );
+      // Let's make sure the boxes are setup correctly.
+      test(
+        'Southwest Box',
+        () {
+          expect(zone.getAbsoluteCoordinates(sw.start), const Point(0, 0));
+          expect(
+            zone.getAbsoluteCoordinates(sw.end),
+            const Point(boxSize, boxSize),
+          );
+        },
+      );
+      test(
+        'Northwest Box',
+        () {
+          expect(
+            zone.getAbsoluteCoordinates(nw.start),
+            const Point(0, boxSize + 1),
+          );
+          expect(
+            zone.getAbsoluteCoordinates(nw.end),
+            const Point(boxSize, boxSize + 1 + boxSize),
+          );
+        },
+      );
+      test(
+        'Northeast Box',
+        () {
+          expect(
+            zone.getAbsoluteCoordinates(ne.start),
+            const Point(boxSize + 1, boxSize + 1),
+          );
+          expect(
+            zone.getAbsoluteCoordinates(ne.end),
+            const Point(boxSize + 1 + boxSize, boxSize + 1 + boxSize),
+          );
+        },
+      );
+      test(
+        'Southeast Box',
+        () {
+          expect(
+            zone.getAbsoluteCoordinates(se.start),
+            const Point(boxSize + 1, 0),
+          );
+          expect(
+            zone.getAbsoluteCoordinates(se.end),
+            const Point(boxSize + 1 + boxSize, boxSize),
+          );
+        },
+      );
+      final swMarker = LocationMarker(
+        id: 'startMarker',
+        message: CustomMessage(text: 'Southwest Marker'),
+        coordinates: Coordinates(
+          0,
+          0,
+          clamp: CoordinateClamp(
+            boxId: sw.id,
+            corner: BoxCorner.southwest,
+          ),
+        ),
+      );
+      test(
+        'Southwest Marker',
+        () {
+          expect(
+            zone.getAbsoluteCoordinates(swMarker.coordinates),
+            const Point(0, 0),
+          );
+        },
+      );
+      final nwMarker = LocationMarker(
+        id: 'nw',
+        message: CustomMessage(text: 'Northwest Marker'),
+        coordinates: Coordinates(
+          0,
+          0,
+          clamp: CoordinateClamp(
+            boxId: nw.id,
+            corner: BoxCorner.northwest,
+          ),
+        ),
+      );
+      test(
+        'Northwest Marker',
+        () {
+          expect(
+            zone.getAbsoluteCoordinates(nwMarker.coordinates),
+            zone.getBoxNorthwestCorner(nw),
+          );
+        },
+      );
+      final middleMarker = LocationMarker(
+        id: 'middle',
+        message: CustomMessage(text: 'Middle Marker'),
+        coordinates: Coordinates(
+          0,
+          0,
+          clamp: CoordinateClamp(
+            boxId: ne.id,
+            corner: BoxCorner.southwest,
+          ),
+        ),
+      );
+      test(
+        'Middle Marker',
+        () {
+          expect(
+            zone.getAbsoluteCoordinates(middleMarker.coordinates),
+            zone.getAbsoluteCoordinates(ne.start),
+          );
+        },
+      );
+      final walker = Npc(
+        id: 'walker',
+        stats: const Statistics(defaultStats: {}, currentStats: {}),
+        name: 'Walker',
+      );
+      // Link the NPC to the zone.
+      final zoneNpc = ZoneNpc(
+        npcId: walker.id,
+        initialCoordinates: Coordinates(0, 0),
+        moves: [
+          NpcMove(locationMarkerId: nwMarker.id, z: 1.0),
+          NpcMove(locationMarkerId: middleMarker.id, stepSize: 1.0, z: 2.0),
+          NpcMove(locationMarkerId: swMarker.id, z: 3.0)
+        ],
+      );
+      zone.npcs.add(zoneNpc);
+      final world = World(
+        npcs: [walker],
+        terrains: [defaultTerrain, grass, water, dirt, sand],
+        zones: [zone],
+      );
+      final worldContext = WorldContext(
+        sdl: Sdl(),
+        game: Game('NPC Tests'),
+        world: world,
+      );
+      final level = worldContext.getZoneLevel(zone)..onPush();
+      test(
+        'Level',
+        () {
+          expect(level.zone, zone);
+          expect(level.npcContexts.length, 1);
+        },
+      );
+      final context = level.npcContexts.first;
+      test(
+        'Context',
+        () {
+          expect(context.zoneNpc, zoneNpc);
+          expect(context.ambiance, isNull);
+          expect(
+            context.channel.position,
+            predicate(
+              (final value) =>
+                  value is SoundPosition3d &&
+                  value.x == context.coordinates.x &&
+                  value.y == context.coordinates.y &&
+                  value.z == 0,
+            ),
+          );
         },
       );
     },
