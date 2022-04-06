@@ -418,6 +418,7 @@ void main() {
           ),
         ),
       );
+      zone.locationMarkers.addAll([swMarker, nwMarker, middleMarker]);
       test(
         'Middle Marker',
         () {
@@ -448,8 +449,9 @@ void main() {
         terrains: [defaultTerrain, grass, water, dirt, sand],
         zones: [zone],
       );
+      final sdl = Sdl();
       final worldContext = WorldContext(
-        sdl: Sdl(),
+        sdl: sdl,
         game: Game('NPC Tests'),
         world: world,
       );
@@ -462,6 +464,7 @@ void main() {
         },
       );
       final context = level.npcContexts.first;
+      final timeUntilMove = context.timeUntilMove;
       test(
         'Context',
         () {
@@ -477,6 +480,81 @@ void main() {
                   value.z == 0,
             ),
           );
+          expect(context.coordinates, const Point(0.0, 0.0));
+          expect(context.lastMovementSound, isNull);
+          expect(context.lastSound, isNull);
+          expect(context.moveIndex, isZero);
+          expect(
+            timeUntilMove,
+            inInclusiveRange(
+              zoneNpc.moves.first.minMoveInterval,
+              zoneNpc.moves.first.maxMoveInterval,
+            ),
+          );
+        },
+      );
+      test(
+        'Move NPC',
+        () {
+          level.tick(sdl, 1);
+          expect(context.move, zoneNpc.moves.first);
+          expect(context.timeUntilMove, timeUntilMove - 1);
+          final channel = context.channel;
+          var position = channel.position as SoundPosition3d;
+          expect(
+            Stream.fromIterable(
+              [position.x, position.y, position.z],
+            ),
+            emitsInOrder(<Matcher>[isZero, isZero, isZero]),
+          );
+          level.tick(sdl, timeUntilMove);
+          expect(
+            context.coordinates,
+            Point(0.0, grass.fastWalk.distance),
+          );
+          position = channel.position as SoundPosition3d;
+          expect(
+            Stream.fromIterable([position.x, position.y, position.z]),
+            emitsInOrder(
+              <Object>[isZero, grass.fastWalk.distance, context.move.z],
+            ),
+          );
+          level.tick(sdl, 1);
+          expect(
+            context.coordinates,
+            Point(0.0, grass.fastWalk.distance),
+          );
+          position = channel.position as SoundPosition3d;
+          expect(
+            Stream.fromIterable([position.x, position.y, position.z]),
+            emitsInOrder(
+              <Object>[isZero, grass.fastWalk.distance, context.move.z],
+            ),
+          );
+          final coordinates = zone.getAbsoluteCoordinates(nwMarker.coordinates);
+          context.coordinates = Point(
+            coordinates.x.toDouble(),
+            coordinates.y - grass.fastWalk.distance,
+          );
+          final oldMove = context.move;
+          level.tick(sdl, context.timeUntilMove);
+          expect(
+            context.coordinates,
+            Point(coordinates.x.toDouble(), coordinates.y.toDouble()),
+          );
+          position = channel.position as SoundPosition3d;
+          expect(
+            Stream.fromIterable([position.x, position.y, position.z]),
+            emitsInOrder(
+              <double>[
+                coordinates.x.toDouble(),
+                coordinates.y.toDouble(),
+                oldMove.z
+              ],
+            ),
+          );
+          expect(context.move, zoneNpc.moves[1]);
+          expect(context.moveIndex, 1);
         },
       );
     },
