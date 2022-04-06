@@ -438,8 +438,15 @@ void main() {
         npcId: walker.id,
         initialCoordinates: Coordinates(0, 0),
         moves: [
-          NpcMove(locationMarkerId: nwMarker.id, z: 1.0),
-          NpcMove(locationMarkerId: middleMarker.id, stepSize: 1.0, z: 2.0),
+          NpcMove(
+            locationMarkerId: nwMarker.id,
+            z: 1.0,
+          ),
+          NpcMove(
+            locationMarkerId: middleMarker.id,
+            stepSize: 1.0,
+            z: 2.0,
+          ),
           NpcMove(locationMarkerId: swMarker.id, z: 3.0)
         ],
       );
@@ -553,8 +560,21 @@ void main() {
               ],
             ),
           );
-          expect(context.move, zoneNpc.moves[1]);
+          final move = context.move;
+          expect(move, zoneNpc.moves[1]);
           expect(context.moveIndex, 1);
+          expect(
+            context.timeUntilMove,
+            inInclusiveRange(move.minMoveInterval, move.maxMoveInterval),
+          );
+          level.tick(sdl, context.timeUntilMove);
+          expect(
+            context.coordinates,
+            Point(
+              coordinates.x + move.stepSize!,
+              coordinates.y - move.stepSize!,
+            ),
+          );
         },
       );
     },
