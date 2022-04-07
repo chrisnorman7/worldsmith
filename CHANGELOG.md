@@ -5,6 +5,7 @@
 ### Added
 
 * Added a stats system.
+* Added NPC's.
 
 ### Changed
 
