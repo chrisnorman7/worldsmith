@@ -14,9 +14,8 @@ class NpcContext {
     required this.coordinates,
     required this.channel,
     this.ambiance,
-    this.moveIndex = 0,
     this.timeUntilMove = 0,
-  });
+  }) : assert(zoneNpc.moves.isNotEmpty, 'This NPC has no moves to perform.');
 
   /// The NPC that this context represents.
   final ZoneNpc zoneNpc;
@@ -37,10 +36,16 @@ class NpcContext {
   PlaySound? lastMovementSound;
 
   /// The index of the [NpcMove] this is being acted out.
-  int moveIndex;
+  int? moveIndex;
 
   /// The current move.
-  NpcMove get move => zoneNpc.moves[moveIndex];
+  NpcMove get move {
+    final index = moveIndex;
+    if (index == null) {
+      throw StateError('The NPC with ID ${zoneNpc.npcId} has not moved yet.');
+    }
+    return zoneNpc.moves[index];
+  }
 
   /// How many millisecond are left until the NPC must move again.
   int timeUntilMove;

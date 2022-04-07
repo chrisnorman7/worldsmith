@@ -436,7 +436,7 @@ void main() {
       // Link the NPC to the zone.
       final zoneNpc = ZoneNpc(
         npcId: walker.id,
-        initialCoordinates: Coordinates(0, 0),
+        initialCoordinates: Coordinates(1, 1),
         moves: [
           NpcMove(
             locationMarkerId: nwMarker.id,
@@ -461,6 +461,7 @@ void main() {
         sdl: sdl,
         game: Game('NPC Tests'),
         world: world,
+        customCommands: {},
       );
       final level = worldContext.getZoneLevel(zone)..onPush();
       test(
@@ -471,7 +472,6 @@ void main() {
         },
       );
       final context = level.npcContexts.first;
-      final timeUntilMove = context.timeUntilMove;
       test(
         'Context',
         () {
@@ -487,10 +487,24 @@ void main() {
                   value.z == 0,
             ),
           );
-          expect(context.coordinates, const Point(0.0, 0.0));
+          expect(context.coordinates, const Point(1.0, 1.0));
           expect(context.lastMovementSound, isNull);
+          expect(() => context.move, throwsStateError);
           expect(context.lastSound, isNull);
+          expect(context.moveIndex, isNull);
+          expect(
+            context.timeUntilMove,
+            isZero,
+          );
+        },
+      );
+      test(
+        'Move NPC',
+        () async {
+          await level.tick(sdl, 1);
           expect(context.moveIndex, isZero);
+          expect(context.move, zoneNpc.moves.first);
+          final timeUntilMove = context.timeUntilMove;
           expect(
             timeUntilMove,
             inInclusiveRange(
@@ -498,44 +512,55 @@ void main() {
               zoneNpc.moves.first.maxMoveInterval,
             ),
           );
-        },
-      );
-      test(
-        'Move NPC',
-        () {
-          level.tick(sdl, 1);
-          expect(context.move, zoneNpc.moves.first);
-          expect(context.timeUntilMove, timeUntilMove - 1);
           final channel = context.channel;
           var position = channel.position as SoundPosition3d;
-          expect(
+          await expectLater(
             Stream.fromIterable(
               [position.x, position.y, position.z],
             ),
-            emitsInOrder(<Matcher>[isZero, isZero, isZero]),
+            emitsInOrder(<Object>[1.0, 1.0, isZero]),
           );
-          level.tick(sdl, timeUntilMove);
+          await level.tick(sdl, 1);
+          expect(context.move, zoneNpc.moves.first);
+          expect(context.timeUntilMove, timeUntilMove - 1);
+          expect(context.coordinates, const Point(1.0, 1.0));
+          position = channel.position as SoundPosition3d;
+          await expectLater(
+            Stream.fromIterable(
+              [position.x, position.y, position.z],
+            ),
+            emitsInOrder(<Object>[1.0, 1.0, isZero]),
+          );
+          await level.tick(sdl, timeUntilMove);
           expect(
             context.coordinates,
-            Point(0.0, grass.fastWalk.distance),
+            Point(grass.fastWalk.distance, 1 + grass.fastWalk.distance),
           );
           position = channel.position as SoundPosition3d;
-          expect(
+          await expectLater(
             Stream.fromIterable([position.x, position.y, position.z]),
             emitsInOrder(
-              <Object>[isZero, grass.fastWalk.distance, context.move.z],
+              <Object>[
+                grass.fastWalk.distance,
+                1 + grass.fastWalk.distance,
+                context.move.z
+              ],
             ),
           );
-          level.tick(sdl, 1);
+          await level.tick(sdl, 1);
           expect(
             context.coordinates,
-            Point(0.0, grass.fastWalk.distance),
+            Point(grass.fastWalk.distance, 1 + grass.fastWalk.distance),
           );
           position = channel.position as SoundPosition3d;
-          expect(
+          await expectLater(
             Stream.fromIterable([position.x, position.y, position.z]),
             emitsInOrder(
-              <Object>[isZero, grass.fastWalk.distance, context.move.z],
+              <Object>[
+                grass.fastWalk.distance,
+                1 + grass.fastWalk.distance,
+                context.move.z
+              ],
             ),
           );
           final coordinates = zone.getAbsoluteCoordinates(nwMarker.coordinates);
@@ -544,13 +569,13 @@ void main() {
             coordinates.y - grass.fastWalk.distance,
           );
           final oldMove = context.move;
-          level.tick(sdl, context.timeUntilMove);
+          await level.tick(sdl, context.timeUntilMove);
           expect(
             context.coordinates,
             Point(coordinates.x.toDouble(), coordinates.y.toDouble()),
           );
           position = channel.position as SoundPosition3d;
-          expect(
+          await expectLater(
             Stream.fromIterable([position.x, position.y, position.z]),
             emitsInOrder(
               <double>[
@@ -567,12 +592,97 @@ void main() {
             context.timeUntilMove,
             inInclusiveRange(move.minMoveInterval, move.maxMoveInterval),
           );
-          level.tick(sdl, context.timeUntilMove);
+          await level.tick(sdl, context.timeUntilMove);
           expect(
             context.coordinates,
             Point(
               coordinates.x + move.stepSize!,
               coordinates.y - move.stepSize!,
+            ),
+          );
+        },
+      );
+      test(
+        'Commands',
+        () async {
+          const moveCommandName = 'Move';
+          const startPathCommandName = 'start';
+          const endPathCommandName = 'stop';
+          final results = <String>[];
+          worldContext.customCommands[moveCommandName] =
+              (final event) => results.add(moveCommandName);
+          worldContext.customCommands[startPathCommandName] =
+              (final event) => results.add(startPathCommandName);
+          worldContext.customCommands[endPathCommandName] =
+              (final event) => results.add(endPathCommandName);
+          final moveCommand = WorldCommand(
+            id: 'move',
+            name: 'Move',
+            customCommandName: moveCommandName,
+          );
+          final startPathCommand = WorldCommand(
+            id: 'startPath',
+            name: 'Start Path',
+            customCommandName: startPathCommandName,
+          );
+          final endPathCommand = WorldCommand(
+            id: 'endPath',
+            name: endPathCommandName,
+            customCommandName: endPathCommandName,
+          );
+          final category = CommandCategory(
+            id: 'category',
+            name: 'Movement Commands',
+            commands: [moveCommand, startPathCommand, endPathCommand],
+          );
+          world.commandCategories.add(category);
+          zoneNpc.moves.first
+            ..startCommand = CallCommand(commandId: startPathCommand.id)
+            ..moveCommand = CallCommand(commandId: moveCommand.id)
+            ..endCommand = CallCommand(commandId: endPathCommand.id);
+          context
+            ..moveIndex = null
+            ..timeUntilMove = 0;
+          expect(() => context.move, throwsStateError);
+          await level.tick(sdl, 1);
+          expect(context.move, zoneNpc.moves.first);
+          expect(results.length, 1);
+          expect(results.first, startPathCommandName);
+          await level.tick(sdl, context.timeUntilMove);
+          await expectLater(
+            Stream.fromIterable(results),
+            emitsInOrder(
+              <String>[startPathCommandName, moveCommandName],
+            ),
+          );
+          await level.tick(sdl, context.timeUntilMove);
+          await expectLater(
+            Stream.fromIterable(results),
+            emitsInOrder(
+              <String>[startPathCommandName, moveCommandName, moveCommandName],
+            ),
+          );
+          final coordinates =
+              zone.getAbsoluteCoordinates(middleMarker.coordinates);
+          context.coordinates = Point(
+            coordinates.x + 0.1,
+            coordinates.y + 0.1,
+          );
+          expect(
+            context.coordinates,
+            Point(coordinates.x + 0.1, coordinates.y + 0.1),
+          );
+          await level.tick(sdl, context.timeUntilMove);
+          expect(context.coordinates, coordinates);
+          await expectLater(
+            Stream.fromIterable(results),
+            emitsInOrder(
+              <String>[
+                startPathCommandName,
+                moveCommandName,
+                moveCommandName,
+                endPathCommandName
+              ],
             ),
           );
         },

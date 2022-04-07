@@ -10,6 +10,8 @@ import '../../command_triggers.dart';
 import '../../constants.dart';
 import '../../util.dart';
 import '../../world_context.dart';
+import '../json/commands/call_command.dart';
+import '../json/npcs/npc.dart';
 import '../json/options/walking_options.dart';
 import '../json/sound.dart';
 import '../json/zones/box.dart';
@@ -76,10 +78,7 @@ class ZoneLevel extends Level {
                       keepAlive: true,
                       looping: true,
                     ),
-            )..resetTimeUntilMove(
-                random: worldContext.game.random,
-                move: e.moves.isEmpty ? null : e.moves.first,
-              );
+            );
           },
         ).toList(),
         super(
@@ -827,12 +826,32 @@ class ZoneLevel extends Level {
   /// Move the NPC's identified by [npcContexts].
   void moveNpcs(final int timeDelta) {
     for (final context in npcContexts) {
-      if (context.zoneNpc.moves.isNotEmpty) {
-        final move = context.move;
-        if (move.walkingMode != WalkingMode.stationary) {
-          context.timeUntilMove -= timeDelta;
-          if (context.timeUntilMove <= 0) {
-            moveNpc(context);
+      final moves = context.zoneNpc.moves;
+      if (moves.isNotEmpty) {
+        if (context.moveIndex == null) {
+          context
+            ..moveIndex = 0
+            ..resetTimeUntilMove(
+              random: game.random,
+              move: context.zoneNpc.moves.first,
+            );
+          final callCommand = moves.first.startCommand;
+          if (callCommand != null) {
+            handleNpcCallCommand(
+              callCommand: callCommand,
+              npc: worldContext.world.getNpc(context.zoneNpc.npcId),
+              box: getBox(context.coordinates),
+              channel: context.channel,
+              coordinates: context.coordinates.floor(),
+            );
+          }
+        } else {
+          final move = context.move;
+          if (move.walkingMode != WalkingMode.stationary) {
+            context.timeUntilMove -= timeDelta;
+            if (context.timeUntilMove <= 0) {
+              moveNpc(context);
+            }
           }
         }
       }
@@ -867,12 +886,16 @@ class ZoneLevel extends Level {
     final stepSize = move.stepSize ?? walkingOptions.distance;
     var x = context.coordinates.x;
     var y = context.coordinates.y;
-    if (destination.x > x) {
+    if ((max(destination.x, x) - min(destination.x, x)) <= stepSize) {
+      x = destination.x.toDouble();
+    } else if (destination.x > x) {
       x += min(stepSize, destination.x - x);
     } else {
       x -= min(stepSize, x - destination.x);
     }
-    if (destination.y > y) {
+    if ((max(destination.y, y) - min(destination.y, y)) <= stepSize) {
+      y = destination.y.toDouble();
+    } else if (destination.y > y) {
       y += min(stepSize, destination.y - y);
     } else {
       y -= min(stepSize, y - destination.y);
@@ -888,41 +911,41 @@ class ZoneLevel extends Level {
     terrainId = box?.terrainId ?? zone.defaultTerrainId;
     terrain = world.getTerrain(terrainId);
     final moveCommand = move.moveCommand;
-    final replacements = {
-      'npc_name': npc.name,
-      'box_name': box?.name ?? 'nowhere'
-    };
     if (moveCommand != null) {
-      worldContext.handleCallCommand(
+      handleNpcCallCommand(
         callCommand: moveCommand,
-        replacements: replacements,
-        soundChannel: channel,
-        zoneLevel: this,
+        npc: npc,
+        box: box,
+        channel: channel,
+        coordinates: context.coordinates.floor(),
       );
     }
     if (x.floor() == destination.x && y.floor() == destination.y) {
-      context.moveIndex++;
-      if (context.moveIndex >= zoneNpc.moves.length) {
+      final index = (context.moveIndex ?? 0) + 1;
+      context.moveIndex = index;
+      if (index >= zoneNpc.moves.length) {
         context.moveIndex = 0;
-        final endCommand = move.endCommand;
-        if (endCommand != null) {
-          worldContext.handleCallCommand(
-            callCommand: endCommand,
-            replacements: replacements,
-            soundChannel: channel,
-            zoneLevel: this,
-          );
-        }
-        move = zoneNpc.moves[context.moveIndex];
-        final startCommand = move.startCommand;
-        if (startCommand != null) {
-          worldContext.handleCallCommand(
-            callCommand: startCommand,
-            replacements: replacements,
-            soundChannel: channel,
-            zoneLevel: this,
-          );
-        }
+      }
+      final endCommand = move.endCommand;
+      if (endCommand != null) {
+        handleNpcCallCommand(
+          callCommand: endCommand,
+          npc: npc,
+          box: box,
+          channel: channel,
+          coordinates: context.coordinates.floor(),
+        );
+      }
+      move = context.move;
+      final startCommand = move.startCommand;
+      if (startCommand != null) {
+        handleNpcCallCommand(
+          callCommand: startCommand,
+          npc: npc,
+          box: box,
+          channel: channel,
+          coordinates: context.coordinates.floor(),
+        );
       }
     }
     final sound = move.moveSound ?? walkingOptions.sound;
@@ -941,6 +964,29 @@ class ZoneLevel extends Level {
     context.resetTimeUntilMove(
       random: game.random,
       move: move,
+    );
+  }
+
+  /// Handle the given [callCommand] in the context of the given [npc].
+  void handleNpcCallCommand({
+    required final CallCommand callCommand,
+    required final Npc npc,
+    required final Box? box,
+    required final SoundChannel channel,
+    required final Point<int> coordinates,
+  }) {
+    final replacements = {
+      'npc_name': npc.name,
+      'box_name': box?.name ?? 'nowhere',
+      'x': '${coordinates.x}',
+      'y': '${coordinates.y}',
+      'coordinates': '${coordinates.x}, ${coordinates.y}'
+    };
+    return worldContext.handleCallCommand(
+      callCommand: callCommand,
+      replacements: replacements,
+      soundChannel: channel,
+      zoneLevel: this,
     );
   }
 }
