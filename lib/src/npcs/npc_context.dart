@@ -15,7 +15,7 @@ class NpcContext {
     required this.channel,
     this.ambiance,
     this.timeUntilMove = 0,
-  }) : assert(zoneNpc.moves.isNotEmpty, 'This NPC has no moves to perform.');
+  });
 
   /// The NPC that this context represents.
   final ZoneNpc zoneNpc;
