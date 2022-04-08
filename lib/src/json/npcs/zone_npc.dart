@@ -28,7 +28,7 @@ class ZoneNpc {
   final String npcId;
 
   /// The coordinates where this NPC will pop.
-  Coordinates initialCoordinates;
+  final Coordinates initialCoordinates;
 
   /// The moves this NPC will perform.
   final List<NpcMove> moves;
