@@ -1,6 +1,7 @@
 /// Provides the [NpcCollision] class.
 import 'package:json_annotation/json_annotation.dart';
 
+import '../commands/call_command.dart';
 import '../commands/world_command.dart';
 import 'npc.dart';
 
@@ -11,7 +12,7 @@ part 'npc_collision.g.dart';
 class NpcCollision {
   /// Create an instance.
   NpcCollision({
-    required this.commandId,
+    this.callCommand,
     this.distance = 1.0,
     this.collideWithNpcs = false,
     this.collideWithPlayer = true,
@@ -23,7 +24,7 @@ class NpcCollision {
       _$NpcCollisionFromJson(json);
 
   /// The ID of a [WorldCommand] to run.
-  String commandId;
+  CallCommand? callCommand;
 
   /// The maximum distance before collision occurs.
   double distance;

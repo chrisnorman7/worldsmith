@@ -7,7 +7,9 @@ part of 'npc_collision.dart';
 // **************************************************************************
 
 NpcCollision _$NpcCollisionFromJson(Map<String, dynamic> json) => NpcCollision(
-      commandId: json['commandId'] as String,
+      callCommand: json['callCommand'] == null
+          ? null
+          : CallCommand.fromJson(json['callCommand'] as Map<String, dynamic>),
       distance: (json['distance'] as num?)?.toDouble() ?? 1.0,
       collideWithNpcs: json['collideWithNpcs'] as bool? ?? false,
       collideWithPlayer: json['collideWithPlayer'] as bool? ?? true,
@@ -16,7 +18,7 @@ NpcCollision _$NpcCollisionFromJson(Map<String, dynamic> json) => NpcCollision(
 
 Map<String, dynamic> _$NpcCollisionToJson(NpcCollision instance) =>
     <String, dynamic>{
-      'commandId': instance.commandId,
+      'callCommand': instance.callCommand,
       'distance': instance.distance,
       'collideWithPlayer': instance.collideWithPlayer,
       'collideWithNpcs': instance.collideWithNpcs,
