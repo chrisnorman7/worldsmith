@@ -439,15 +439,21 @@ void main() {
         initialCoordinates: Coordinates(1, 1),
         moves: [
           NpcMove(
+            id: 'nw',
             locationMarkerId: nwMarker.id,
             z: 1.0,
           ),
           NpcMove(
+            id: 'middle',
             locationMarkerId: middleMarker.id,
             stepSize: 1.0,
             z: 2.0,
           ),
-          NpcMove(locationMarkerId: swMarker.id, z: 3.0)
+          NpcMove(
+            id: 'sw',
+            locationMarkerId: swMarker.id,
+            z: 3.0,
+          )
         ],
       );
       zone.npcs.add(zoneNpc);

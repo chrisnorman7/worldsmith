@@ -7,6 +7,7 @@ part of 'npc_move.dart';
 // **************************************************************************
 
 NpcMove _$NpcMoveFromJson(Map<String, dynamic> json) => NpcMove(
+      id: json['id'] as String,
       locationMarkerId: json['locationMarkerId'] as String,
       z: (json['z'] as num?)?.toDouble() ?? 0.0,
       minMoveInterval: json['minMoveInterval'] as int? ?? 100,
@@ -30,6 +31,7 @@ NpcMove _$NpcMoveFromJson(Map<String, dynamic> json) => NpcMove(
     );
 
 Map<String, dynamic> _$NpcMoveToJson(NpcMove instance) => <String, dynamic>{
+      'id': instance.id,
       'locationMarkerId': instance.locationMarkerId,
       'z': instance.z,
       'minMoveInterval': instance.minMoveInterval,

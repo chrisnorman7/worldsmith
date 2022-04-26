@@ -14,6 +14,7 @@ part 'npc_move.g.dart';
 class NpcMove {
   /// Create an instance.
   NpcMove({
+    required this.id,
     required this.locationMarkerId,
     this.z = 0.0,
     this.minMoveInterval = 100,
@@ -29,6 +30,9 @@ class NpcMove {
   /// Create an instance from a JSON object.
   factory NpcMove.fromJson(final Map<String, dynamic> json) =>
       _$NpcMoveFromJson(json);
+
+  /// The ID of this move.
+  final String id;
 
   /// The ID of the [LocationMarker] to move to.
   String locationMarkerId;
