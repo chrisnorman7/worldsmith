@@ -212,7 +212,12 @@ class ZoneLevel extends Level {
       return soundChannel;
     }
     final box = getBox(coordinates);
-    final reverb = box == null ? null : getBoxReverb(box);
+    final reverbId = box?.reverbId;
+    final reverb = box == null || reverbId == null
+        ? null
+        : worldContext.getReverb(
+            worldContext.world.getReverbPresetReference(reverbId),
+          );
     final channel = game.createSoundChannel(
       gain: worldContext.world.soundOptions.defaultGain,
       reverb: reverb,
@@ -277,8 +282,13 @@ class ZoneLevel extends Level {
         affectedInterfaceSounds.reverb = null;
       }
     } else {
-      final reverb = getBoxReverb(box);
-      affectedInterfaceSounds.reverb = reverb?.id;
+      final reverbId = box.reverbId;
+      if (reverbId != null) {
+        final reverb = worldContext.getReverb(
+          worldContext.world.getReverbPresetReference(reverbId),
+        );
+        affectedInterfaceSounds.reverb = reverb.id;
+      }
     }
   }
 
@@ -605,20 +615,6 @@ class ZoneLevel extends Level {
     affectedInterfaceSounds.destroy();
   }
 
-  /// Get the reverb for the given [box].
-  CreateReverb? getBoxReverb(final Box box) {
-    final reverbId = box.reverbId;
-    if (reverbId == null) {
-      return null;
-    }
-    var reverb = boxReverbs[box.id];
-    if (reverb == null) {
-      reverb = game.createReverb(worldContext.world.getReverb(reverbId));
-      boxReverbs[box.id] = reverb;
-    }
-    return reverb;
-  }
-
   /// Start walking if the time is right.
   void maybeWalk(final int timeDelta) {
     final walkingOptions = currentWalkingOptions;
@@ -911,7 +907,12 @@ class ZoneLevel extends Level {
     if (newBox != null &&
         ((newBox.id != box?.id) ||
             (newBox.reverbId != null && channel.reverb == null))) {
-      final reverb = getBoxReverb(newBox);
+      final reverbId = newBox.reverbId;
+      final reverb = reverbId == null
+          ? null
+          : worldContext.getReverb(
+              world.getReverbPresetReference(reverbId),
+            );
       channel.reverb = reverb?.id;
     }
     box = newBox;

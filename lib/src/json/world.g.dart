@@ -112,6 +112,9 @@ World _$WorldFromJson(Map<String, dynamic> json) => World(
       npcs: (json['npcs'] as List<dynamic>?)
           ?.map((e) => Npc.fromJson(e as Map<String, dynamic>))
           .toList(),
+      audioBusses: (json['audioBusses'] as List<dynamic>?)
+          ?.map((e) => AudioBus.fromJson(e as Map<String, dynamic>))
+          .toList(),
     );
 
 Map<String, dynamic> _$WorldToJson(World instance) => <String, dynamic>{
@@ -145,4 +148,5 @@ Map<String, dynamic> _$WorldToJson(World instance) => <String, dynamic>{
       'stats': instance.stats,
       'defaultPlayerStats': instance.defaultPlayerStats,
       'npcs': instance.npcs,
+      'audioBusses': instance.audioBusses,
     };

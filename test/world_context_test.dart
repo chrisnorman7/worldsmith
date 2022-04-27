@@ -7,6 +7,7 @@ import 'package:test/test.dart';
 import 'package:worldsmith/constants.dart';
 import 'package:worldsmith/world_context.dart';
 import 'package:worldsmith/worldsmith.dart';
+import 'package:ziggurat/sound.dart';
 import 'package:ziggurat/ziggurat.dart';
 import 'package:ziggurat_sounds/ziggurat_sounds.dart';
 
@@ -492,6 +493,28 @@ void main() {
             worldContext.playerPreferences.stats[str.id],
           );
           expect(stats.getStat(dex), dex.defaultValue);
+        },
+      );
+      test(
+        '.getReverb',
+        () {
+          const reverbPreset = ReverbPreset(name: 'Test Reverb');
+          final reverbPresetReference = ReverbPresetReference(
+            id: 'reverb',
+            reverbPreset: reverbPreset,
+          );
+          world.reverbs.add(reverbPresetReference);
+          expect(
+            identical(
+              reverbPresetReference,
+              world.getReverbPresetReference(reverbPresetReference.id),
+            ),
+            isTrue,
+          );
+          expect(
+            worldContext.getReverb(reverbPresetReference),
+            isA<CreateReverb>(),
+          );
         },
       );
     },

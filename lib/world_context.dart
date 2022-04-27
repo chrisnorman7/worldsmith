@@ -32,7 +32,9 @@ class WorldContext {
         preferencesDirectory = sdl.getPrefPath(
           world.globalOptions.orgName,
           world.globalOptions.appName,
-        );
+        ),
+        _audioBusses = {},
+        _reverbs = {};
 
   /// Return an instance with its [world] loaded from an encrypted file.
   factory WorldContext.loadEncrypted({
@@ -138,6 +140,41 @@ class WorldContext {
         defaultStats: world.defaultPlayerStats,
         currentStats: playerPreferences.stats,
       );
+
+  /// The created reverbs.
+  final Map<String, CreateReverb> _reverbs;
+
+  /// Get the reverb with the given [preset].
+  CreateReverb getReverb(final ReverbPresetReference preset) {
+    final reverb = _reverbs[preset.id];
+    if (reverb != null) {
+      return reverb;
+    }
+    final r = game.createReverb(preset.reverbPreset);
+    _reverbs[preset.id] = r;
+    return r;
+  }
+
+  /// The cached audio busses.
+  final Map<String, SoundChannel> _audioBusses;
+
+  /// Get a sound channel that represents the given [audioBus].
+  SoundChannel getAudioBus(final AudioBus audioBus) {
+    final channel = _audioBusses[audioBus.id];
+    if (channel != null) {
+      return channel;
+    }
+    final reverbId = audioBus.reverbId;
+    final soundChannel = game.createSoundChannel(
+      gain: audioBus.gain ?? world.soundOptions.defaultGain,
+      position: audioBus.position,
+      reverb: reverbId == null
+          ? null
+          : getReverb(world.getReverbPresetReference(reverbId)),
+    );
+    _audioBusses[audioBus.id] = soundChannel;
+    return soundChannel;
+  }
 
   /// A function that will be called when hitting the edge of a [ZoneLevel].
   void onEdgeOfZoneLevel(
@@ -403,6 +440,9 @@ class WorldContext {
     } on Exception {
       rethrow;
     } finally {
+      for (final id in _audioBusses.keys.toList()) {
+        _audioBusses.remove(id)!.destroy();
+      }
       context?.destroy();
       synthizer?.shutdown();
       sdl.quit();

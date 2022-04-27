@@ -27,6 +27,7 @@ import 'player_preferences.dart';
 import 'quests/quest.dart';
 import 'reverb_preset_reference.dart';
 import 'scenes/scene.dart';
+import 'sounds/audio_bus.dart';
 import 'sounds/custom_sound.dart';
 import 'stats/world_stat.dart';
 import 'world_credit.dart';
@@ -119,6 +120,7 @@ class World {
     final StatList? stats,
     final Map<String, int>? defaultPlayerStats,
     final List<Npc>? npcs,
+    final List<AudioBus>? audioBusses,
   })  : globalOptions = globalOptions ?? WorldOptions(),
         soundOptions = soundOptions ?? SoundOptions(),
         mainMenuOptions = mainMenuOptions ?? MainMenuOptions(),
@@ -151,7 +153,8 @@ class World {
         scenes = scenes ?? [],
         stats = stats ?? [],
         defaultPlayerStats = defaultPlayerStats ?? {},
-        npcs = npcs ?? [];
+        npcs = npcs ?? [],
+        audioBusses = audioBusses ?? [];
 
   /// Create an instance from a JSON object.
   factory World.fromJson(final Map<String, dynamic> json) =>
@@ -375,7 +378,11 @@ class World {
 
   /// Return the reverb with the given [id].
   ReverbPreset getReverb(final String id) =>
-      reverbs.firstWhere((final element) => element.id == id).reverbPreset;
+      getReverbPresetReference(id).reverbPreset;
+
+  /// Get the reverb reference with the given [id].
+  ReverbPresetReference getReverbPresetReference(final String id) =>
+      reverbs.firstWhere((final element) => element.id == id);
 
   /// A list of command categories.
   final CommandCategoryList commandCategories;
@@ -436,6 +443,13 @@ class World {
   /// Return the NPC with the given [id].
   Npc getNpc(final String id) =>
       npcs.firstWhere((final element) => element.id == id);
+
+  /// The created channel busses.
+  final List<AudioBus> audioBusses;
+
+  /// Get the audio bus with the given [id].
+  AudioBus getAudioBus(final String id) =>
+      audioBusses.firstWhere((final element) => element.id == id);
 
   /// Convert an instance to JSON.
   Map<String, dynamic> toJson() => _$WorldToJson(this);

@@ -6,6 +6,9 @@
 
 * Added a stats system.
 * Added NPC's.
+* Added the `AudioBus` class.
+* Added the `World.getReverbPresetReference` method.
+* Added the `WorldContext.getReverb` method.
 
 ### Changed
 
