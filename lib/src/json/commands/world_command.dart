@@ -2,7 +2,6 @@ import 'package:json_annotation/json_annotation.dart';
 
 import '../../../world_context.dart';
 import '../../levels/walking_mode.dart';
-import '../messages/custom_message.dart';
 import 'call_command.dart';
 import 'play_rumble.dart';
 import 'return_to_main_menu.dart';
@@ -20,7 +19,7 @@ class WorldCommand {
   WorldCommand({
     required this.id,
     required this.name,
-    final CustomMessage? message,
+    this.message,
     this.zoneTeleport,
     this.walkingMode,
     this.customCommandName,
@@ -31,8 +30,7 @@ class WorldCommand {
     this.showScene,
     this.playRumble,
     this.url,
-  })  : message = message ?? CustomMessage(),
-        callCommands = callCommands ?? [];
+  }) : callCommands = callCommands ?? [];
 
   /// Create an instance from a JSON object.
   factory WorldCommand.fromJson(final Map<String, dynamic> json) =>
@@ -45,7 +43,7 @@ class WorldCommand {
   String name;
 
   /// A message to show.
-  final CustomMessage message;
+  String? message;
 
   /// Teleport to another zone.
   ZoneTeleport? zoneTeleport;

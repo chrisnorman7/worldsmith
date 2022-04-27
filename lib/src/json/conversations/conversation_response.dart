@@ -2,7 +2,7 @@ import 'package:json_annotation/json_annotation.dart';
 
 import '../commands/call_command.dart';
 import '../conditionals/conditional.dart';
-import '../sound.dart';
+import '../sounds/sound.dart';
 import 'conversation.dart';
 import 'conversation_branch.dart';
 import 'conversation_next_branch.dart';

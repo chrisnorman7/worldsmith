@@ -1,7 +1,7 @@
 /// Provides the [Npc] class.
 import 'package:json_annotation/json_annotation.dart';
 
-import '../sound.dart';
+import '../sounds/sound.dart';
 import '../stats/statistics.dart';
 
 part 'npc.g.dart';

@@ -3,6 +3,7 @@ import 'package:ziggurat/sound.dart';
 import 'package:ziggurat/ziggurat.dart';
 
 import '../../command_triggers.dart';
+import '../../util.dart';
 import '../../world_context.dart';
 import '../json/commands/call_command.dart';
 import '../json/scenes/scene.dart';
@@ -74,9 +75,17 @@ class SceneLevel extends Level {
         );
         _soundChannel = soundChannel;
       }
+      final sectionSound = section.sound;
       final message = worldContext.getCustomMessage(
-        section.message,
+        message: section.message,
         keepAlive: true,
+        gain: sectionSound?.gain,
+        sound: sectionSound == null
+            ? null
+            : getAssetReferenceReference(
+                assets: world.interfaceSoundsAssets,
+                id: sectionSound.id,
+              ).reference,
       );
       sound = game.outputMessage(
         message,

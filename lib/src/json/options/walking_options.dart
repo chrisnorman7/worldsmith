@@ -1,7 +1,7 @@
 /// Provides the [WalkingOptions] class.
 import 'package:json_annotation/json_annotation.dart';
 
-import '../sound.dart';
+import '../sounds/sound.dart';
 
 part 'walking_options.g.dart';
 

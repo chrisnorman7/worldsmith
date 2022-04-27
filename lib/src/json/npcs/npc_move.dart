@@ -3,7 +3,7 @@ import 'package:json_annotation/json_annotation.dart';
 
 import '../../levels/walking_mode.dart';
 import '../commands/call_command.dart';
-import '../sound.dart';
+import '../sounds/sound.dart';
 import '../zones/location_marker.dart';
 import 'npc.dart';
 

@@ -6,7 +6,7 @@ import 'package:ziggurat/sound.dart';
 import 'package:ziggurat_sounds/ziggurat_sounds.dart';
 
 import 'constants.dart';
-import 'src/json/sound.dart';
+import 'src/json/sounds/sound.dart';
 import 'src/json/world.dart';
 
 /// Return the asset reference with the given [id].

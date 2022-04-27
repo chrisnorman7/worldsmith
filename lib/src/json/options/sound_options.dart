@@ -2,7 +2,7 @@
 import 'package:dart_synthizer/dart_synthizer.dart';
 import 'package:json_annotation/json_annotation.dart';
 
-import '../sound.dart';
+import '../sounds/sound.dart';
 
 part 'sound_options.g.dart';
 

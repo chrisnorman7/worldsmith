@@ -1,7 +1,7 @@
 /// Provides the [SceneSection] class.
 import 'package:json_annotation/json_annotation.dart';
 
-import '../messages/custom_message.dart';
+import '../sounds/sound.dart';
 import 'scene.dart';
 
 part 'scene_section.g.dart';
@@ -11,7 +11,8 @@ part 'scene_section.g.dart';
 class SceneSection {
   /// Create an instance.
   SceneSection({
-    required this.message,
+    this.message,
+    this.sound,
   });
 
   /// Create an instance from a JSON object.
@@ -19,7 +20,10 @@ class SceneSection {
       _$SceneSectionFromJson(json);
 
   /// The message that will be shown.
-  final CustomMessage message;
+  String? message;
+
+  /// The sound that will be played.
+  Sound? sound;
 
   /// Convert an instance to JSON.
   Map<String, dynamic> toJson() => _$SceneSectionToJson(this);

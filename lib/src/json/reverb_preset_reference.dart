@@ -2,7 +2,7 @@
 import 'package:json_annotation/json_annotation.dart';
 import 'package:ziggurat/sound.dart';
 
-import 'messages/custom_sound.dart';
+import 'sounds/custom_sound.dart';
 
 part 'reverb_preset_reference.g.dart';
 

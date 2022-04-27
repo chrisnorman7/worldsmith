@@ -283,18 +283,16 @@ void main() {
             id: assetReferenceReference.variableName,
             gain: 1.0,
           );
-          final customMessage = CustomMessage(
-            sound: sound,
-            text: 'I love {action_1} {action_2}.',
-          );
           final worldContext = WorldContext(
             sdl: sdl,
             game: Game('Custom Message'),
             world: World(interfaceSoundsAssets: [assetReferenceReference]),
           );
           final message = worldContext.getCustomMessage(
-            customMessage,
+            message: 'I love {action_1} {action_2}.',
             replacements: {'action_1': 'writing', 'action_2': 'tests'},
+            gain: sound.gain,
+            sound: assetReferenceReference.reference,
           );
           expect(message.gain, sound.gain);
           expect(message.keepAlive, isFalse);
@@ -589,7 +587,7 @@ void main() {
         zone.locationMarkers.add(
           LocationMarker(
             id: 'marker_${box.id}',
-            message: CustomMessage(text: 'Box ${box.name}'),
+            name: 'Box ${box.name}',
             coordinates: Coordinates(
               0,
               0,

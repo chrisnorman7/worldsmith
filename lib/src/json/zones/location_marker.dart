@@ -1,6 +1,6 @@
 import 'package:json_annotation/json_annotation.dart';
 
-import '../messages/custom_message.dart';
+import '../sounds/sound.dart';
 import 'coordinates.dart';
 import 'zone.dart';
 
@@ -12,8 +12,9 @@ class LocationMarker {
   /// Create an instance.
   LocationMarker({
     required this.id,
-    required this.message,
     required this.coordinates,
+    this.name = 'Untitled Marker',
+    this.sound,
   });
 
   /// Create an instance from a JSON object.
@@ -23,8 +24,11 @@ class LocationMarker {
   /// The ID of this marker.
   final String id;
 
-  /// The message that describes this marker.
-  final CustomMessage message;
+  /// The name of this marker.
+  String name;
+
+  /// The sound that represents this marker.
+  Sound? sound;
 
   /// The coordinates this marker describes.
   final Coordinates coordinates;

@@ -366,7 +366,7 @@ void main() {
       );
       final swMarker = LocationMarker(
         id: 'startMarker',
-        message: CustomMessage(text: 'Southwest Marker'),
+        name: 'Southwest Marker',
         coordinates: Coordinates(
           0,
           0,
@@ -387,7 +387,7 @@ void main() {
       );
       final nwMarker = LocationMarker(
         id: 'nw',
-        message: CustomMessage(text: 'Northwest Marker'),
+        name: 'Northwest Marker',
         coordinates: Coordinates(
           0,
           0,
@@ -408,7 +408,7 @@ void main() {
       );
       final middleMarker = LocationMarker(
         id: 'middle',
-        message: CustomMessage(text: 'Middle Marker'),
+        name: 'Middle Marker',
         coordinates: Coordinates(
           0,
           0,

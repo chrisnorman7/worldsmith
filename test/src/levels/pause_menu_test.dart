@@ -39,7 +39,7 @@ void main() {
           expect(overviewMenuItem.label.sound, isNull);
           expect(
             overviewMenuItem.label.text,
-            world.pauseMenuOptions.zoneOverviewMessage.text,
+            world.pauseMenuOptions.zoneOverviewMessage,
           );
           expect(overviewMenuItem.widget, isA<Button>());
           final returnToGameMenuItem = menu.menuItems[2];
@@ -51,7 +51,7 @@ void main() {
           expect(returnToGameMenuItem.label.sound, isNull);
           expect(
             returnToGameMenuItem.label.text,
-            world.pauseMenuOptions.returnToGameMessage.text,
+            world.pauseMenuOptions.returnToGameMessage,
           );
           expect(returnToGameMenuItem.widget, isA<Button>());
         },

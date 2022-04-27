@@ -7,10 +7,14 @@ part of 'scene_section.dart';
 // **************************************************************************
 
 SceneSection _$SceneSectionFromJson(Map<String, dynamic> json) => SceneSection(
-      message: CustomMessage.fromJson(json['message'] as Map<String, dynamic>),
+      message: json['message'] as String?,
+      sound: json['sound'] == null
+          ? null
+          : Sound.fromJson(json['sound'] as Map<String, dynamic>),
     );
 
 Map<String, dynamic> _$SceneSectionToJson(SceneSection instance) =>
     <String, dynamic>{
       'message': instance.message,
+      'sound': instance.sound,
     };

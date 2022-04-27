@@ -6,7 +6,7 @@ import 'package:json_annotation/json_annotation.dart';
 import '../../levels/pause_menu.dart';
 import '../commands/call_command.dart';
 import '../npcs/zone_npc.dart';
-import '../sound.dart';
+import '../sounds/sound.dart';
 import '../world.dart';
 import 'box.dart';
 import 'coordinates.dart';

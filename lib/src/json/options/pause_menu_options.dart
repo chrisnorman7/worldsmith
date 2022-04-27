@@ -1,8 +1,7 @@
 /// Provides the [PauseMenuOptions] class.
 import 'package:json_annotation/json_annotation.dart';
 
-import '../messages/custom_message.dart';
-import '../sound.dart';
+import '../sounds/sound.dart';
 
 part 'pause_menu_options.g.dart';
 
@@ -14,16 +13,14 @@ class PauseMenuOptions {
     this.title = 'Pause Menu',
     this.music,
     this.fadeTime,
-    final CustomMessage? zoneOverviewMessage,
-    final CustomMessage? returnToGameMessage,
-    final CustomMessage? returnToMainMenuMessage,
+    this.zoneOverviewMessage = 'Show Map',
+    this.zoneOverviewSound,
+    this.returnToGameMessage = 'Return To Game',
+    this.returnToGameSound,
+    this.returnToMainMenuMessage = 'Return To Main Menu',
+    this.returnToMainMenuSound,
     this.returnToMainMenuFadeTime = 3.0,
-  })  : zoneOverviewMessage =
-            zoneOverviewMessage ?? CustomMessage(text: 'Map Overview'),
-        returnToGameMessage =
-            returnToGameMessage ?? CustomMessage(text: 'Return To Game'),
-        returnToMainMenuMessage = returnToMainMenuMessage ??
-            CustomMessage(text: 'Return To Main Menu');
+  });
 
   /// Create an instance from a JSON object.
   factory PauseMenuOptions.fromJson(final Map<String, dynamic> json) =>
@@ -39,13 +36,22 @@ class PauseMenuOptions {
   double? fadeTime;
 
   /// The message for the "Show Zone Map" item.
-  final CustomMessage zoneOverviewMessage;
+  String? zoneOverviewMessage;
+
+  /// The sound for the "Show Zone Map" item.
+  Sound? zoneOverviewSound;
 
   /// The message for the "Return to game" menu item.
-  final CustomMessage returnToGameMessage;
+  String? returnToGameMessage;
+
+  /// The sound for the "Return to game" menu item.
+  Sound? returnToGameSound;
 
   /// The message to be used when returning to the main menu.
-  final CustomMessage returnToMainMenuMessage;
+  String? returnToMainMenuMessage;
+
+  /// The sound to be used when returning to the main menu.
+  Sound? returnToMainMenuSound;
 
   /// The fade time when returning to the main menu.
   double? returnToMainMenuFadeTime;

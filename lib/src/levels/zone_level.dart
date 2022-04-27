@@ -13,7 +13,7 @@ import '../../world_context.dart';
 import '../json/commands/call_command.dart';
 import '../json/npcs/npc.dart';
 import '../json/options/walking_options.dart';
-import '../json/sound.dart';
+import '../json/sounds/sound.dart';
 import '../json/zones/box.dart';
 import '../json/zones/terrain.dart';
 import '../json/zones/zone.dart';

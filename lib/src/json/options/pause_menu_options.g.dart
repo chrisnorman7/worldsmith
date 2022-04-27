@@ -13,18 +13,21 @@ PauseMenuOptions _$PauseMenuOptionsFromJson(Map<String, dynamic> json) =>
           ? null
           : Sound.fromJson(json['music'] as Map<String, dynamic>),
       fadeTime: (json['fadeTime'] as num?)?.toDouble(),
-      zoneOverviewMessage: json['zoneOverviewMessage'] == null
+      zoneOverviewMessage: json['zoneOverviewMessage'] as String? ?? 'Show Map',
+      zoneOverviewSound: json['zoneOverviewSound'] == null
           ? null
-          : CustomMessage.fromJson(
-              json['zoneOverviewMessage'] as Map<String, dynamic>),
-      returnToGameMessage: json['returnToGameMessage'] == null
+          : Sound.fromJson(json['zoneOverviewSound'] as Map<String, dynamic>),
+      returnToGameMessage:
+          json['returnToGameMessage'] as String? ?? 'Return To Game',
+      returnToGameSound: json['returnToGameSound'] == null
           ? null
-          : CustomMessage.fromJson(
-              json['returnToGameMessage'] as Map<String, dynamic>),
-      returnToMainMenuMessage: json['returnToMainMenuMessage'] == null
+          : Sound.fromJson(json['returnToGameSound'] as Map<String, dynamic>),
+      returnToMainMenuMessage:
+          json['returnToMainMenuMessage'] as String? ?? 'Return To Main Menu',
+      returnToMainMenuSound: json['returnToMainMenuSound'] == null
           ? null
-          : CustomMessage.fromJson(
-              json['returnToMainMenuMessage'] as Map<String, dynamic>),
+          : Sound.fromJson(
+              json['returnToMainMenuSound'] as Map<String, dynamic>),
       returnToMainMenuFadeTime:
           (json['returnToMainMenuFadeTime'] as num?)?.toDouble() ?? 3.0,
     );
@@ -35,7 +38,10 @@ Map<String, dynamic> _$PauseMenuOptionsToJson(PauseMenuOptions instance) =>
       'music': instance.music,
       'fadeTime': instance.fadeTime,
       'zoneOverviewMessage': instance.zoneOverviewMessage,
+      'zoneOverviewSound': instance.zoneOverviewSound,
       'returnToGameMessage': instance.returnToGameMessage,
+      'returnToGameSound': instance.returnToGameSound,
       'returnToMainMenuMessage': instance.returnToMainMenuMessage,
+      'returnToMainMenuSound': instance.returnToMainMenuSound,
       'returnToMainMenuFadeTime': instance.returnToMainMenuFadeTime,
     };

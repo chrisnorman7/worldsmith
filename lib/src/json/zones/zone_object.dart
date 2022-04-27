@@ -2,7 +2,7 @@
 import 'package:json_annotation/json_annotation.dart';
 
 import '../commands/call_command.dart';
-import '../sound.dart';
+import '../sounds/sound.dart';
 import 'coordinates.dart';
 import 'zone.dart';
 

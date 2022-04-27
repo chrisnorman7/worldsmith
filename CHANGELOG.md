@@ -14,7 +14,8 @@
 
 ### Removed
 
-z* Removed the `LocalTeleport` class.
+* Removed the `LocalTeleport` class.
+* Removed the `CustomMessage` class.
 
 ## [0.18.0]
 

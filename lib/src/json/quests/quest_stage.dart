@@ -1,7 +1,7 @@
 /// Provides the [QuestStage] class.
 import 'package:json_annotation/json_annotation.dart';
 
-import '../sound.dart';
+import '../sounds/sound.dart';
 import 'quest.dart';
 
 part 'quest_stage.g.dart';

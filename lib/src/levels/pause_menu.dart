@@ -19,51 +19,6 @@ class PauseMenu extends Menu {
               worldContext.getMenuItemMessage(text: zone.name),
               menuItemLabel,
             ),
-            if (zone.topDownMap)
-              MenuItem(
-                worldContext.getCustomMessage(
-                  worldContext.world.pauseMenuOptions.zoneOverviewMessage,
-                  keepAlive: true,
-                  nullSound: worldContext.world.menuMoveSound,
-                ),
-                worldContext.getButton(
-                  () => worldContext.game.outputText('Not implemented.'),
-                ),
-              ),
-            MenuItem(
-              worldContext.getCustomMessage(
-                worldContext.world.pauseMenuOptions.returnToGameMessage,
-                keepAlive: true,
-                nullSound: worldContext.world.menuMoveSound,
-              ),
-              worldContext.getButton(
-                () => worldContext.game.popLevel(
-                  ambianceFadeTime:
-                      worldContext.world.pauseMenuOptions.fadeTime,
-                ),
-              ),
-            ),
-            MenuItem(
-              worldContext.getCustomMessage(
-                worldContext.world.pauseMenuOptions.returnToMainMenuMessage,
-                keepAlive: true,
-                nullSound: worldContext.world.menuMoveSound,
-              ),
-              worldContext.getButton(
-                () {
-                  worldContext.savePlayerPreferences();
-                  final world = worldContext.world;
-                  final options = world.pauseMenuOptions;
-                  final fadeTime = options.returnToMainMenuFadeTime;
-                  worldContext.game
-                    ..popLevel()
-                    ..replaceLevel(
-                      worldContext.getMainMenu(),
-                      ambianceFadeTime: fadeTime,
-                    );
-                },
-              ),
-            )
           ],
           onCancel: () {
             worldContext
@@ -73,6 +28,52 @@ class PauseMenu extends Menu {
               );
           },
         ) {
+    final options = worldContext.world.pauseMenuOptions;
+    menuItems.addAll(
+      [
+        if (zone.topDownMap)
+          MenuItem(
+            worldContext.getMenuItemMessage(
+              text: options.zoneOverviewMessage,
+              sound: options.zoneOverviewSound,
+            ),
+            worldContext.getButton(
+              () => worldContext.game.outputText('Not implemented.'),
+            ),
+          ),
+        MenuItem(
+          worldContext.getMenuItemMessage(
+            text: worldContext.world.pauseMenuOptions.returnToGameMessage,
+            sound: worldContext.world.pauseMenuOptions.returnToGameSound,
+          ),
+          worldContext.getButton(
+            () => worldContext.game.popLevel(
+              ambianceFadeTime: worldContext.world.pauseMenuOptions.fadeTime,
+            ),
+          ),
+        ),
+        MenuItem(
+          worldContext.getMenuItemMessage(
+            text: worldContext.world.pauseMenuOptions.returnToMainMenuMessage,
+            sound: worldContext.world.pauseMenuOptions.returnToMainMenuSound,
+          ),
+          worldContext.getButton(
+            () {
+              worldContext.savePlayerPreferences();
+              final world = worldContext.world;
+              final options = world.pauseMenuOptions;
+              final fadeTime = options.returnToMainMenuFadeTime;
+              worldContext.game
+                ..popLevel()
+                ..replaceLevel(
+                  worldContext.getMainMenu(),
+                  ambianceFadeTime: fadeTime,
+                );
+            },
+          ),
+        )
+      ],
+    );
     registerCommand(
       switchMenuForwardCommandTrigger.name,
       Command(

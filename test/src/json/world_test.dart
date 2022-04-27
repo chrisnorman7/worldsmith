@@ -27,12 +27,12 @@ void main() {
           expect(world.interfaceSoundsAssets, isEmpty);
           expect(world.mainMenuMusic, isNull);
           final mainMenuOptions = world.mainMenuOptions;
-          expect(mainMenuOptions.creditsMessage.text, 'Show Credits');
-          expect(mainMenuOptions.exitMessage.text, 'Exit');
+          expect(mainMenuOptions.creditsMessage, 'Show Credits');
+          expect(mainMenuOptions.exitMessage, 'Exit');
           expect(mainMenuOptions.fadeTime, 4.0);
           expect(mainMenuOptions.music, isNull);
-          expect(mainMenuOptions.newGameMessage.text, 'Start New Game');
-          expect(mainMenuOptions.savedGameMessage.text, 'Play Saved Game');
+          expect(mainMenuOptions.newGameMessage, 'Start New Game');
+          expect(mainMenuOptions.savedGameMessage, 'Play Saved Game');
           expect(mainMenuOptions.title, 'Main Menu');
           expect(world.menuActivateSound, isNull);
           expect(world.menuMoveSound, isNull);
@@ -40,7 +40,7 @@ void main() {
           final pauseMenuOptions = world.pauseMenuOptions;
           expect(pauseMenuOptions.fadeTime, isNull);
           expect(pauseMenuOptions.music, isNull);
-          expect(pauseMenuOptions.returnToGameMessage.text, 'Return To Game');
+          expect(pauseMenuOptions.returnToGameMessage, 'Return To Game');
           expect(pauseMenuOptions.title, 'Pause Menu');
           expect(world.reverbs, isEmpty);
           final soundOptions = world.soundOptions;

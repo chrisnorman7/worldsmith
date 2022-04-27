@@ -146,11 +146,21 @@ class WorldContext {
   ) {}
 
   /// Get a message suitable for a [MenuItem] label.
-  Message getMenuItemMessage({final String? text}) => Message(
-        gain: world.soundOptions.menuMoveSound?.gain ??
+  Message getMenuItemMessage({
+    final String? text,
+    final Sound? sound,
+  }) =>
+      Message(
+        gain: sound?.gain ??
+            world.soundOptions.menuMoveSound?.gain ??
             world.soundOptions.defaultGain,
         keepAlive: true,
-        sound: world.menuMoveSound,
+        sound: sound == null
+            ? world.menuMoveSound
+            : getAssetReferenceReference(
+                assets: world.interfaceSoundsAssets,
+                id: sound.id,
+              ).reference,
         text: text,
       );
 
@@ -200,38 +210,53 @@ class WorldContext {
         id: sound.id,
       ).reference;
 
-  /// Convert the given [message].
-  Message getCustomMessage(
-    final CustomMessage message, {
+  /// Get a button with the proper activate sound.
+  Button getButton(final TaskFunction func) =>
+      Button(func, activateSound: world.menuActivateSound);
+
+  /// Get a message with the given parameters.
+  Message getCustomMessage({
+    final String? message,
     final Map<String, String> replacements = const {},
+    final AssetReference? sound,
+    final double? gain,
     final bool keepAlive = false,
-    final AssetReference? nullSound,
   }) {
-    var text = message.text;
+    var text = message;
     if (text != null) {
       for (final entry in replacements.entries) {
         text = text?.replaceAll('{${entry.key}}', entry.value);
       }
     }
-    final sound = message.sound;
-    AssetReference? assetReference;
-    if (sound != null) {
-      assetReference = getCustomSound(sound);
-    } else if (nullSound != null) {
-      assetReference = nullSound;
-    }
-    final gain = sound?.gain ?? world.soundOptions.defaultGain;
     return Message(
-      gain: gain,
+      gain: gain ?? world.soundOptions.defaultGain,
       keepAlive: keepAlive,
-      sound: assetReference,
+      sound: sound,
       text: text,
     );
   }
 
-  /// Get a button with the proper activate sound.
-  Button getButton(final TaskFunction func) =>
-      Button(func, activateSound: world.menuActivateSound);
+  /// Output the given [message].
+  PlaySound? outputCustomMessage(
+    final String? message, {
+    final Map<String, String> replacements = const {},
+    final AssetReference? sound,
+    final double? gain,
+    final bool keepAlive = false,
+    final PlaySound? oldSound,
+    final SoundChannel? soundChannel,
+  }) =>
+      game.outputMessage(
+        getCustomMessage(
+          gain: gain,
+          keepAlive: keepAlive,
+          message: message,
+          replacements: replacements,
+          sound: sound,
+        ),
+        oldSound: oldSound,
+        soundChannel: soundChannel ?? game.interfaceSounds,
+      );
 
   /// Get the main menu for the given [WorldContext].
   MainMenu getMainMenu() => MainMenu(this);
@@ -384,25 +409,6 @@ class WorldContext {
       for (final haptic in hapticDevices) {
         haptic.close();
       }
-    }
-  }
-
-  /// Output a custom [message].
-  void outputCustomMessage(
-    final CustomMessage message, {
-    final AssetReference? nullSound,
-    final Map<String, String> replacements = const {},
-    final SoundChannel? soundChannel,
-  }) {
-    if (message.sound != null || message.text != null) {
-      game.outputMessage(
-        getCustomMessage(
-          message,
-          nullSound: nullSound,
-          replacements: replacements,
-        ),
-        soundChannel: soundChannel,
-      );
     }
   }
 
@@ -607,9 +613,7 @@ class WorldContext {
   }) {
     outputCustomMessage(
       command.message,
-      nullSound: nullSound,
       replacements: replacements,
-      soundChannel: soundChannel,
     );
     if (zoneLevel != null) {
       final walkingMode = command.walkingMode;

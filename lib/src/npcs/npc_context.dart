@@ -55,9 +55,13 @@ class NpcContext {
     if (move == null) {
       timeUntilMove = 0;
     } else {
-      final a = min(move.minMoveInterval, move.maxMoveInterval);
-      final b = max(move.minMoveInterval, move.maxMoveInterval);
-      timeUntilMove = a + random.nextInt(b - a);
+      if (move.minMoveInterval == move.maxMoveInterval) {
+        timeUntilMove = move.minMoveInterval;
+      } else {
+        final a = min(move.minMoveInterval, move.maxMoveInterval);
+        final b = max(move.minMoveInterval, move.maxMoveInterval);
+        timeUntilMove = a + random.nextInt(b - a);
+      }
     }
   }
 }

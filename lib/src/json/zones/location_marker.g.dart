@@ -9,14 +9,18 @@ part of 'location_marker.dart';
 LocationMarker _$LocationMarkerFromJson(Map<String, dynamic> json) =>
     LocationMarker(
       id: json['id'] as String,
-      message: CustomMessage.fromJson(json['message'] as Map<String, dynamic>),
       coordinates:
           Coordinates.fromJson(json['coordinates'] as Map<String, dynamic>),
+      name: json['name'] as String? ?? 'Untitled Marker',
+      sound: json['sound'] == null
+          ? null
+          : Sound.fromJson(json['sound'] as Map<String, dynamic>),
     );
 
 Map<String, dynamic> _$LocationMarkerToJson(LocationMarker instance) =>
     <String, dynamic>{
       'id': instance.id,
-      'message': instance.message,
+      'name': instance.name,
+      'sound': instance.sound,
       'coordinates': instance.coordinates,
     };

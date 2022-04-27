@@ -9,9 +9,7 @@ part of 'world_command.dart';
 WorldCommand _$WorldCommandFromJson(Map<String, dynamic> json) => WorldCommand(
       id: json['id'] as String,
       name: json['name'] as String,
-      message: json['message'] == null
-          ? null
-          : CustomMessage.fromJson(json['message'] as Map<String, dynamic>),
+      message: json['message'] as String?,
       zoneTeleport: json['zoneTeleport'] == null
           ? null
           : ZoneTeleport.fromJson(json['zoneTeleport'] as Map<String, dynamic>),

@@ -1,8 +1,7 @@
 /// Provides the [MainMenuOptions] class.
 import 'package:json_annotation/json_annotation.dart';
 
-import '../messages/custom_message.dart';
-import '../sound.dart';
+import '../sounds/sound.dart';
 
 part 'main_menu_options.g.dart';
 
@@ -14,23 +13,20 @@ class MainMenuOptions {
     this.title = 'Main Menu',
     this.music,
     this.fadeTime = 4.0,
-    final CustomMessage? newGameMessage,
-    final CustomMessage? savedGameMessage,
-    final CustomMessage? creditsMessage,
-    final CustomMessage? soundOptionsMessage,
-    final CustomMessage? exitMessage,
-    final CustomMessage? onExitMessage,
+    this.newGameMessage = 'Start New Game',
+    this.newGameSound,
+    this.savedGameMessage = 'Play Saved Game',
+    this.savedGameSound,
+    this.creditsMessage = 'Show Credits',
+    this.creditsSound,
+    this.exitMessage = 'Exit',
+    this.exitSound,
+    this.onExitMessage = 'The game will now close.',
+    this.onExitSound,
+    this.soundOptionsMessage = 'Sound Options',
+    this.soundOptionsSound,
     this.startGameCommandId,
-  })  : newGameMessage =
-            newGameMessage ?? CustomMessage(text: 'Start New Game'),
-        savedGameMessage =
-            savedGameMessage ?? CustomMessage(text: 'Play Saved Game'),
-        creditsMessage = creditsMessage ?? CustomMessage(text: 'Show Credits'),
-        soundOptionsMessage =
-            soundOptionsMessage ?? CustomMessage(text: 'Sound Options'),
-        exitMessage = exitMessage ?? CustomMessage(text: 'Exit'),
-        onExitMessage =
-            onExitMessage ?? CustomMessage(text: 'The game will now close.');
+  });
 
   /// Create an instance from a JSON object.
   factory MainMenuOptions.fromJson(final Map<String, dynamic> json) =>
@@ -46,22 +42,40 @@ class MainMenuOptions {
   double? fadeTime;
 
   /// The message for the "Play New Game" option.
-  final CustomMessage newGameMessage;
+  String? newGameMessage;
+
+  /// The sound for the "Play New Game" option.
+  Sound? newGameSound;
 
   /// The message for the "Play Saved Game" option.
-  final CustomMessage savedGameMessage;
+  String? savedGameMessage;
+
+  /// The sound for the "Play Saved Game" option.
+  Sound? savedGameSound;
 
   /// The message for the "Credits" option.
-  final CustomMessage creditsMessage;
+  String? creditsMessage;
 
-  /// The message for the "Sound Options" option.
-  final CustomMessage soundOptionsMessage;
+  /// The sound for the "Credits" option.
+  Sound? creditsSound;
+
+  /// The sound for the "Sound Options" option.
+  final String? soundOptionsMessage;
+
+  /// The sound for the "Sound Options" option.
+  Sound? soundOptionsSound;
 
   /// The message for the "Exit" option.
-  final CustomMessage exitMessage;
+  String? exitMessage;
 
-  /// The message that will be used as the game closes.
-  final CustomMessage onExitMessage;
+  /// The sound for the "Exit" option.
+  Sound? exitSound;
+
+  /// The message that will be shown as the game closes.
+  String? onExitMessage;
+
+  /// The sound that will be played as the game closes.
+  Sound? onExitSound;
 
   /// The command to run to start a new game.
   String? startGameCommandId;

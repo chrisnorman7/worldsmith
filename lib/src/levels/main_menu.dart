@@ -2,9 +2,9 @@
 import 'package:ziggurat/menus.dart';
 import 'package:ziggurat/ziggurat.dart';
 
+import '../../util.dart';
 import '../../world_context.dart';
 import '../json/commands/world_command.dart';
-import '../json/messages/custom_message.dart';
 
 void _unimplemented(final Game game) => game.outputText('Unimplemented.');
 
@@ -21,16 +21,13 @@ class MainMenu extends Menu {
     final world = worldContext.world;
     final options = world.mainMenuOptions;
     final fadeTime = options.fadeTime;
-    final menuMoveAsset = world.menuMoveSound;
     final startGameCommandId = world.mainMenuOptions.startGameCommandId;
     final WorldCommand command;
     if (startGameCommandId == null) {
       command = WorldCommand(
         id: '',
         name: 'Faked Start Game Command',
-        message: CustomMessage(
-          text: 'The start game command has not been set.',
-        ),
+        message: 'The start game command has not been set.',
       );
     } else {
       command = world.getCommand(startGameCommandId);
@@ -38,30 +35,29 @@ class MainMenu extends Menu {
     menuItems.addAll(
       [
         MenuItem(
-          worldContext.getCustomMessage(
-            options.newGameMessage,
-            keepAlive: true,
-            nullSound: menuMoveAsset,
+          worldContext.getMenuItemMessage(
+            text: options.newGameMessage,
+            sound: options.newGameSound,
           ),
-          Button(() {
-            worldContext.playerPreferences.questStages.clear();
-            worldContext.runCommand(command: command);
-          }),
+          worldContext.getButton(
+            () {
+              worldContext.playerPreferences.questStages.clear();
+              worldContext.runCommand(command: command);
+            },
+          ),
         ),
         MenuItem(
-          worldContext.getCustomMessage(
-            options.savedGameMessage,
-            keepAlive: true,
-            nullSound: menuMoveAsset,
+          worldContext.getMenuItemMessage(
+            text: options.savedGameMessage,
+            sound: options.savedGameSound,
           ),
           worldContext.getButton(() => _unimplemented(worldContext.game)),
         ),
         if (world.credits.isNotEmpty)
           MenuItem(
-            worldContext.getCustomMessage(
-              options.creditsMessage,
-              keepAlive: true,
-              nullSound: menuMoveAsset,
+            worldContext.getMenuItemMessage(
+              text: options.creditsMessage,
+              sound: options.creditsSound,
             ),
             worldContext.getButton(
               () => worldContext.game.replaceLevel(
@@ -71,10 +67,9 @@ class MainMenu extends Menu {
             ),
           ),
         MenuItem(
-          worldContext.getCustomMessage(
-            options.soundOptionsMessage,
-            keepAlive: true,
-            nullSound: menuMoveAsset,
+          worldContext.getMenuItemMessage(
+            text: options.soundOptionsMessage,
+            sound: options.soundOptionsSound,
           ),
           worldContext.getButton(
             () => game.replaceLevel(
@@ -84,16 +79,25 @@ class MainMenu extends Menu {
           ),
         ),
         MenuItem(
-          worldContext.getCustomMessage(
-            options.exitMessage,
-            keepAlive: true,
-            nullSound: menuMoveAsset,
+          worldContext.getMenuItemMessage(
+            text: options.exitMessage,
+            sound: options.exitSound,
           ),
           worldContext.getButton(
             () {
+              final sound = options.onExitSound;
               final game = worldContext.game
                 ..outputMessage(
-                  worldContext.getCustomMessage(options.onExitMessage),
+                  worldContext.getCustomMessage(
+                    message: options.onExitMessage,
+                    gain: sound?.gain,
+                    sound: sound == null
+                        ? null
+                        : getAssetReferenceReference(
+                            assets: world.interfaceSoundsAssets,
+                            id: sound.id,
+                          ).reference,
+                  ),
                 );
               if (fadeTime != null) {
                 game

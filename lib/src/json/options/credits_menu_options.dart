@@ -1,7 +1,7 @@
 /// Provides the [CreditsMenuOptions] class.
 import 'package:json_annotation/json_annotation.dart';
 
-import '../sound.dart';
+import '../sounds/sound.dart';
 
 part 'credits_menu_options.g.dart';
 

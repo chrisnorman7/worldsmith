@@ -1,7 +1,8 @@
+// ignore_for_file: prefer_final_parameters
 import 'package:json_annotation/json_annotation.dart';
 import 'package:ziggurat_sounds/ziggurat_sounds.dart';
 
-import '../sound.dart';
+import 'sound.dart';
 
 part 'custom_sound.g.dart';
 
@@ -38,9 +39,9 @@ class CustomSound extends Sound {
   /// Create an instance.
   CustomSound({
     required this.assetStore,
-    required final String id,
-    final double gain = 0.7,
-  }) : super(id: id, gain: gain);
+    required super.id,
+    super.gain,
+  });
 
   /// Create an instance from a JSON object.
   factory CustomSound.fromJson(final Map<String, dynamic> json) =>
