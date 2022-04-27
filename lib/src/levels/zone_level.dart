@@ -900,14 +900,21 @@ class ZoneLevel extends Level {
     } else {
       y -= min(stepSize, y - destination.y);
     }
-    final channel = context.channel;
+    final channel = context.channel
+      ..position = SoundPosition3d(
+        x: x,
+        y: y,
+        z: move.z,
+      );
     context.coordinates = Point(x, y);
-    channel.position = SoundPosition3d(
-      x: x,
-      y: y,
-      z: move.z,
-    );
-    box = getBox(context.coordinates);
+    final newBox = getBox(context.coordinates);
+    if (newBox != null &&
+        ((newBox.id != box?.id) ||
+            (newBox.reverbId != null && channel.reverb == null))) {
+      final reverb = getBoxReverb(newBox);
+      channel.reverb = reverb?.id;
+    }
+    box = newBox;
     terrainId = box?.terrainId ?? zone.defaultTerrainId;
     terrain = world.getTerrain(terrainId);
     final moveCommand = move.moveCommand;
