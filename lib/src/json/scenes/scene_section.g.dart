@@ -7,7 +7,7 @@ part of 'scene_section.dart';
 // **************************************************************************
 
 SceneSection _$SceneSectionFromJson(Map<String, dynamic> json) => SceneSection(
-      message: json['message'] as String?,
+      text: json['text'] as String?,
       sound: json['sound'] == null
           ? null
           : Sound.fromJson(json['sound'] as Map<String, dynamic>),
@@ -15,6 +15,6 @@ SceneSection _$SceneSectionFromJson(Map<String, dynamic> json) => SceneSection(
 
 Map<String, dynamic> _$SceneSectionToJson(SceneSection instance) =>
     <String, dynamic>{
-      'message': instance.message,
+      'text': instance.text,
       'sound': instance.sound,
     };

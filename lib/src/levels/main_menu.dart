@@ -27,7 +27,7 @@ class MainMenu extends Menu {
       command = WorldCommand(
         id: '',
         name: 'Faked Start Game Command',
-        message: 'The start game command has not been set.',
+        text: 'The start game command has not been set.',
       );
     } else {
       command = world.getCommand(startGameCommandId);
@@ -36,7 +36,7 @@ class MainMenu extends Menu {
       [
         MenuItem(
           worldContext.getMenuItemMessage(
-            text: options.newGameMessage,
+            text: options.newGameString,
             sound: options.newGameSound,
           ),
           worldContext.getButton(
@@ -48,7 +48,7 @@ class MainMenu extends Menu {
         ),
         MenuItem(
           worldContext.getMenuItemMessage(
-            text: options.savedGameMessage,
+            text: options.savedGameString,
             sound: options.savedGameSound,
           ),
           worldContext.getButton(() => _unimplemented(worldContext.game)),
@@ -56,7 +56,7 @@ class MainMenu extends Menu {
         if (world.credits.isNotEmpty)
           MenuItem(
             worldContext.getMenuItemMessage(
-              text: options.creditsMessage,
+              text: options.creditsString,
               sound: options.creditsSound,
             ),
             worldContext.getButton(
@@ -68,7 +68,7 @@ class MainMenu extends Menu {
           ),
         MenuItem(
           worldContext.getMenuItemMessage(
-            text: options.soundOptionsMessage,
+            text: options.soundOptionsString,
             sound: options.soundOptionsSound,
           ),
           worldContext.getButton(
@@ -80,7 +80,7 @@ class MainMenu extends Menu {
         ),
         MenuItem(
           worldContext.getMenuItemMessage(
-            text: options.exitMessage,
+            text: options.exitString,
             sound: options.exitSound,
           ),
           worldContext.getButton(
@@ -89,7 +89,7 @@ class MainMenu extends Menu {
               final game = worldContext.game
                 ..outputMessage(
                   worldContext.getCustomMessage(
-                    message: options.onExitMessage,
+                    message: options.onExitString,
                     gain: sound?.gain,
                     sound: sound == null
                         ? null

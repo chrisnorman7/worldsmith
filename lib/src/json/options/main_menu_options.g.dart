@@ -13,30 +13,29 @@ MainMenuOptions _$MainMenuOptionsFromJson(Map<String, dynamic> json) =>
           ? null
           : Sound.fromJson(json['music'] as Map<String, dynamic>),
       fadeTime: (json['fadeTime'] as num?)?.toDouble() ?? 4.0,
-      newGameMessage: json['newGameMessage'] as String? ?? 'Start New Game',
+      newGameString: json['newGameString'] as String? ?? 'Start New Game',
       newGameSound: json['newGameSound'] == null
           ? null
           : Sound.fromJson(json['newGameSound'] as Map<String, dynamic>),
-      savedGameMessage:
-          json['savedGameMessage'] as String? ?? 'Play Saved Game',
+      savedGameString: json['savedGameString'] as String? ?? 'Play Saved Game',
       savedGameSound: json['savedGameSound'] == null
           ? null
           : Sound.fromJson(json['savedGameSound'] as Map<String, dynamic>),
-      creditsMessage: json['creditsMessage'] as String? ?? 'Show Credits',
+      creditsString: json['creditsString'] as String? ?? 'Show Credits',
       creditsSound: json['creditsSound'] == null
           ? null
           : Sound.fromJson(json['creditsSound'] as Map<String, dynamic>),
-      exitMessage: json['exitMessage'] as String? ?? 'Exit',
+      exitString: json['exitString'] as String? ?? 'Exit',
       exitSound: json['exitSound'] == null
           ? null
           : Sound.fromJson(json['exitSound'] as Map<String, dynamic>),
-      onExitMessage:
-          json['onExitMessage'] as String? ?? 'The game will now close.',
+      onExitString:
+          json['onExitString'] as String? ?? 'The game will now close.',
       onExitSound: json['onExitSound'] == null
           ? null
           : Sound.fromJson(json['onExitSound'] as Map<String, dynamic>),
-      soundOptionsMessage:
-          json['soundOptionsMessage'] as String? ?? 'Sound Options',
+      soundOptionsString:
+          json['soundOptionsString'] as String? ?? 'Sound Options',
       soundOptionsSound: json['soundOptionsSound'] == null
           ? null
           : Sound.fromJson(json['soundOptionsSound'] as Map<String, dynamic>),
@@ -48,17 +47,17 @@ Map<String, dynamic> _$MainMenuOptionsToJson(MainMenuOptions instance) =>
       'title': instance.title,
       'music': instance.music,
       'fadeTime': instance.fadeTime,
-      'newGameMessage': instance.newGameMessage,
+      'newGameString': instance.newGameString,
       'newGameSound': instance.newGameSound,
-      'savedGameMessage': instance.savedGameMessage,
+      'savedGameString': instance.savedGameString,
       'savedGameSound': instance.savedGameSound,
-      'creditsMessage': instance.creditsMessage,
+      'creditsString': instance.creditsString,
       'creditsSound': instance.creditsSound,
-      'soundOptionsMessage': instance.soundOptionsMessage,
+      'soundOptionsString': instance.soundOptionsString,
       'soundOptionsSound': instance.soundOptionsSound,
-      'exitMessage': instance.exitMessage,
+      'exitString': instance.exitString,
       'exitSound': instance.exitSound,
-      'onExitMessage': instance.onExitMessage,
+      'onExitString': instance.onExitString,
       'onExitSound': instance.onExitSound,
       'startGameCommandId': instance.startGameCommandId,
     };

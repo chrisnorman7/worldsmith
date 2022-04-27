@@ -34,7 +34,7 @@ class PauseMenu extends Menu {
         if (zone.topDownMap)
           MenuItem(
             worldContext.getMenuItemMessage(
-              text: options.zoneOverviewMessage,
+              text: options.zoneOverviewString,
               sound: options.zoneOverviewSound,
             ),
             worldContext.getButton(
@@ -43,7 +43,7 @@ class PauseMenu extends Menu {
           ),
         MenuItem(
           worldContext.getMenuItemMessage(
-            text: worldContext.world.pauseMenuOptions.returnToGameMessage,
+            text: worldContext.world.pauseMenuOptions.returnToGameString,
             sound: worldContext.world.pauseMenuOptions.returnToGameSound,
           ),
           worldContext.getButton(
@@ -54,7 +54,7 @@ class PauseMenu extends Menu {
         ),
         MenuItem(
           worldContext.getMenuItemMessage(
-            text: worldContext.world.pauseMenuOptions.returnToMainMenuMessage,
+            text: worldContext.world.pauseMenuOptions.returnToMainMenuString,
             sound: worldContext.world.pauseMenuOptions.returnToMainMenuSound,
           ),
           worldContext.getButton(

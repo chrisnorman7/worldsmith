@@ -13,17 +13,17 @@ class MainMenuOptions {
     this.title = 'Main Menu',
     this.music,
     this.fadeTime = 4.0,
-    this.newGameMessage = 'Start New Game',
+    this.newGameString = 'Start New Game',
     this.newGameSound,
-    this.savedGameMessage = 'Play Saved Game',
+    this.savedGameString = 'Play Saved Game',
     this.savedGameSound,
-    this.creditsMessage = 'Show Credits',
+    this.creditsString = 'Show Credits',
     this.creditsSound,
-    this.exitMessage = 'Exit',
+    this.exitString = 'Exit',
     this.exitSound,
-    this.onExitMessage = 'The game will now close.',
+    this.onExitString = 'The game will now close.',
     this.onExitSound,
-    this.soundOptionsMessage = 'Sound Options',
+    this.soundOptionsString = 'Sound Options',
     this.soundOptionsSound,
     this.startGameCommandId,
   });
@@ -42,37 +42,37 @@ class MainMenuOptions {
   double? fadeTime;
 
   /// The message for the "Play New Game" option.
-  String? newGameMessage;
+  String? newGameString;
 
   /// The sound for the "Play New Game" option.
   Sound? newGameSound;
 
   /// The message for the "Play Saved Game" option.
-  String? savedGameMessage;
+  String? savedGameString;
 
   /// The sound for the "Play Saved Game" option.
   Sound? savedGameSound;
 
   /// The message for the "Credits" option.
-  String? creditsMessage;
+  String? creditsString;
 
   /// The sound for the "Credits" option.
   Sound? creditsSound;
 
   /// The sound for the "Sound Options" option.
-  final String? soundOptionsMessage;
+  final String? soundOptionsString;
 
   /// The sound for the "Sound Options" option.
   Sound? soundOptionsSound;
 
   /// The message for the "Exit" option.
-  String? exitMessage;
+  String? exitString;
 
   /// The sound for the "Exit" option.
   Sound? exitSound;
 
   /// The message that will be shown as the game closes.
-  String? onExitMessage;
+  String? onExitString;
 
   /// The sound that will be played as the game closes.
   Sound? onExitSound;

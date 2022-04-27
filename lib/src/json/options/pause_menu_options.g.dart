@@ -13,17 +13,17 @@ PauseMenuOptions _$PauseMenuOptionsFromJson(Map<String, dynamic> json) =>
           ? null
           : Sound.fromJson(json['music'] as Map<String, dynamic>),
       fadeTime: (json['fadeTime'] as num?)?.toDouble(),
-      zoneOverviewMessage: json['zoneOverviewMessage'] as String? ?? 'Show Map',
+      zoneOverviewString: json['zoneOverviewString'] as String? ?? 'Show Map',
       zoneOverviewSound: json['zoneOverviewSound'] == null
           ? null
           : Sound.fromJson(json['zoneOverviewSound'] as Map<String, dynamic>),
-      returnToGameMessage:
-          json['returnToGameMessage'] as String? ?? 'Return To Game',
+      returnToGameString:
+          json['returnToGameString'] as String? ?? 'Return To Game',
       returnToGameSound: json['returnToGameSound'] == null
           ? null
           : Sound.fromJson(json['returnToGameSound'] as Map<String, dynamic>),
-      returnToMainMenuMessage:
-          json['returnToMainMenuMessage'] as String? ?? 'Return To Main Menu',
+      returnToMainMenuString:
+          json['returnToMainMenuString'] as String? ?? 'Return To Main Menu',
       returnToMainMenuSound: json['returnToMainMenuSound'] == null
           ? null
           : Sound.fromJson(
@@ -37,11 +37,11 @@ Map<String, dynamic> _$PauseMenuOptionsToJson(PauseMenuOptions instance) =>
       'title': instance.title,
       'music': instance.music,
       'fadeTime': instance.fadeTime,
-      'zoneOverviewMessage': instance.zoneOverviewMessage,
+      'zoneOverviewString': instance.zoneOverviewString,
       'zoneOverviewSound': instance.zoneOverviewSound,
-      'returnToGameMessage': instance.returnToGameMessage,
+      'returnToGameString': instance.returnToGameString,
       'returnToGameSound': instance.returnToGameSound,
-      'returnToMainMenuMessage': instance.returnToMainMenuMessage,
+      'returnToMainMenuString': instance.returnToMainMenuString,
       'returnToMainMenuSound': instance.returnToMainMenuSound,
       'returnToMainMenuFadeTime': instance.returnToMainMenuFadeTime,
     };

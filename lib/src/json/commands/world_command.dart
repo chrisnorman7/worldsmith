@@ -19,7 +19,7 @@ class WorldCommand {
   WorldCommand({
     required this.id,
     required this.name,
-    this.message,
+    this.text,
     this.zoneTeleport,
     this.walkingMode,
     this.customCommandName,
@@ -43,7 +43,7 @@ class WorldCommand {
   String name;
 
   /// A message to show.
-  String? message;
+  String? text;
 
   /// Teleport to another zone.
   ZoneTeleport? zoneTeleport;

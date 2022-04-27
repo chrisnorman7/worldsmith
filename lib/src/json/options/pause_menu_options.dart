@@ -13,11 +13,11 @@ class PauseMenuOptions {
     this.title = 'Pause Menu',
     this.music,
     this.fadeTime,
-    this.zoneOverviewMessage = 'Show Map',
+    this.zoneOverviewString = 'Show Map',
     this.zoneOverviewSound,
-    this.returnToGameMessage = 'Return To Game',
+    this.returnToGameString = 'Return To Game',
     this.returnToGameSound,
-    this.returnToMainMenuMessage = 'Return To Main Menu',
+    this.returnToMainMenuString = 'Return To Main Menu',
     this.returnToMainMenuSound,
     this.returnToMainMenuFadeTime = 3.0,
   });
@@ -36,19 +36,19 @@ class PauseMenuOptions {
   double? fadeTime;
 
   /// The message for the "Show Zone Map" item.
-  String? zoneOverviewMessage;
+  String? zoneOverviewString;
 
   /// The sound for the "Show Zone Map" item.
   Sound? zoneOverviewSound;
 
   /// The message for the "Return to game" menu item.
-  String? returnToGameMessage;
+  String? returnToGameString;
 
   /// The sound for the "Return to game" menu item.
   Sound? returnToGameSound;
 
   /// The message to be used when returning to the main menu.
-  String? returnToMainMenuMessage;
+  String? returnToMainMenuString;
 
   /// The sound to be used when returning to the main menu.
   Sound? returnToMainMenuSound;

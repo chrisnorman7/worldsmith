@@ -77,7 +77,7 @@ class SceneLevel extends Level {
       }
       final sectionSound = section.sound;
       final message = worldContext.getCustomMessage(
-        message: section.message,
+        message: section.text,
         keepAlive: true,
         gain: sectionSound?.gain,
         sound: sectionSound == null

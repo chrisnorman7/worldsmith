@@ -612,7 +612,7 @@ class WorldContext {
     final List<CallCommand> calledCommands = const [],
   }) {
     outputCustomMessage(
-      command.message,
+      command.text,
       replacements: replacements,
     );
     if (zoneLevel != null) {

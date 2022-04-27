@@ -11,7 +11,7 @@ part 'scene_section.g.dart';
 class SceneSection {
   /// Create an instance.
   SceneSection({
-    this.message,
+    this.text,
     this.sound,
   });
 
@@ -20,7 +20,7 @@ class SceneSection {
       _$SceneSectionFromJson(json);
 
   /// The message that will be shown.
-  String? message;
+  String? text;
 
   /// The sound that will be played.
   Sound? sound;
