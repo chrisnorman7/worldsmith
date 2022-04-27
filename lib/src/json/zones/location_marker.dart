@@ -13,7 +13,7 @@ class LocationMarker {
   LocationMarker({
     required this.id,
     required this.coordinates,
-    this.name = 'Untitled Marker',
+    this.name,
     this.sound,
   });
 
@@ -25,7 +25,7 @@ class LocationMarker {
   final String id;
 
   /// The name of this marker.
-  String name;
+  String? name;
 
   /// The sound that represents this marker.
   Sound? sound;

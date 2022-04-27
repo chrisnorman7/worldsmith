@@ -11,7 +11,7 @@ LocationMarker _$LocationMarkerFromJson(Map<String, dynamic> json) =>
       id: json['id'] as String,
       coordinates:
           Coordinates.fromJson(json['coordinates'] as Map<String, dynamic>),
-      name: json['name'] as String? ?? 'Untitled Marker',
+      name: json['name'] as String?,
       sound: json['sound'] == null
           ? null
           : Sound.fromJson(json['sound'] as Map<String, dynamic>),
