@@ -2,6 +2,7 @@ import 'package:json_annotation/json_annotation.dart';
 
 import '../../../world_context.dart';
 import '../../levels/walking_mode.dart';
+import '../sounds/custom_sound.dart';
 import 'call_command.dart';
 import 'play_rumble.dart';
 import 'return_to_main_menu.dart';
@@ -20,6 +21,7 @@ class WorldCommand {
     required this.id,
     required this.name,
     this.text,
+    this.sound,
     this.zoneTeleport,
     this.walkingMode,
     this.customCommandName,
@@ -44,6 +46,9 @@ class WorldCommand {
 
   /// A message to show.
   String? text;
+
+  /// The sound to play.
+  CustomSound? sound;
 
   /// Teleport to another zone.
   ZoneTeleport? zoneTeleport;

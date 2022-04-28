@@ -2,6 +2,7 @@
 import 'package:json_annotation/json_annotation.dart';
 import 'package:ziggurat_sounds/ziggurat_sounds.dart';
 
+import 'audio_bus.dart';
 import 'sound.dart';
 
 part 'custom_sound.g.dart';
@@ -49,6 +50,12 @@ class CustomSound extends Sound {
 
   /// The asset store where [id] resides.
   CustomSoundAssetStore assetStore;
+
+  /// The ID of the [AudioBus] to play through.
+  ///
+  /// If this value is `null`, then the interface sounds sound channel will be
+  /// used.
+  String? audioBusId;
 
   /// Convert an instance to JSON.
   @override

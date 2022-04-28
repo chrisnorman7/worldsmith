@@ -9,6 +9,7 @@
 * Added the `AudioBus` class.
 * Added the `World.getReverbPresetReference` method.
 * Added the `WorldContext.getReverb` method.
+* Allow `CustomSound` classes to play through a specific `AudioBus`.
 
 ### Changed
 

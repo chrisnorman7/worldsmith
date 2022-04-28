@@ -651,9 +651,23 @@ class WorldContext {
     final AssetReference? nullSound,
     final List<CallCommand> calledCommands = const [],
   }) {
+    final sound = command.sound;
+    final audioBusId = sound?.audioBusId;
+    final soundChannel = audioBusId == null
+        ? game.interfaceSounds
+        : getAudioBus(
+            world.getAudioBus(
+              audioBusId,
+            ),
+          );
+    final gain = sound?.gain ?? world.soundOptions.defaultGain;
+    final asset = sound == null ? null : getCustomSound(sound);
     outputCustomMessage(
       command.text,
       replacements: replacements,
+      gain: gain,
+      sound: asset,
+      soundChannel: soundChannel,
     );
     if (zoneLevel != null) {
       final walkingMode = command.walkingMode;
@@ -779,6 +793,22 @@ class WorldContext {
         ),
       );
     }
+  }
+
+  /// Handle the given [customSound].
+  void handleCustomSound(final CustomSound customSound) {
+    final assetReference = getCustomSound(customSound);
+    final audioBusId = customSound.audioBusId;
+    final SoundChannel channel;
+    if (audioBusId == null) {
+      channel = game.interfaceSounds;
+    } else {
+      channel = getAudioBus(world.getAudioBus(audioBusId));
+    }
+    channel.playSound(
+      assetReference,
+      gain: customSound.gain,
+    );
   }
 
   /// Get the name of the nearest direction to [bearing].

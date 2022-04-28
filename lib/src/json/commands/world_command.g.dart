@@ -10,6 +10,9 @@ WorldCommand _$WorldCommandFromJson(Map<String, dynamic> json) => WorldCommand(
       id: json['id'] as String,
       name: json['name'] as String,
       text: json['text'] as String?,
+      sound: json['sound'] == null
+          ? null
+          : CustomSound.fromJson(json['sound'] as Map<String, dynamic>),
       zoneTeleport: json['zoneTeleport'] == null
           ? null
           : ZoneTeleport.fromJson(json['zoneTeleport'] as Map<String, dynamic>),
@@ -45,6 +48,7 @@ Map<String, dynamic> _$WorldCommandToJson(WorldCommand instance) =>
       'id': instance.id,
       'name': instance.name,
       'text': instance.text,
+      'sound': instance.sound,
       'zoneTeleport': instance.zoneTeleport,
       'walkingMode': _$WalkingModeEnumMap[instance.walkingMode],
       'customCommandName': instance.customCommandName,
