@@ -2,6 +2,8 @@
 import 'package:json_annotation/json_annotation.dart';
 import 'package:ziggurat/sound.dart';
 
+import 'custom_sound.dart';
+
 part 'audio_bus.g.dart';
 
 /// The type of output to use.
@@ -35,6 +37,7 @@ class AudioBus {
     this.x = 0.0,
     this.y = 0.0,
     this.z = 0.0,
+    this.testSound,
   });
 
   /// Create an instance from a JSON object.
@@ -91,6 +94,9 @@ class AudioBus {
   /// If [panningType] is anything except [PanningType.threeD], this value is
   /// ignored.
   double z;
+
+  /// The sound to test this bus with.
+  CustomSound? testSound;
 
   /// Get an appropriate sound position.
   SoundPosition get position {

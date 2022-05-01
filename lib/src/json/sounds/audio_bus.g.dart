@@ -17,6 +17,9 @@ AudioBus _$AudioBusFromJson(Map<String, dynamic> json) => AudioBus(
       x: (json['x'] as num?)?.toDouble() ?? 0.0,
       y: (json['y'] as num?)?.toDouble() ?? 0.0,
       z: (json['z'] as num?)?.toDouble() ?? 0.0,
+      testSound: json['testSound'] == null
+          ? null
+          : CustomSound.fromJson(json['testSound'] as Map<String, dynamic>),
     );
 
 Map<String, dynamic> _$AudioBusToJson(AudioBus instance) => <String, dynamic>{
@@ -28,6 +31,7 @@ Map<String, dynamic> _$AudioBusToJson(AudioBus instance) => <String, dynamic>{
       'x': instance.x,
       'y': instance.y,
       'z': instance.z,
+      'testSound': instance.testSound,
     };
 
 const _$PanningTypeEnumMap = {
