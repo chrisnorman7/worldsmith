@@ -1,7 +1,7 @@
 /// Provides the [LookAroundObject] class.
 import 'dart:math';
 
-import 'json/sounds/sound.dart';
+import '../json/sounds/sound.dart';
 
 /// A class for representing objects in a zone, relative to the player.
 class LookAroundObject {

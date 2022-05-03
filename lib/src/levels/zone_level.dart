@@ -19,7 +19,8 @@ import '../json/zones/box.dart';
 import '../json/zones/terrain.dart';
 import '../json/zones/zone.dart';
 import '../json/zones/zone_object.dart';
-import '../look_around_item.dart';
+import '../look_around/look_around_item.dart';
+import '../look_around/look_around_menu_item.dart';
 import '../npcs/npc_context.dart';
 import 'pause_menu.dart';
 import 'walking_mode.dart';
@@ -1108,23 +1109,28 @@ class ZoneLevel extends Level {
           (final e) {
             final distance =
                 coordinates.distanceTo(e.coordinates).toStringAsFixed(1);
-            final angle = coordinates.angleBetween(e.coordinates);
+            final angle =
+                (coordinates.angleBetween(e.coordinates) - heading) % 360.0;
             final direction = worldContext.getDirectionName(angle.floor());
             final sound = e.icon;
-            return MenuItem(
-              Message(
-                text: '${e.name} ($distance $direction)',
-                gain: sound?.gain ?? 0.0,
-                keepAlive: true,
-                sound: sound == null
-                    ? null
-                    : getAssetReferenceReference(
-                        assets: worldContext.world.interfaceSoundsAssets,
-                        id: sound.id,
-                      ).reference,
-              ),
-              worldContext.getButton(game.popLevel),
-            );
+            final message = Message(text: '${e.name} ($distance $direction)');
+            final button = worldContext.getButton(game.popLevel);
+            if (sound == null) {
+              return MenuItem(message, button);
+            } else {
+              return LookAroundMenuItem(
+                worldContext: worldContext,
+                message: message,
+                widget: button,
+                sound: getAssetReferenceReference(
+                  assets: worldContext.world.interfaceSoundsAssets,
+                  id: sound.id,
+                ).reference,
+                gain: sound.gain,
+                x: e.coordinates.x,
+                y: e.coordinates.y,
+              );
+            }
           },
         ).toList(),
         onCancel: game.popLevel,
