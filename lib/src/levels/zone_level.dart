@@ -969,6 +969,55 @@ class ZoneLevel extends Level {
         keepAlive: true,
       );
     }
+    final collision = zoneNpc.collision;
+    final callCommand = collision?.callCommand;
+    if (collision != null &&
+        callCommand != null &&
+        worldContext.handleConditionals(callCommand.conditions)) {
+      if (collision.collideWithPlayer &&
+          context.coordinates.distanceTo(coordinates) <= collision.distance) {
+        handleNpcCallCommand(
+          callCommand: callCommand,
+          npc: npc,
+          box: box,
+          channel: channel,
+          coordinates: coordinates.floor(),
+        );
+      }
+      if (collision.collideWithNpcs) {
+        for (final otherContext in npcContexts.where(
+          (final element) => element.zoneNpc.npcId != context.zoneNpc.npcId,
+        )) {
+          if (otherContext.coordinates.distanceTo(context.coordinates) <
+              collision.distance) {
+            handleNpcCallCommand(
+              callCommand: callCommand,
+              npc: npc,
+              box: box,
+              channel: channel,
+              coordinates: otherContext.coordinates.floor(),
+            );
+          }
+        }
+      }
+      if (collision.collideWithObjects) {
+        for (final zoneObject in zone.objects) {
+          final objectCoordinates = zone.getAbsoluteCoordinates(
+            zoneObject.initialCoordinates,
+          );
+          if (objectCoordinates.toDouble().distanceTo(context.coordinates) <=
+              collision.distance) {
+            handleNpcCallCommand(
+              callCommand: callCommand,
+              npc: npc,
+              box: box,
+              channel: channel,
+              coordinates: objectCoordinates,
+            );
+          }
+        }
+      }
+    }
     context.resetTimeUntilMove(
       random: game.random,
       move: move,
