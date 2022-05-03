@@ -37,6 +37,7 @@ class Zone {
     final List<ZoneObject>? objects,
     final List<LocationMarker>? locationMarkers,
     final List<ZoneNpc>? npcs,
+    this.lookAroundDistance = 50,
   })  : ambiances = ambiances ?? [],
         objects = objects ?? [],
         locationMarkers = locationMarkers ?? [],
@@ -99,6 +100,9 @@ class Zone {
 
   /// A list of mobiles that should be loaded into this zone.
   final List<ZoneNpc> npcs;
+
+  /// How far the look around function should reach.
+  int lookAroundDistance;
 
   /// Get a box by its [id].
   Box getBox(final String id) =>

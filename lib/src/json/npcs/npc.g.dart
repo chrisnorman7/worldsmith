@@ -13,6 +13,9 @@ Npc _$NpcFromJson(Map<String, dynamic> json) => Npc(
       ambiance: json['ambiance'] == null
           ? null
           : Sound.fromJson(json['ambiance'] as Map<String, dynamic>),
+      icon: json['icon'] == null
+          ? null
+          : Sound.fromJson(json['icon'] as Map<String, dynamic>),
     );
 
 Map<String, dynamic> _$NpcToJson(Npc instance) => <String, dynamic>{
@@ -20,4 +23,5 @@ Map<String, dynamic> _$NpcToJson(Npc instance) => <String, dynamic>{
       'name': instance.name,
       'stats': instance.stats,
       'ambiance': instance.ambiance,
+      'icon': instance.icon,
     };

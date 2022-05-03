@@ -20,6 +20,9 @@ ZoneObject _$ZoneObjectFromJson(Map<String, dynamic> json) => ZoneObject(
           ? null
           : CallCommand.fromJson(
               json['collideCommand'] as Map<String, dynamic>),
+      icon: json['icon'] == null
+          ? null
+          : Sound.fromJson(json['icon'] as Map<String, dynamic>),
     );
 
 Map<String, dynamic> _$ZoneObjectToJson(ZoneObject instance) =>
@@ -29,4 +32,5 @@ Map<String, dynamic> _$ZoneObjectToJson(ZoneObject instance) =>
       'initialCoordinates': instance.initialCoordinates,
       'ambiance': instance.ambiance,
       'collideCommand': instance.collideCommand,
+      'icon': instance.icon,
     };

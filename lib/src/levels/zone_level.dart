@@ -3,6 +3,7 @@ import 'dart:math';
 
 import 'package:dart_sdl/dart_sdl.dart';
 import 'package:ziggurat/levels.dart';
+import 'package:ziggurat/menus.dart';
 import 'package:ziggurat/sound.dart';
 import 'package:ziggurat/ziggurat.dart';
 
@@ -18,6 +19,7 @@ import '../json/zones/box.dart';
 import '../json/zones/terrain.dart';
 import '../json/zones/zone.dart';
 import '../json/zones/zone_object.dart';
+import '../look_around_item.dart';
 import '../npcs/npc_context.dart';
 import 'pause_menu.dart';
 import 'walking_mode.dart';
@@ -429,6 +431,12 @@ class ZoneLevel extends Level {
         onStart: () {
           heading = heading + zone.turnAmount;
         },
+      ),
+    );
+    registerCommand(
+      lookAroundCommandTrigger.name,
+      Command(
+        onStart: lookAround,
       ),
     );
     var minCoordinates = const Point(0, 0);
@@ -1044,6 +1052,83 @@ class ZoneLevel extends Level {
       replacements: replacements,
       soundChannel: channel,
       zoneLevel: this,
+    );
+  }
+
+  /// Get the objects within visual range of the player.
+  ///
+  /// These objects will be sorted by the [lookAround] method.
+  List<LookAroundObject> getLookAroundObjects() {
+    final menuMoveSound = worldContext.world.soundOptions.menuMoveSound;
+    return [
+      ...zone.objects.map<LookAroundObject>(
+        (final e) {
+          final objectCoordinates = zone.getAbsoluteCoordinates(
+            e.initialCoordinates,
+          );
+          return LookAroundObject(
+            name: e.name,
+            coordinates: objectCoordinates.toDouble(),
+            icon: e.icon ?? menuMoveSound,
+          );
+        },
+      ),
+      ...npcContexts.map<LookAroundObject>(
+        (final e) {
+          final npc = worldContext.world.getNpc(e.zoneNpc.npcId);
+          return LookAroundObject(
+            name: npc.name,
+            coordinates: e.coordinates,
+            icon: npc.icon ?? menuMoveSound,
+          );
+        },
+      )
+    ]
+        .where(
+          (final element) =>
+              coordinates.distanceTo(element.coordinates) <=
+              zone.lookAroundDistance,
+        )
+        .toList();
+  }
+
+  /// Look around.
+  void lookAround() {
+    final objects = getLookAroundObjects()
+      ..sort(
+        (final a, final b) => coordinates
+            .distanceTo(a.coordinates)
+            .compareTo(coordinates.distanceTo(b.coordinates)),
+      );
+    game.pushLevel(
+      Menu(
+        game: game,
+        title: const Message(text: 'Look Around'),
+        items: objects.map<MenuItem>(
+          (final e) {
+            final distance =
+                coordinates.distanceTo(e.coordinates).toStringAsFixed(1);
+            final angle = coordinates.angleBetween(e.coordinates);
+            final direction = worldContext.getDirectionName(angle.floor());
+            final sound = e.icon;
+            return MenuItem(
+              Message(
+                text: '${e.name} ($distance $direction)',
+                gain: sound?.gain ?? 0.0,
+                keepAlive: true,
+                sound: sound == null
+                    ? null
+                    : getAssetReferenceReference(
+                        assets: worldContext.world.interfaceSoundsAssets,
+                        id: sound.id,
+                      ).reference,
+              ),
+              worldContext.getButton(game.popLevel),
+            );
+          },
+        ).toList(),
+        onCancel: game.popLevel,
+      ),
     );
   }
 }

@@ -1,5 +1,11 @@
 # Changelog
 
+## [0.20.0]
+
+### Added
+
+* Added a look around function.
+
 ## [0.19.0]
 
 ### Added

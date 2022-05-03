@@ -106,6 +106,14 @@ const nextSceneSectionCommandTrigger = CommandTrigger(
   keyboardKey: CommandKeyboardKey(ScanCode.space),
 );
 
+/// View nearby objects and NPC's.
+const lookAroundCommandTrigger = CommandTrigger(
+  name: 'look_around',
+  description: 'View a list of nearby objects',
+  button: GameControllerButton.y,
+  keyboardKey: CommandKeyboardKey(ScanCode.x),
+);
+
 /// The default trigger map.
 const defaultTriggerMap = TriggerMap(
   [
@@ -122,5 +130,6 @@ const defaultTriggerMap = TriggerMap(
     switchMenuForwardCommandTrigger,
     switchMenuBackwardsCommandTrigger,
     nextSceneSectionCommandTrigger,
+    lookAroundCommandTrigger,
   ],
 );

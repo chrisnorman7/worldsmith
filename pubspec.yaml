@@ -1,5 +1,5 @@
 name: worldsmith
-version: 0.19.0
+version: 0.20.0
 description: A library for creating RPGs using [ziggurat](https://pub.dev/packages/ziggurat).
 repository: https://github.com/chrisnorman7/worldsmith
 environment:
@@ -13,7 +13,7 @@ dependencies:
   json_annotation: ^4.4.0
   open_url: ^2.0.0
   path: ^1.8.0
-  ziggurat: ^0.43.0
+  ziggurat: ^0.43.1
   ziggurat_sounds: ^0.23.2
 
 dev_dependencies:

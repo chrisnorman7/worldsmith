@@ -37,6 +37,7 @@ Zone _$ZoneFromJson(Map<String, dynamic> json) => Zone(
       npcs: (json['npcs'] as List<dynamic>?)
           ?.map((e) => ZoneNpc.fromJson(e as Map<String, dynamic>))
           .toList(),
+      lookAroundDistance: json['lookAroundDistance'] as int? ?? 50,
     );
 
 Map<String, dynamic> _$ZoneToJson(Zone instance) => <String, dynamic>{
@@ -56,4 +57,5 @@ Map<String, dynamic> _$ZoneToJson(Zone instance) => <String, dynamic>{
       'objects': instance.objects,
       'locationMarkers': instance.locationMarkers,
       'npcs': instance.npcs,
+      'lookAroundDistance': instance.lookAroundDistance,
     };

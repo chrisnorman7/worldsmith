@@ -15,6 +15,7 @@ class Npc {
     required this.stats,
     this.name = 'Unnamed NPC',
     this.ambiance,
+    this.icon,
   });
 
   /// Create an instance from a JSON object.
@@ -31,6 +32,9 @@ class Npc {
 
   /// The ambiance that will play for this NPC.
   Sound? ambiance;
+
+  /// The icon that will play for this NPC in the look around menu.
+  Sound? icon;
 
   /// Convert an instance to JSON.
   Map<String, dynamic> toJson() => _$NpcToJson(this);
