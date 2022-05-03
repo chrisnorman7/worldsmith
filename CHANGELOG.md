@@ -1,11 +1,5 @@
 # Changelog
 
-## [0.20.0]
-
-### Added
-
-* Added a look around function.
-
 ## [0.19.0]
 
 ### Added
@@ -16,6 +10,7 @@
 * Added the `World.getReverbPresetReference` method.
 * Added the `WorldContext.getReverb` method.
 * Allow `CustomSound` classes to play through a specific `AudioBus`.
+* Added a look around function.
 
 ### Changed
 
