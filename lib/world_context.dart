@@ -440,9 +440,6 @@ class WorldContext {
     } on Exception {
       rethrow;
     } finally {
-      for (final id in _audioBusses.keys.toList()) {
-        _audioBusses.remove(id)!.destroy();
-      }
       context?.destroy();
       synthizer?.shutdown();
       sdl.quit();
