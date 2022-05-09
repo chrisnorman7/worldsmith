@@ -28,7 +28,8 @@ class PauseMenu extends Menu {
               );
           },
         ) {
-    final options = worldContext.world.pauseMenuOptions;
+    final world = worldContext.world;
+    final options = world.pauseMenuOptions;
     menuItems.addAll(
       [
         if (zone.topDownMap)
@@ -92,6 +93,13 @@ class PauseMenu extends Menu {
         },
       ),
     );
+    for (final worldCommand in world.customCommandTriggers
+        .where((final element) => element.pauseMenu == true)) {
+      registerCommand(
+        worldCommand.commandTrigger.name,
+        worldCommand.getCommand(worldContext),
+      );
+    }
   }
 
   /// The world context to use.

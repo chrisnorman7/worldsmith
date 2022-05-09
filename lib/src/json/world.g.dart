@@ -118,6 +118,9 @@ World _$WorldFromJson(Map<String, dynamic> json) => World(
       defaultCommandTriggers: (json['defaultCommandTriggers'] as List<dynamic>?)
           ?.map((e) => CommandTrigger.fromJson(e as Map<String, dynamic>))
           .toList(),
+      customCommandTriggers: (json['customCommandTriggers'] as List<dynamic>?)
+          ?.map((e) => WorldCommandTrigger.fromJson(e as Map<String, dynamic>))
+          .toList(),
     );
 
 Map<String, dynamic> _$WorldToJson(World instance) => <String, dynamic>{
@@ -153,4 +156,5 @@ Map<String, dynamic> _$WorldToJson(World instance) => <String, dynamic>{
       'npcs': instance.npcs,
       'audioBusses': instance.audioBusses,
       'defaultCommandTriggers': instance.defaultCommandTriggers,
+      'customCommandTriggers': instance.customCommandTriggers,
     };

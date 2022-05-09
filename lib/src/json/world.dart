@@ -31,6 +31,7 @@ import 'scenes/scene.dart';
 import 'sounds/audio_bus.dart';
 import 'sounds/custom_sound.dart';
 import 'stats/world_stat.dart';
+import 'world_command_trigger.dart';
 import 'world_credit.dart';
 import 'zones/terrain.dart';
 import 'zones/zone.dart';
@@ -123,6 +124,7 @@ class World {
     final List<Npc>? npcs,
     final List<AudioBus>? audioBusses,
     final List<CommandTrigger>? defaultCommandTriggers,
+    final List<WorldCommandTrigger>? customCommandTriggers,
   })  : globalOptions = globalOptions ?? WorldOptions(),
         soundOptions = soundOptions ?? SoundOptions(),
         mainMenuOptions = mainMenuOptions ?? MainMenuOptions(),
@@ -173,7 +175,8 @@ class World {
               switchMenuBackwardsCommandTrigger,
               nextSceneSectionCommandTrigger,
               lookAroundCommandTrigger,
-            ];
+            ],
+        customCommandTriggers = customCommandTriggers ?? [];
 
   /// Create an instance from a JSON object.
   factory World.fromJson(final Map<String, dynamic> json) =>
@@ -475,6 +478,9 @@ class World {
 
   /// Get a suitable trigger map.
   TriggerMap get triggerMap => TriggerMap(defaultCommandTriggers);
+
+  /// The custom command triggers supported by this world.
+  final List<WorldCommandTrigger> customCommandTriggers;
 
   /// Convert an instance to JSON.
   Map<String, dynamic> toJson() => _$WorldToJson(this);

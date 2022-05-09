@@ -37,10 +37,10 @@ class SoundOptionsMenu extends ParameterMenu {
               );
           },
         ) {
+    final world = worldContext.world;
     menuItems.add(
       ParameterMenuParameter(
         getLabel: () {
-          final world = worldContext.world;
           final options = world.soundMenuOptions;
           final title = options.outputTypeTitle;
           final String value;
@@ -63,6 +63,13 @@ class SoundOptionsMenu extends ParameterMenu {
         decreaseValue: () => changePannerStrategy(-1),
       ),
     );
+    for (final worldCommand in world.customCommandTriggers
+        .where((final element) => element.soundOptionsMenu == true)) {
+      registerCommand(
+        worldCommand.commandTrigger.name,
+        worldCommand.getCommand(worldContext),
+      );
+    }
   }
 
   /// The world context to use.

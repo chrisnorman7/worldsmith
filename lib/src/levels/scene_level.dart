@@ -26,6 +26,13 @@ class SceneLevel extends Level {
         onStart: showNextSection,
       ),
     );
+    for (final worldCommand in worldContext.world.customCommandTriggers
+        .where((final element) => element.scenes == true)) {
+      registerCommand(
+        worldCommand.commandTrigger.name,
+        worldCommand.getCommand(worldContext),
+      );
+    }
   }
 
   /// The world context to use.

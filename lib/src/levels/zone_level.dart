@@ -440,6 +440,13 @@ class ZoneLevel extends Level {
         onStart: lookAround,
       ),
     );
+    for (final worldCommand in worldContext.world.customCommandTriggers
+        .where((final element) => element.zone == true)) {
+      registerCommand(
+        worldCommand.commandTrigger.name,
+        worldCommand.getCommand(worldContext),
+      );
+    }
     var minCoordinates = const Point(0, 0);
     final startCoordinates = <String, Point<int>>{};
     final endCoordinates = <String, Point<int>>{};
@@ -1101,40 +1108,46 @@ class ZoneLevel extends Level {
             .distanceTo(a.coordinates)
             .compareTo(coordinates.distanceTo(b.coordinates)),
       );
-    game.pushLevel(
-      Menu(
-        game: game,
-        title: const Message(text: 'Look Around'),
-        items: objects.map<MenuItem>(
-          (final e) {
-            final distance =
-                coordinates.distanceTo(e.coordinates).toStringAsFixed(1);
-            final angle =
-                (coordinates.angleBetween(e.coordinates) - heading) % 360.0;
-            final direction = worldContext.getDirectionName(angle.floor());
-            final sound = e.icon;
-            final message = Message(text: '${e.name} ($distance $direction)');
-            final button = worldContext.getButton(game.popLevel);
-            if (sound == null) {
-              return MenuItem(message, button);
-            } else {
-              return LookAroundMenuItem(
-                worldContext: worldContext,
-                message: message,
-                widget: button,
-                sound: getAssetReferenceReference(
-                  assets: worldContext.world.interfaceSoundsAssets,
-                  id: sound.id,
-                ).reference,
-                gain: sound.gain,
-                x: e.coordinates.x,
-                y: e.coordinates.y,
-              );
-            }
-          },
-        ).toList(),
-        onCancel: game.popLevel,
-      ),
+    final menu = Menu(
+      game: game,
+      title: const Message(text: 'Look Around'),
+      items: objects.map<MenuItem>(
+        (final e) {
+          final distance =
+              coordinates.distanceTo(e.coordinates).toStringAsFixed(1);
+          final angle =
+              (coordinates.angleBetween(e.coordinates) - heading) % 360.0;
+          final direction = worldContext.getDirectionName(angle.floor());
+          final sound = e.icon;
+          final message = Message(text: '${e.name} ($distance $direction)');
+          final button = worldContext.getButton(game.popLevel);
+          if (sound == null) {
+            return MenuItem(message, button);
+          } else {
+            return LookAroundMenuItem(
+              worldContext: worldContext,
+              message: message,
+              widget: button,
+              sound: getAssetReferenceReference(
+                assets: worldContext.world.interfaceSoundsAssets,
+                id: sound.id,
+              ).reference,
+              gain: sound.gain,
+              x: e.coordinates.x,
+              y: e.coordinates.y,
+            );
+          }
+        },
+      ).toList(),
+      onCancel: game.popLevel,
     );
+    for (final worldCommand in worldContext.world.customCommandTriggers
+        .where((final element) => element.lookAroundMenu == true)) {
+      menu.registerCommand(
+        worldCommand.commandTrigger.name,
+        worldCommand.getCommand(worldContext),
+      );
+    }
+    game.pushLevel(menu);
   }
 }
