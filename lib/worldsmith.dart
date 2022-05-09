@@ -17,6 +17,7 @@ export 'src/json/sounds/_sounds.dart';
 export 'src/json/sounds/sound.dart';
 export 'src/json/stats/_stats.dart';
 export 'src/json/world.dart';
+export 'src/json/world_command_trigger.dart';
 export 'src/json/world_credit.dart';
 export 'src/json/zones/_zones.dart';
 export 'src/levels/_levels.dart';
