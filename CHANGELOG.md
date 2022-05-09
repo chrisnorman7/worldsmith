@@ -5,6 +5,7 @@
 ## Changed
 
 * Default command triggers can now be customised with the `World.defaultCommandTriggers` list.
+* Custom command triggers can now be added.
 
 ## [0.19.0]
 
