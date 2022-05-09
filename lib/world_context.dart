@@ -13,7 +13,6 @@ import 'package:ziggurat/sound.dart';
 import 'package:ziggurat/ziggurat.dart';
 import 'package:ziggurat_sounds/ziggurat_sounds.dart';
 
-import 'command_triggers.dart';
 import 'constants.dart';
 import 'util.dart';
 import 'worldsmith.dart';
@@ -54,7 +53,7 @@ class WorldContext {
       game: game ??
           Game(
             'Worldsmith Game',
-            triggerMap: defaultTriggerMap,
+            triggerMap: world.triggerMap,
           ),
       world: world,
       customCommands: customCommands,

@@ -8,6 +8,7 @@ import 'package:ziggurat/sound.dart';
 import 'package:ziggurat/ziggurat.dart';
 import 'package:ziggurat_sounds/ziggurat_sounds.dart';
 
+import '../../command_triggers.dart';
 import '../../constants.dart';
 import '../../util.dart';
 import 'commands/command_category.dart';
@@ -121,6 +122,7 @@ class World {
     final Map<String, int>? defaultPlayerStats,
     final List<Npc>? npcs,
     final List<AudioBus>? audioBusses,
+    final List<CommandTrigger>? defaultCommandTriggers,
   })  : globalOptions = globalOptions ?? WorldOptions(),
         soundOptions = soundOptions ?? SoundOptions(),
         mainMenuOptions = mainMenuOptions ?? MainMenuOptions(),
@@ -154,7 +156,24 @@ class World {
         stats = stats ?? [],
         defaultPlayerStats = defaultPlayerStats ?? {},
         npcs = npcs ?? [],
-        audioBusses = audioBusses ?? [];
+        audioBusses = audioBusses ?? [],
+        defaultCommandTriggers = defaultCommandTriggers ??
+            [
+              slowWalkCommandTrigger,
+              walkForwardsCommandTrigger,
+              walkBackwardsCommandTrigger,
+              sidestepLeftCommandTrigger,
+              sidestepRightCommandTrigger,
+              turnLeftCommandTrigger,
+              turnRightCommandTrigger,
+              pauseMenuCommandTrigger,
+              showCoordinatesCommandTrigger,
+              showFacingCommandTrigger,
+              switchMenuForwardCommandTrigger,
+              switchMenuBackwardsCommandTrigger,
+              nextSceneSectionCommandTrigger,
+              lookAroundCommandTrigger,
+            ];
 
   /// Create an instance from a JSON object.
   factory World.fromJson(final Map<String, dynamic> json) =>
@@ -450,6 +469,12 @@ class World {
   /// Get the audio bus with the given [id].
   AudioBus getAudioBus(final String id) =>
       audioBusses.firstWhere((final element) => element.id == id);
+
+  /// The default command triggers to use.
+  final List<CommandTrigger> defaultCommandTriggers;
+
+  /// Get a suitable trigger map.
+  TriggerMap get triggerMap => TriggerMap(defaultCommandTriggers);
 
   /// Convert an instance to JSON.
   Map<String, dynamic> toJson() => _$WorldToJson(this);

@@ -113,23 +113,3 @@ const lookAroundCommandTrigger = CommandTrigger(
   button: GameControllerButton.y,
   keyboardKey: CommandKeyboardKey(ScanCode.x),
 );
-
-/// The default trigger map.
-const defaultTriggerMap = TriggerMap(
-  [
-    slowWalkCommandTrigger,
-    walkForwardsCommandTrigger,
-    walkBackwardsCommandTrigger,
-    sidestepLeftCommandTrigger,
-    sidestepRightCommandTrigger,
-    turnLeftCommandTrigger,
-    turnRightCommandTrigger,
-    pauseMenuCommandTrigger,
-    showCoordinatesCommandTrigger,
-    showFacingCommandTrigger,
-    switchMenuForwardCommandTrigger,
-    switchMenuBackwardsCommandTrigger,
-    nextSceneSectionCommandTrigger,
-    lookAroundCommandTrigger,
-  ],
-);
