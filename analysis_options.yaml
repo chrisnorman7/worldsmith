@@ -2,19 +2,7 @@ include: package:lints/recommended.yaml
 
 analyzer:
   exclude:
-    - lib/src/json/*.g.dart
-    - lib/src/json/commands/*.g.dart
-    - lib/src/json/conditionals/*.g.dart
-    - lib/src/json/conversations/*.g.dart
-    - lib/src/json/equipment/*.g.dart
-    - lib/src/json/messages/*.g.dart
-    - lib/src/json/npcs/*.g.dart
-    - lib/src/json/options/*.g.dart
-    - lib/src/json/scenes/*.g.dart
-    - lib/src/json/sounds/*.g.dart
-    - lib/src/json/stats/*.g.dart
-    - lib/src/json/quests/*.g.dart
-    - lib/src/json/zones/*.g.dart
+    - lib/src/json/**.g.dart
   strong-mode:
     implicit-casts: false
     implicit-dynamic: false
