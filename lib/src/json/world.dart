@@ -16,6 +16,7 @@ import 'commands/world_command.dart';
 import 'conversations/conversation.dart';
 import 'conversations/conversation_category.dart';
 import 'equipment/equipment_position.dart';
+import 'menus/custom_menu.dart';
 import 'npcs/npc.dart';
 import 'options/credits_menu_options.dart';
 import 'options/main_menu_options.dart';
@@ -125,6 +126,7 @@ class World {
     final List<AudioBus>? audioBusses,
     final List<CommandTrigger>? defaultCommandTriggers,
     final List<WorldCommandTrigger>? customCommandTriggers,
+    final List<CustomMenu>? menus,
   })  : globalOptions = globalOptions ?? WorldOptions(),
         soundOptions = soundOptions ?? SoundOptions(),
         mainMenuOptions = mainMenuOptions ?? MainMenuOptions(),
@@ -176,7 +178,8 @@ class World {
               nextSceneSectionCommandTrigger,
               lookAroundCommandTrigger,
             ],
-        customCommandTriggers = customCommandTriggers ?? [];
+        customCommandTriggers = customCommandTriggers ?? [],
+        menus = menus ?? [];
 
   /// Create an instance from a JSON object.
   factory World.fromJson(final Map<String, dynamic> json) =>
@@ -481,6 +484,13 @@ class World {
 
   /// The custom command triggers supported by this world.
   final List<WorldCommandTrigger> customCommandTriggers;
+
+  /// The menus that have been created.
+  final List<CustomMenu> menus;
+
+  /// Return the menu with the given [id].
+  CustomMenu getMenu(final String id) =>
+      menus.firstWhere((final element) => element.id == id);
 
   /// Convert an instance to JSON.
   Map<String, dynamic> toJson() => _$WorldToJson(this);

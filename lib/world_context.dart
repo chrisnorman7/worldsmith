@@ -337,6 +337,10 @@ class WorldContext {
         fadeTime: fadeTime,
       );
 
+  /// Get a custom menu level.
+  CustomMenuLevel getCustomMenuLevel(final CustomMenu menu) =>
+      CustomMenuLevel(worldContext: this, customMenu: menu);
+
   /// Returns the given [world] as a JSON string.
   String getWorldJsonString({final bool compact = true}) {
     final json = world.toJson();
@@ -635,6 +639,10 @@ class WorldContext {
     openUrl(url);
   }
 
+  /// Handle the showing of a custom [menu].
+  void handleCustomMenu(final CustomMenu menu) =>
+      game.pushLevel(getCustomMenuLevel(menu));
+
   /// Run the given [command].
   ///
   /// All of [nullSound], [soundChannel], and [replacements] will be passed to
@@ -714,6 +722,10 @@ class WorldContext {
     final url = command.url;
     if (url != null) {
       handleUrl(url);
+    }
+    final customMenuId = command.customMenuId;
+    if (customMenuId != null) {
+      handleCustomMenu(world.getMenu(customMenuId));
     }
   }
 

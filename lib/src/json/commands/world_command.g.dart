@@ -41,6 +41,7 @@ WorldCommand _$WorldCommandFromJson(Map<String, dynamic> json) => WorldCommand(
           ? null
           : PlayRumble.fromJson(json['playRumble'] as Map<String, dynamic>),
       url: json['url'] as String?,
+      customMenuId: json['customMenuId'] as String?,
     );
 
 Map<String, dynamic> _$WorldCommandToJson(WorldCommand instance) =>
@@ -59,6 +60,7 @@ Map<String, dynamic> _$WorldCommandToJson(WorldCommand instance) =>
       'showScene': instance.showScene,
       'playRumble': instance.playRumble,
       'url': instance.url,
+      'customMenuId': instance.customMenuId,
     };
 
 const _$WalkingModeEnumMap = {

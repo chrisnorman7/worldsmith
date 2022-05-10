@@ -2,6 +2,7 @@ import 'package:json_annotation/json_annotation.dart';
 
 import '../../../world_context.dart';
 import '../../levels/walking_mode.dart';
+import '../menus/custom_menu.dart';
 import '../sounds/custom_sound.dart';
 import 'call_command.dart';
 import 'play_rumble.dart';
@@ -32,6 +33,7 @@ class WorldCommand {
     this.showScene,
     this.playRumble,
     this.url,
+    this.customMenuId,
   }) : callCommands = callCommands ?? [];
 
   /// Create an instance from a JSON object.
@@ -81,6 +83,9 @@ class WorldCommand {
 
   /// Open a URL.
   String? url;
+
+  /// The ID of a [CustomMenu] instance to show.
+  String? customMenuId;
 
   /// Convert an instance to JSON.
   Map<String, dynamic> toJson() => _$WorldCommandToJson(this);

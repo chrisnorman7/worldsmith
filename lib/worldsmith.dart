@@ -7,6 +7,7 @@ export 'src/json/commands/show_scene.dart';
 export 'src/json/conditionals/_conditionals.dart';
 export 'src/json/conversations/_conversations.dart';
 export 'src/json/equipment/_equipment.dart';
+export 'src/json/menus/_menus.dart';
 export 'src/json/npcs/_npcs.dart';
 export 'src/json/options/_options.dart';
 export 'src/json/player_preferences.dart';

@@ -2,6 +2,10 @@
 
 ## []
 
+### Added
+
+* Added the `CustomMenu` class.
+
 ## Changed
 
 * Default command triggers can now be customised with the `World.defaultCommandTriggers` list.
