@@ -78,6 +78,10 @@ World _$WorldFromJson(Map<String, dynamic> json) => World(
           ? null
           : PauseMenuOptions.fromJson(
               json['pauseMenuOptions'] as Map<String, dynamic>),
+      controlsMenuOptions: json['controlsMenuOptions'] == null
+          ? null
+          : ControlsMenuOptions.fromJson(
+              json['controlsMenuOptions'] as Map<String, dynamic>),
       reverbs: (json['reverbs'] as List<dynamic>?)
           ?.map(
               (e) => ReverbPresetReference.fromJson(e as Map<String, dynamic>))
@@ -147,6 +151,7 @@ Map<String, dynamic> _$WorldToJson(World instance) => <String, dynamic>{
       'terrains': instance.terrains,
       'zones': instance.zones,
       'pauseMenuOptions': instance.pauseMenuOptions,
+      'controlsMenuOptions': instance.controlsMenuOptions,
       'reverbs': instance.reverbs,
       'commandCategories': instance.commandCategories,
       'defaultPlayerPreferences': instance.defaultPlayerPreferences,

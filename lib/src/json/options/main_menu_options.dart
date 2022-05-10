@@ -19,6 +19,8 @@ class MainMenuOptions {
     this.savedGameSound,
     this.creditsString = 'Show Credits',
     this.creditsSound,
+    this.controlsMenuString = 'Review Game Controls',
+    this.controlsMenuSound,
     this.exitString = 'Exit',
     this.exitSound,
     this.onExitString = 'The game will now close.',
@@ -59,8 +61,14 @@ class MainMenuOptions {
   /// The sound for the "Credits" option.
   Sound? creditsSound;
 
-  /// The sound for the "Sound Options" option.
-  final String? soundOptionsString;
+  /// The message for the "Controls Menu" option.
+  String? controlsMenuString;
+
+  /// The sound for the "Controls Menu" option.
+  Sound? controlsMenuSound;
+
+  /// The message for the "Sound Options" option.
+  String? soundOptionsString;
 
   /// The sound for the "Sound Options" option.
   Sound? soundOptionsSound;

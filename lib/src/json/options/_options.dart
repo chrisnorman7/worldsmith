@@ -1,3 +1,4 @@
+export 'controls_menu_options.dart';
 export 'credits_menu_options.dart';
 export 'main_menu_options.dart';
 export 'pause_menu_options.dart';

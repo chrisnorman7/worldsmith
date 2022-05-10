@@ -18,13 +18,7 @@ import 'conversations/conversation_category.dart';
 import 'equipment/equipment_position.dart';
 import 'menus/custom_menu.dart';
 import 'npcs/npc.dart';
-import 'options/credits_menu_options.dart';
-import 'options/main_menu_options.dart';
-import 'options/pause_menu_options.dart';
-import 'options/quest_menu_options.dart';
-import 'options/sound_menu_options.dart';
-import 'options/sound_options.dart';
-import 'options/world_options.dart';
+import 'options/_options.dart';
 import 'player_preferences.dart';
 import 'quests/quest.dart';
 import 'reverb_preset_reference.dart';
@@ -113,6 +107,7 @@ class World {
     final TerrainsList? terrains,
     final ZonesList? zones,
     final PauseMenuOptions? pauseMenuOptions,
+    final ControlsMenuOptions? controlsMenuOptions,
     final ReverbsList? reverbs,
     final CommandCategoryList? commandCategories,
     final PlayerPreferences? defaultPlayerPreferences,
@@ -149,6 +144,7 @@ class World {
         terrains = terrains ?? [],
         zones = zones ?? [],
         pauseMenuOptions = pauseMenuOptions ?? PauseMenuOptions(),
+        controlsMenuOptions = controlsMenuOptions ?? ControlsMenuOptions(),
         reverbs = reverbs ?? [],
         commandCategories = commandCategories ?? [],
         defaultPlayerPreferences =
@@ -391,6 +387,9 @@ class World {
 
   /// The options for the pause menu.
   final PauseMenuOptions pauseMenuOptions;
+
+  /// The options for the controls menu.
+  final ControlsMenuOptions controlsMenuOptions;
 
   /// Get the music for the pause menu.
   Music? get pauseMenuMusic => getMusic(

@@ -25,6 +25,11 @@ MainMenuOptions _$MainMenuOptionsFromJson(Map<String, dynamic> json) =>
       creditsSound: json['creditsSound'] == null
           ? null
           : Sound.fromJson(json['creditsSound'] as Map<String, dynamic>),
+      controlsMenuString:
+          json['controlsMenuString'] as String? ?? 'Review Game Controls',
+      controlsMenuSound: json['controlsMenuSound'] == null
+          ? null
+          : Sound.fromJson(json['controlsMenuSound'] as Map<String, dynamic>),
       exitString: json['exitString'] as String? ?? 'Exit',
       exitSound: json['exitSound'] == null
           ? null
@@ -53,6 +58,8 @@ Map<String, dynamic> _$MainMenuOptionsToJson(MainMenuOptions instance) =>
       'savedGameSound': instance.savedGameSound,
       'creditsString': instance.creditsString,
       'creditsSound': instance.creditsSound,
+      'controlsMenuString': instance.controlsMenuString,
+      'controlsMenuSound': instance.controlsMenuSound,
       'soundOptionsString': instance.soundOptionsString,
       'soundOptionsSound': instance.soundOptionsSound,
       'exitString': instance.exitString,

@@ -68,6 +68,18 @@ class MainMenu extends Menu {
           ),
         MenuItem(
           worldContext.getMenuItemMessage(
+            sound: options.controlsMenuSound,
+            text: options.controlsMenuString,
+          ),
+          worldContext.getButton(
+            () => game.replaceLevel(
+              worldContext.getControlsMenu(),
+              ambianceFadeTime: fadeTime,
+            ),
+          ),
+        ),
+        MenuItem(
+          worldContext.getMenuItemMessage(
             text: options.soundOptionsString,
             sound: options.soundOptionsSound,
           ),

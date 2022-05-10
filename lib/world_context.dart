@@ -300,6 +300,9 @@ class WorldContext {
   /// Returns a menu that will show credits.
   CreditsMenu getCreditsMenu() => CreditsMenu(this);
 
+  /// Returns a menu that will show game controls.
+  ControlsMenu getControlsMenu() => ControlsMenu(worldContext: this);
+
   /// Returns a menu that will allow the configuration of sound options.
   SoundOptionsMenu getSoundOptionsMenu() => SoundOptionsMenu(this);
 

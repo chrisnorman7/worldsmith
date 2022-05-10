@@ -5,6 +5,7 @@
 ### Added
 
 * Added the `CustomMenu` class.
+* Added the `ControlsMenu`, and an entry in the main menu.
 
 ## Changed
 
