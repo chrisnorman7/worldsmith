@@ -479,7 +479,12 @@ class World {
   final List<CommandTrigger> defaultCommandTriggers;
 
   /// Get a suitable trigger map.
-  TriggerMap get triggerMap => TriggerMap(defaultCommandTriggers);
+  TriggerMap get triggerMap => TriggerMap([
+        ...defaultCommandTriggers,
+        ...customCommandTriggers.map<CommandTrigger>(
+          (final e) => e.commandTrigger,
+        )
+      ]);
 
   /// The custom command triggers supported by this world.
   final List<WorldCommandTrigger> customCommandTriggers;
