@@ -58,7 +58,7 @@ class ControlsMenu extends Menu {
                 gain: worldContext.world.controlsMenuOptions.music!.gain,
               )
           ],
-          items: worldContext.world.defaultCommandTriggers.map<MenuItem>((e) {
+          items: worldContext.world.triggerMap.triggers.map<MenuItem>((e) {
             final controlsMenuOptions = worldContext.world.controlsMenuOptions;
             return MenuItem(
               worldContext.getMenuItemMessage(
