@@ -126,6 +126,14 @@ class MainMenu extends Menu {
         )
       ],
     );
+    for (final commandTrigger in world.customCommandTriggers.where(
+      (final element) => element.mainMenu == true,
+    )) {
+      registerCommand(
+        commandTrigger.commandTrigger.name,
+        commandTrigger.getCommand(worldContext),
+      );
+    }
   }
 
   /// The world context to work with.
