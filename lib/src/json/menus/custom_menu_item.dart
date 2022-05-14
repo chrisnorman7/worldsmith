@@ -12,6 +12,7 @@ part 'custom_menu_item.g.dart';
 class CustomMenuItem {
   /// Create an instance.
   CustomMenuItem({
+    required this.id,
     this.label,
     this.sound,
     this.activateCommand,
@@ -20,6 +21,9 @@ class CustomMenuItem {
   /// Create an instance from a JSON object.
   factory CustomMenuItem.fromJson(final Map<String, dynamic> json) =>
       _$CustomMenuItemFromJson(json);
+
+  /// The ID for this menu item.
+  final String id;
 
   /// The text of this item.
   String? label;

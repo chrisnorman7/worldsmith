@@ -8,6 +8,7 @@ part of 'custom_menu_item.dart';
 
 CustomMenuItem _$CustomMenuItemFromJson(Map<String, dynamic> json) =>
     CustomMenuItem(
+      id: json['id'] as String,
       label: json['label'] as String?,
       sound: json['sound'] == null
           ? null
@@ -20,6 +21,7 @@ CustomMenuItem _$CustomMenuItemFromJson(Map<String, dynamic> json) =>
 
 Map<String, dynamic> _$CustomMenuItemToJson(CustomMenuItem instance) =>
     <String, dynamic>{
+      'id': instance.id,
       'label': instance.label,
       'sound': instance.sound,
       'activateCommand': instance.activateCommand,
