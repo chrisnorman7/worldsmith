@@ -1,6 +1,6 @@
 # Changelog
 
-## []
+## [0.20.0]
 
 ### Added
 
@@ -11,6 +11,7 @@
 
 * Default command triggers can now be customised with the `World.defaultCommandTriggers` list.
 * Custom command triggers can now be added.
+* Updated dependencies.
 
 ## [0.19.0]
 
