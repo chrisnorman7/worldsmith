@@ -104,9 +104,15 @@ void main() {
             audioBusses: [bus],
             reverbs: [reverbPresetReference],
           );
-          final game = Game('Audio Bus Tests');
           final sdl = Sdl();
-          final worldContext = WorldContext(sdl: sdl, game: game, world: world);
+          final game = Game(
+            title: 'Audio Bus Tests',
+            sdl: sdl,
+          );
+          final worldContext = WorldContext(
+            game: game,
+            world: world,
+          );
           final reverb = worldContext.getReverb(reverbPresetReference);
           final channel = worldContext.getAudioBus(bus);
           expect(channel.gain, bus.gain);

@@ -4,7 +4,7 @@ import 'package:worldsmith/worldsmith.dart';
 import 'package:ziggurat/ziggurat.dart';
 
 Future<void> main() {
-  final sdl = Sdl();
+  final sdl = Sdl()..init();
   final world = World(
     title: 'Example World',
     credits: [
@@ -17,9 +17,12 @@ Future<void> main() {
     creditsMenuOptions: CreditsMenuOptions(fadeTime: 1.0),
     mainMenuOptions: MainMenuOptions(fadeTime: 1.0),
   );
-  final game = Game(world.title, triggerMap: world.triggerMap);
-  final worldContext = WorldContext(
+  final game = Game(
+    title: world.title,
     sdl: sdl,
+    triggerMap: world.triggerMap,
+  );
+  final worldContext = WorldContext(
     game: game,
     world: world,
   );

@@ -3,7 +3,10 @@ import 'package:ziggurat/ziggurat.dart';
 /// A game that stores text.
 class CustomGame extends Game {
   /// Create an instance.
-  CustomGame(super.title) : strings = [];
+  CustomGame({
+    required super.title,
+    required super.sdl,
+  }) : strings = [];
 
   /// The stored messages.
   final List<String> strings;

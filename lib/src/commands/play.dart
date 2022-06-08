@@ -38,13 +38,13 @@ class PlayCommand extends Command<void> {
     final results = argResults!;
     final filename = results['filename'] as String;
     final world = World.fromFilename(filename);
+    final sdl = Sdl();
     final game = Game(
-      world.title,
+      title: world.title,
+      sdl: sdl,
       triggerMap: world.triggerMap,
     );
-    final sdl = Sdl();
     final worldContext = WorldContext(
-      sdl: sdl,
       game: game,
       world: world,
     );

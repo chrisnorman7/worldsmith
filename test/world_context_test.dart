@@ -2,7 +2,6 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:dart_sdl/dart_sdl.dart';
-import 'package:path/path.dart' as path;
 import 'package:test/test.dart';
 import 'package:worldsmith/constants.dart';
 import 'package:worldsmith/world_context.dart';
@@ -31,7 +30,10 @@ class _ButtonException implements Exception {}
 
 void main() {
   final sdl = Sdl();
-  final game = Game('Test Game');
+  final game = Game(
+    title: 'Test Game',
+    sdl: sdl,
+  );
   final directory = Directory(
     sdl.getPrefPath(orgName, appName),
   );
@@ -52,7 +54,6 @@ void main() {
         ),
       );
       final worldContext = WorldContext(
-        sdl: sdl,
         game: game,
         world: world,
       );
@@ -66,34 +67,24 @@ void main() {
               orgName: orgName,
             ),
           );
-          final game = Game(world.title);
-          final worldContext = WorldContext(sdl: sdl, game: game, world: world);
-          expect(worldContext.sdl, sdl);
+          final game = Game(
+            title: world.title,
+            sdl: sdl,
+          );
+          final worldContext = WorldContext(
+            game: game,
+            world: world,
+          );
           expect(worldContext.game, game);
           expect(worldContext.world, world);
           expect(worldContext.customCommands, isEmpty);
           expect(worldContext.conditionalFunctions, isEmpty);
-          expect(
-            worldContext.preferencesDirectory,
-            sdl.getPrefPath(
-              orgName,
-              appName,
-            ),
-          );
           expect(worldContext.errorHandler, isNull);
         },
       );
       test(
         '.playerPreference',
         () {
-          expect(
-            worldContext.playerPreferencesFile.path,
-            path.join(directory.path, preferencesFilename),
-          );
-          if (worldContext.playerPreferencesFile.existsSync()) {
-            worldContext.playerPreferencesFile.deleteSync(recursive: true);
-          }
-          expect(worldContext.playerPreferencesFile.existsSync(), isFalse);
           final defaultPrefs = world.defaultPlayerPreferences;
           final prefs = worldContext.playerPreferences;
           expect(prefs.ambianceGain, defaultPrefs.ambianceGain);
@@ -108,29 +99,25 @@ void main() {
       );
       test(
         '.triggerMapFile',
-        () {
-          expect(
-            worldContext.triggerMapFile.path,
-            path.join(
-              worldContext.preferencesDirectory,
-              triggerMapFilename,
-            ),
-          );
-        },
+        () {},
       );
       test(
         '.savePlayerPreferences',
         () {
-          if (worldContext.playerPreferencesFile.existsSync()) {
-            worldContext.playerPreferencesFile.deleteSync(recursive: true);
-          }
           final prefs = worldContext.playerPreferences
             ..ambianceGain *= 2
             ..interfaceSoundsGain *= 3
             ..musicGain *= 3;
           worldContext.savePlayerPreferences();
-          expect(worldContext.playerPreferencesFile.existsSync(), isTrue);
-          final data = worldContext.playerPreferencesFile.readAsStringSync();
+          expect(game, worldContext.game);
+          expect(
+            game.preferences.get<JsonType>(worldsmithGamePreferencesKey),
+            isNotNull,
+          );
+          expect(game.preferencesFile.existsSync(), true);
+          final data = game.preferences.getString(
+            worldsmithGamePreferencesKey,
+          )!;
           final json = jsonDecode(data) as JsonType;
           final prefs2 = PlayerPreferences.fromJson(json);
           expect(prefs2.ambianceGain, prefs.ambianceGain);
@@ -142,8 +129,14 @@ void main() {
         '.getMenuItemMessage',
         () {
           final world = World();
-          final game = Game(world.title);
-          final worldContext = WorldContext(sdl: sdl, game: game, world: world);
+          final game = Game(
+            title: world.title,
+            sdl: sdl,
+          );
+          final worldContext = WorldContext(
+            game: game,
+            world: world,
+          );
           var message = worldContext.getMenuItemMessage(text: 'Testing');
           expect(message.text, 'Testing');
           expect(message.gain, world.soundOptions.defaultGain);
@@ -176,8 +169,14 @@ void main() {
             reference: AssetReference.file('2.mp3'),
           );
           final world = World(interfaceSoundsAssets: [reference1, reference2]);
-          final game = Game(world.title);
-          final worldContext = WorldContext(sdl: sdl, game: game, world: world);
+          final game = Game(
+            title: world.title,
+            sdl: sdl,
+          );
+          final worldContext = WorldContext(
+            game: game,
+            world: world,
+          );
           var message = worldContext.getSoundMessage(
             sound: Sound(id: reference1.variableName, gain: 2.0),
             assets: world.interfaceSoundsAssets,
@@ -204,8 +203,10 @@ void main() {
         () {
           final world = World();
           final worldContext = WorldContext(
-            sdl: sdl,
-            game: Game('Test asset stores'),
+            game: Game(
+              title: 'Test asset stores',
+              sdl: sdl,
+            ),
             world: world,
           );
           expect(
@@ -248,7 +249,6 @@ void main() {
             terrainAssets: [terrainReference],
           );
           final worldContext = WorldContext(
-            sdl: sdl,
             game: game,
             world: world,
           );
@@ -285,8 +285,10 @@ void main() {
             gain: 1.0,
           );
           final worldContext = WorldContext(
-            sdl: sdl,
-            game: Game('Custom Message'),
+            game: Game(
+              title: 'Custom Message',
+              sdl: sdl,
+            ),
             world: World(interfaceSoundsAssets: [assetReferenceReference]),
           );
           final message = worldContext.getCustomMessage(
@@ -322,8 +324,11 @@ void main() {
               menuMoveSound: Sound(id: moveSound.variableName, gain: 5.0),
             ),
           );
-          final game = Game(world.title);
-          final worldContext = WorldContext(sdl: sdl, game: game, world: world);
+          final game = Game(
+            title: world.title,
+            sdl: sdl,
+          );
+          final worldContext = WorldContext(game: game, world: world);
           final button = worldContext.getButton(() {
             throw _ButtonException();
           });
@@ -360,7 +365,10 @@ void main() {
           final zone = pondZone.zone;
           final world = World(zones: [zone]);
           pondZone.generateTerrains(world);
-          final worldContext = WorldContext(sdl: sdl, game: game, world: world);
+          final worldContext = WorldContext(
+            game: game,
+            world: world,
+          );
           final level = worldContext.getZoneLevel(zone);
           expect(level.worldContext, worldContext);
           expect(level.zone, zone);
@@ -372,7 +380,10 @@ void main() {
           final pondZone = PondZone.generate();
           final zone = pondZone.zone;
           final world = World(zones: [zone]);
-          final worldContext = WorldContext(sdl: sdl, game: game, world: world);
+          final worldContext = WorldContext(
+            game: game,
+            world: world,
+          );
           final menu = worldContext.getPauseMenu(zone);
           expect(menu.worldContext, worldContext);
           expect(menu.zone, zone);
@@ -404,7 +415,10 @@ void main() {
               ),
             ],
           );
-          final worldContext = WorldContext(sdl: sdl, game: game, world: world);
+          final worldContext = WorldContext(
+            game: game,
+            world: world,
+          );
           var level = worldContext.getSceneLevel(scene: scene);
           expect(level.callCommand, isNull);
           expect(level.index, isZero);
@@ -445,7 +459,10 @@ void main() {
               )
             ],
           );
-          final worldContext = WorldContext(sdl: sdl, game: game, world: world);
+          final worldContext = WorldContext(
+            game: game,
+            world: world,
+          );
           const fadeTime = 12345;
           final level = worldContext.getConversationLevel(
             conversation: conversation,
@@ -466,7 +483,10 @@ void main() {
         () {
           final zone = PondZone.generate().zone;
           final world = World(zones: [zone]);
-          final worldContext = WorldContext(sdl: sdl, game: game, world: world);
+          final worldContext = WorldContext(
+            game: game,
+            world: world,
+          );
           expect(
             worldContext.getWorldJsonString(compact: false),
             indentedJsonEncoder.convert(world),
@@ -483,7 +503,10 @@ void main() {
           final str = WorldStat(id: 'str', name: 'Strength');
           final dex = WorldStat(id: 'dex', name: 'Dexterity');
           final world = World(stats: [str, dex]);
-          final worldContext = WorldContext(sdl: sdl, game: game, world: world);
+          final worldContext = WorldContext(
+            game: game,
+            world: world,
+          );
           final stats = worldContext.playerStats;
           expect(stats.getStat(str), str.defaultValue);
           expect(stats.getStat(dex), dex.defaultValue);
@@ -546,7 +569,10 @@ void main() {
         'loadEncryptedString',
         () {
           final world = World(title: 'Encrypted World');
-          final worldContext = WorldContext(sdl: sdl, game: game, world: world);
+          final worldContext = WorldContext(
+            game: game,
+            world: world,
+          );
           final encryptionKey = worldContext.saveEncrypted(
             filename: worldFileEncrypted.path,
           );
@@ -565,7 +591,10 @@ void main() {
     () {
       final zone = PondZone.generate().zone;
       final world = World(zones: [zone]);
-      final worldContext = WorldContext(sdl: sdl, game: game, world: world);
+      final worldContext = WorldContext(
+        game: game,
+        world: world,
+      );
       final file = File(encryptedWorldFilename);
       tearDown(
         () {
@@ -629,7 +658,6 @@ void main() {
       pondZone.generateTerrains(world);
       const commandName = 'testing';
       final worldContext = WorldContext(
-        sdl: sdl,
         game: game,
         world: world,
         customCommands: {
@@ -774,9 +802,9 @@ void main() {
           expect(level.conversation, conversation);
           expect(level.fadeTime, startConversation.fadeTime);
           expect(level.reverb, isNull);
-          await game.tick(sdl, startConversation.pushInitialBranchAfter - 1);
+          await game.tick(startConversation.pushInitialBranchAfter - 1);
           expect(level.branch, isNull);
-          await game.tick(sdl, 1);
+          await game.tick(1);
           expect(level.branch, branch);
         },
       );
@@ -809,7 +837,10 @@ void main() {
       final world = World(
         globalOptions: WorldOptions(appName: appName, orgName: orgName),
       );
-      final worldContext = WorldContext(sdl: sdl, game: game, world: world);
+      final worldContext = WorldContext(
+        game: game,
+        world: world,
+      );
       test(
         '.handleQuestCondition',
         () {

@@ -53,8 +53,14 @@ void main() {
           menuMoveSound: Sound(id: moveSound.variableName, gain: 4.0),
         ),
       );
-      final game = Game(world.title);
-      final worldContext = WorldContext(sdl: sdl, game: game, world: world);
+      final game = Game(
+        title: world.title,
+        sdl: sdl,
+      );
+      final worldContext = WorldContext(
+        game: game,
+        world: world,
+      );
       final creditsMenu = worldContext.getCreditsMenu();
       test(
         'Initialisation',

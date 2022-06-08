@@ -17,9 +17,11 @@ void main() {
         defaultTerrainId: 'terrain',
       );
       final world = World(zones: [zone], pauseMenuOptions: PauseMenuOptions());
-      final game = Game(world.title);
-      final worldContext = WorldContext(
+      final game = Game(
+        title: world.title,
         sdl: sdl,
+      );
+      final worldContext = WorldContext(
         game: game,
         world: world,
       );

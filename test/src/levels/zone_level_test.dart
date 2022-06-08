@@ -68,8 +68,14 @@ void main() {
         ambianceAssets: [ambiance1Reference, ambiance2Reference],
         musicAssets: [musicReference],
       );
-      final game = CustomGame(world.title);
-      final worldContext = WorldContext(sdl: sdl, game: game, world: world);
+      final game = CustomGame(
+        title: world.title,
+        sdl: sdl,
+      );
+      final worldContext = WorldContext(
+        game: game,
+        world: world,
+      );
       pondZone.generateTerrains(world);
       final pondZoneLevel =
           ZoneLevel(worldContext: worldContext, zone: pondZone.zone)..onPush();
@@ -464,8 +470,10 @@ void main() {
       );
       final sdl = Sdl();
       final worldContext = WorldContext(
-        sdl: sdl,
-        game: Game('NPC Tests'),
+        game: Game(
+          title: 'NPC Tests',
+          sdl: sdl,
+        ),
         world: world,
         customCommands: {},
       );

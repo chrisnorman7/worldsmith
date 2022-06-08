@@ -61,3 +61,6 @@ typedef CustomCommandsMap = Map<String, EventCallback<WorldContext>>;
 /// The type of a conditional functions map.
 typedef ConditionalFunctionsMap
     = Map<String, bool Function(WorldContext worldContext)>;
+
+/// The key where worldsmith preferences will be stored.
+const worldsmithGamePreferencesKey = '__worldsmith_gmae_preferences__';

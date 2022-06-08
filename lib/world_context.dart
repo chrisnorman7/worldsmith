@@ -21,50 +21,30 @@ import 'worldsmith.dart';
 class WorldContext {
   /// Create an instance.
   WorldContext({
-    required this.sdl,
     required this.game,
     required this.world,
     this.customCommands = const {},
     this.conditionalFunctions = const {},
     this.errorHandler,
   })  : hapticDevices = [],
-        preferencesDirectory = sdl.getPrefPath(
-          world.globalOptions.orgName,
-          world.globalOptions.appName,
-        ),
         _audioBusses = {},
         _reverbs = {};
 
   /// Return an instance with its [world] loaded from an encrypted file.
-  factory WorldContext.loadEncrypted({
+  WorldContext.loadEncrypted({
+    required this.game,
     required final String encryptionKey,
     final String filename = encryptedWorldFilename,
-    final Game? game,
-    final CustomCommandsMap customCommands = const {},
-    final ErrorHandler? errorHandler,
-  }) {
-    final sdl = Sdl();
-    final world = World.loadEncrypted(
-      encryptionKey: encryptionKey,
-      filename: filename,
-    );
-    return WorldContext(
-      sdl: sdl,
-      game: game ??
-          Game(
-            'Worldsmith Game',
-            triggerMap: world.triggerMap,
-          ),
-      world: world,
-      customCommands: customCommands,
-      errorHandler: errorHandler,
-    );
-  }
-
-  /// The SDL instance to use.
-  ///
-  /// The [Sdl.init] method will be called by the [run] method.
-  final Sdl sdl;
+    this.customCommands = const {},
+    this.conditionalFunctions = const {},
+    this.errorHandler,
+  })  : world = World.loadEncrypted(
+          encryptionKey: encryptionKey,
+          filename: filename,
+        ),
+        _audioBusses = {},
+        _reverbs = {},
+        hapticDevices = [];
 
   /// The game to use.
   final Game game;
@@ -84,16 +64,9 @@ class WorldContext {
   /// The list of initialised haptic devices.
   final List<Haptic> hapticDevices;
 
-  /// The directory where preferences should be stored.
-  final String preferencesDirectory;
-
-  /// The file where [playerPreferences] should be saved.
-  File get playerPreferencesFile =>
-      File(path.join(preferencesDirectory, preferencesFilename));
-
   /// The file where the trigger map should be stored.
   File get triggerMapFile =>
-      File(path.join(preferencesDirectory, triggerMapFilename));
+      File(path.join(game.preferencesDirectory.path, triggerMapFilename));
 
   /// The loaded player preferences.
   PlayerPreferences? _playerPreferences;
@@ -107,10 +80,10 @@ class WorldContext {
     if (currentPreferences != null) {
       return currentPreferences;
     }
-    if (playerPreferencesFile.existsSync()) {
-      final data = playerPreferencesFile.readAsStringSync();
-      final json = jsonDecode(data) as JsonType;
-      final preferences = PlayerPreferences.fromJson(json);
+    final preferences = game.preferences;
+    final data = preferences.get<JsonType>(worldsmithGamePreferencesKey);
+    if (data != null) {
+      final preferences = PlayerPreferences.fromJson(data);
       _playerPreferences = preferences;
       return preferences;
     } else {
@@ -127,8 +100,7 @@ class WorldContext {
   void savePlayerPreferences() {
     final preferences = playerPreferences;
     final json = preferences.toJson();
-    final data = indentedJsonEncoder.convert(json);
-    playerPreferencesFile.writeAsStringSync(data);
+    game.preferences.set(worldsmithGamePreferencesKey, json);
   }
 
   /// A function that will handle errors from [WorldCommand] instances.
@@ -373,9 +345,9 @@ class WorldContext {
   }
 
   /// Run this world.
-  ///
-  /// If [sdl] is not `null`, then it should call [Sdl.init] itself.
-  Future<void> run({final EventCallback<SoundEvent>? onSound}) async {
+  Future<void> run({
+    final EventCallback<SoundEvent>? onSound,
+  }) async {
     Synthizer? synthizer;
     Context? context;
     if (triggerMapFile.existsSync() == true) {
@@ -424,10 +396,8 @@ class WorldContext {
     } else {
       game.sounds.listen(onSound);
     }
-    sdl.init();
     try {
       await game.run(
-        sdl,
         framesPerSecond: world.globalOptions.framesPerSecond,
         onStart: () {
           game
@@ -448,10 +418,10 @@ class WorldContext {
     } finally {
       context?.destroy();
       synthizer?.shutdown();
-      sdl.quit();
       for (final haptic in hapticDevices) {
         haptic.close();
       }
+      game.sdl.quit();
     }
   }
 

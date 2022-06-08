@@ -90,12 +90,14 @@ class BuildCommand extends Command<void> {
     final sdlLib = results['sdl-lib'] as String?;
     final synthizerLib = results['synthizer-lib'] as String?;
     final libsndfileLib = results['libsndfile-lib'] as String?;
-    final game = Game('World Builder');
+    final sdl = Sdl();
+    final game = Game(
+      title: 'World Builder',
+      sdl: sdl,
+    );
     final world = World.fromFilename(results['filename'] as String);
     print('World: ${world.title}');
-    final sdl = Sdl();
     final worldContext = WorldContext(
-      sdl: sdl,
       game: game,
       world: world,
     );
