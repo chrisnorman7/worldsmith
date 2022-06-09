@@ -14,7 +14,7 @@ dependencies:
   json_annotation: ^4.5.0
   open_url: ^2.0.0
   path: ^1.8.1
-  ziggurat: ^0.48.1
+  ziggurat: ^0.48.2
   ziggurat_sounds: ^0.28.1
 
 dev_dependencies:

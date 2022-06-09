@@ -85,6 +85,10 @@ void main() {
       test(
         '.playerPreference',
         () {
+          final file = game.preferencesFile;
+          if (file.existsSync()) {
+            file.deleteSync(recursive: true);
+          }
           final defaultPrefs = world.defaultPlayerPreferences;
           final prefs = worldContext.playerPreferences;
           expect(prefs.ambianceGain, defaultPrefs.ambianceGain);
@@ -115,10 +119,9 @@ void main() {
             isNotNull,
           );
           expect(game.preferencesFile.existsSync(), true);
-          final data = game.preferences.getString(
+          final json = game.preferences.get<JsonType>(
             worldsmithGamePreferencesKey,
           )!;
-          final json = jsonDecode(data) as JsonType;
           final prefs2 = PlayerPreferences.fromJson(json);
           expect(prefs2.ambianceGain, prefs.ambianceGain);
           expect(prefs2.interfaceSoundsGain, prefs.interfaceSoundsGain);
