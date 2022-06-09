@@ -515,7 +515,7 @@ void main() {
       test(
         'Move NPC',
         () async {
-          await level.tick(sdl, 1);
+          await level.tick(1);
           expect(context.moveIndex, isZero);
           expect(context.move, zoneNpc.moves.first);
           final timeUntilMove = context.timeUntilMove;
@@ -534,7 +534,7 @@ void main() {
             ),
             emitsInOrder(<Object>[1.0, 1.0, isZero]),
           );
-          await level.tick(sdl, 1);
+          await level.tick(1);
           expect(context.move, zoneNpc.moves.first);
           expect(context.timeUntilMove, timeUntilMove - 1);
           expect(context.coordinates, const Point(1.0, 1.0));
@@ -545,7 +545,7 @@ void main() {
             ),
             emitsInOrder(<Object>[1.0, 1.0, isZero]),
           );
-          await level.tick(sdl, timeUntilMove);
+          await level.tick(timeUntilMove);
           expect(
             context.coordinates,
             Point(grass.fastWalk.distance, 1 + grass.fastWalk.distance),
@@ -561,7 +561,7 @@ void main() {
               ],
             ),
           );
-          await level.tick(sdl, 1);
+          await level.tick(1);
           expect(
             context.coordinates,
             Point(grass.fastWalk.distance, 1 + grass.fastWalk.distance),
@@ -583,7 +583,7 @@ void main() {
             coordinates.y - grass.fastWalk.distance,
           );
           final oldMove = context.move;
-          await level.tick(sdl, context.timeUntilMove);
+          await level.tick(context.timeUntilMove);
           expect(
             context.coordinates,
             Point(coordinates.x.toDouble(), coordinates.y.toDouble()),
@@ -606,7 +606,7 @@ void main() {
             context.timeUntilMove,
             inInclusiveRange(move.minMoveInterval, move.maxMoveInterval),
           );
-          await level.tick(sdl, context.timeUntilMove);
+          await level.tick(context.timeUntilMove);
           expect(
             context.coordinates,
             Point(
@@ -658,18 +658,18 @@ void main() {
             ..moveIndex = null
             ..timeUntilMove = 0;
           expect(() => context.move, throwsStateError);
-          await level.tick(sdl, 1);
+          await level.tick(1);
           expect(context.move, zoneNpc.moves.first);
           expect(results.length, 1);
           expect(results.first, startPathCommandName);
-          await level.tick(sdl, context.timeUntilMove);
+          await level.tick(context.timeUntilMove);
           await expectLater(
             Stream.fromIterable(results),
             emitsInOrder(
               <String>[startPathCommandName, moveCommandName],
             ),
           );
-          await level.tick(sdl, context.timeUntilMove);
+          await level.tick(context.timeUntilMove);
           await expectLater(
             Stream.fromIterable(results),
             emitsInOrder(
@@ -686,7 +686,7 @@ void main() {
             context.coordinates,
             Point(coordinates.x + 0.1, coordinates.y + 0.1),
           );
-          await level.tick(sdl, context.timeUntilMove);
+          await level.tick(context.timeUntilMove);
           expect(context.coordinates, coordinates);
           await expectLater(
             Stream.fromIterable(results),

@@ -785,8 +785,8 @@ class ZoneLevel extends Level {
 
   /// Maybe walk.
   @override
-  Future<void> tick(final Sdl sdl, final int timeDelta) async {
-    super.tick(sdl, timeDelta);
+  Future<void> tick(final int timeDelta) async {
+    super.tick(timeDelta);
     timeSinceLastWalked += timeDelta;
     maybeWalk(timeDelta);
     final turnModifier = turnAmount;
